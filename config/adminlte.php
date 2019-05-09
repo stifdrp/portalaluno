@@ -108,33 +108,20 @@ return [
     */
 
     'menu' => [
-        'MAIN NAVIGATION',
+       'Administrativo',
         [
-            'text' => 'Blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'text'       => 'Impressões',
+            'icon' => 'fa-fw fa-print',
+            // 'icon_color' => 'red',
+            'submenu' => [
+                [
+                    'text' => 'Certificado Conclusão',
+                    'icon' => 'fa-fw fa-sticky-note-o',
+                    'url' => '#'
+                ],
+            ],
         ],
-        [
-            'text'        => 'Pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        'LABELS',
-        [
-            'text'       => 'Important',
-            'icon_color' => 'red',
-        ],
-        [
-            'text'       => 'Warning',
-            'icon_color' => 'yellow',
-        ],
-        [
-            'text'       => 'Information',
-            'icon_color' => 'aqua',
-        ],
-    ],
+   ],
 
     /*
     |--------------------------------------------------------------------------
