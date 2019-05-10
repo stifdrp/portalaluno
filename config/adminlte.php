@@ -117,7 +117,7 @@ return [
                 [
                     'text' => 'Certificado Conclusão',
                     'icon' => 'fa-fw fa-sticky-note-o',
-                    'url' => '#'
+                    'url' => 'certificado_conclusao',
                 ],
             ],
         ],
