@@ -91,6 +91,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'replicado' => [
+            'driver' => 'sqlsrv',
+            // 'url' => env('DATABASE_URL'),
+            'host' => env('REPLICADO_HOST', 'localhost'),
+            'port' => env('REPLICADO_PORT', '1433'),
+            'database' => env('REPLICADO_DATABASE', 'forge'),
+            'username' => env('REPLICADO_USERNAME', 'forge'),
+            'password' => env('REPLICADO_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ]
+
     ],
 
     /*

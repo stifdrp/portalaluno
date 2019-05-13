@@ -23,20 +23,21 @@
             {{ csrf_field() }}
             <div class="box-body">
                 <div class="form-group">
-                    <label for="fonte" class="col-sm-2 control-label">Números USP</label>
+                    <label for="codpes" class="col-sm-2 control-label">Números USP</label>
                     <div class="col-sm-10">
-                        <textarea rows="3" class="form-control" id="fonte" name="fonte" autofocus required placeholder="Insira os números USP serados por vírgula"></textarea>
+                        <textarea rows="3" class="form-control" id="codpes" name="codpes" autofocus required placeholder="Insira os números USP serados por vírgula"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="data_colacao" class="col-sm-2 control-label">Data Colação</label>
                     <div class="col-sm-4">
-                        <input class="form-control" id="data" name="data_colacao" value="{{\Carbon\Carbon::parse(now())->format('d-m-Y')}}" required>
+                        <input class="form-control" id="data" name="data_colacao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
                     </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <button type="submit" class="btn btn-info">Salvar</button>
+                    <!-- <input type="button" onclick="log();" class="btn btn-info" value="Checar informações" /> -->
                     <a href="{{ route('certificado_conclusao.index') }}" class="btn btn-default">Cancelar</a>
                 </div>
                 <!-- /.box-footer -->
@@ -45,4 +46,9 @@
     </div>
 </div>
 
+<script>
+    function log() {
+        console.log('oi');
+    }
+</script>
 @stop
