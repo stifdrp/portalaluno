@@ -40,13 +40,13 @@
                         <tr role="row">
                             <th class="text-center">NUSP</th>
                             <th class="text-center">Nome</th>
-                            <th class="text-center">Mãe</th>
-                            <th class="text-center">Pai</th>
+                            <th class="text-center">Filiação</th>
                             <th class="text-center">Data nascimento</th>
                             <th class="text-center">Tipo</th>
                             <th class="text-center">Num. Documento</th>
                             <th class="text-center">Data Expedição</th>
                             <th class="text-center">Curso</th>
+                            <th class="text-center">Carga horária</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,8 +54,12 @@
                             <tr role="row">
                                 <td class="text-center">{{ $aluno->codpes }}</td>
                                 <td>{{ $aluno->nompes }}</td>
-                                <td>{{ $aluno->nommaepes }}</td>
-                                <td>{{ $aluno->nompaipes }}</td>
+                                <!-- Ciências Contábeis mostra filiação completa -->
+                                @if ($aluno->codcurgrd == '81200')
+                                    <td>{{ "{$aluno->nommaepes} e {$aluno->nompaipes}" }}</td>
+                                @else
+                                    <td>{{ $aluno->nommaepes }}</td>
+                                @endif
                                 <td class="text-center">{{ $aluno->dtanas }}</td>
                                 <td class="text-center">{{ $aluno->tipdocidf }}</td>
                                 @if(strlen($aluno->numdocidf) == 9) 
@@ -65,6 +69,7 @@
                                 @endif
                                 <td class="text-center">{{ $aluno->dtaexdidf }}</td>
                                 <td class="text-center">{{ $aluno->codcurgrd }}</td>
+                                <td class="text-center">{{ $aluno->cgahortot }}</td>
                             </tr>
                         @endforeach
                     </tbody>
