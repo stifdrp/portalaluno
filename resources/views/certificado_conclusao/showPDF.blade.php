@@ -25,11 +25,16 @@
     }
 
     #texto {
+        font-family: "Tajawal", sans-serif;
         text-align: justify;
         font-size: 11pt;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-
+        /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
     }
+
+    .texto-fundo {
+        font-family: "Tajawal", sans-serif;
+    }
+
     /* https://ourcodeworld.com/articles/read/688/how-to-configure-a-watermark-in-dompdf */
     #watermark {
         position: fixed;
@@ -59,7 +64,7 @@
     }
 
     .texto-direita {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-family: "Tajawal", sans-serif;
         font-size: 11pt;
         text-align: right;
     }
@@ -78,6 +83,7 @@
         left: 0px;
     }
 </style>
+{{ \Carbon\Carbon::setlocale('pt_BR') }}
 <header>
     <div class="row">
         <div class="col-md-10 col-md-offset-8">
@@ -101,7 +107,7 @@
         <div id="watermark"><img src="img/logo_fearp_pb.jpg" height="100%" width="100%"></div>
         <p class="texto-fundo">C E R T I F I C A M O S que {{ strtoupper($nome) }}, n° USP {{ $aluno->codpes }},
             @if ($aluno->codcurgrd == '81200')
-            filha(o) de {{ "{$nommae} e {$nompai}" }}, nascido(a) aos {{ \Carbon\Carbon::parse($data_nascimento)->locale('pt_BR.utf8')->format('d F Y') }},  
+            filha(o) de {{ "{$nommae} e {$nompai}" }}, nascido(a) aos {{ $data_nascimento }},  
             @endif
             portador(a) do RG 
             @if(strlen($aluno->numdocidf) == 9) 
@@ -109,7 +115,7 @@
             @elseif(strlen($aluno->numdocidf) == 8)
                 {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}," }}
             @endif
-            expedido em {{ \Carbon\Carbon::parse($data_expedicao)->locale('pt_BR.utf8')->format('d F Y') }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }} desta Faculdade em 8 de dezembro de 2018
+            expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }} desta Faculdade em 8 de dezembro de 2018
             @if ($aluno->codcurgrd == '81200')
             , com carga horária total de 3030 horas.
             @else
@@ -117,12 +123,12 @@
             @endif
         </p>
         <p>
-            Certificamos, ainda, que colou grau em {{ \Carbon\Carbon::parse($data_colacao)->locale('pt_BR.utf8')->format('d F Y') }} e que a expedição e o registro do diploma encontram-se em processamento.
+            Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.
         </p>
 
         <br><br>
         <p class="texto-direita">
-            Ribeirão Preto, {{ \Carbon\Carbon::now()->locale('pt_BR.utf8')->format('d F Y') }}.
+            Ribeirão Preto, {{ \Carbon\Carbon::now()->formatLocalized('%d de %B de %Y') }}.
         </p>
 
         <br><br>

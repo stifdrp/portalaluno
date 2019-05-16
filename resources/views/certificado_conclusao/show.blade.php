@@ -1,7 +1,11 @@
 @extends('adminlte::page')
 
 @section('content')
-
+<!-- <style>
+    div {
+        font-family: DejaVu Sans;
+    }
+</style>  -->
 <div class="form-group">
     <div class="row pull-right">
         <div class="col-sm-4">

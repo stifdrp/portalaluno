@@ -11,6 +11,12 @@ use ForceUTF8\Encoding;
 
 class CertificadoConclusaoController extends Controller
 {
+    public function __construct()
+    {
+        // https://web.emanuellimeira.com.br/php/resolvido-configuracao-de-traducao-para-laravel-setlocale-pt_br/
+        setlocale(LC_TIME, 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+    }
+
     //
     public function index()
     {
@@ -19,7 +25,6 @@ class CertificadoConclusaoController extends Controller
 
     public function show(Request $request)
     {
-        // dd($request);
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
@@ -53,15 +58,18 @@ class CertificadoConclusaoController extends Controller
                                                                     CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
                                                                     CASE WHEN DATEPART(mm, h.dtaini) >= 7 THEN '2' ELSE '1' END
                                         ORDER BY v.codcurgrd, p.nompes "));
-        $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->format('Y-m-d');
-        $start_html = '<html><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><body>';
+        $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
+        $start_html = '<html>
+                        <link href="https://fonts.googleapis.com/css?family=Jura|Quicksand|Tajawal" rel="stylesheet">
+                        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><body>';
         $end_html = '</body></html>';
         $cursos = $this->cursos();
         $html = $start_html;
         $i = 0;
         foreach($alunos as $aluno) {
-            $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->format('Y-m-d');
-            $data_nascimento = Carbon::parse(str_replace('/', '-', $aluno->dtanas))->format('Y-m-d');
+            $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->formatLocalized('%d de %B de %Y');
+            // $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->format('Y-m-d');
+            $data_nascimento = Carbon::parse(str_replace('/', '-', $aluno->dtanas))->formatLocalized('%d de %B de %Y');
             $nome = Encoding::fixUTF8($aluno->nompes);
             $nommae = Encoding::fixUTF8($aluno->nommaepes);
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
