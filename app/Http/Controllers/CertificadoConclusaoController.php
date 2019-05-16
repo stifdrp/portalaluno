@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use PDF;
 use Carbon\Carbon;
+use ForceUTF8\Encoding;
 
 class CertificadoConclusaoController extends Controller
 {
@@ -61,7 +62,12 @@ class CertificadoConclusaoController extends Controller
         foreach($alunos as $aluno) {
             $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->format('Y-m-d');
             $data_nascimento = Carbon::parse(str_replace('/', '-', $aluno->dtanas))->format('Y-m-d');
-            $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 'data_nascimento', 'cursos'))->render();
+            $nome = Encoding::fixUTF8($aluno->nompes);
+            $nommae = Encoding::fixUTF8($aluno->nommaepes);
+            $nompai = Encoding::fixUTF8($aluno->nompaipes);
+            $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 
+                                                                         'data_nascimento', 'cursos',
+                                                                         'nome', 'nommae', 'nompai'))->render();
             // Se não for o último aluno, adiciona uma quebra de página
             if ($i != count($alunos) - 1) {
                 $html .= '<div class="page-break"></div>';

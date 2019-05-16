@@ -99,9 +99,9 @@
 <body>
     <div id="texto">
         <div id="watermark"><img src="img/logo_fearp_pb.jpg" height="100%" width="100%"></div>
-        <p class="texto-fundo">C E R T I F I C A M O S que {{ strtoupper($aluno->nompes) }}, n° USP {{ $aluno->codpes }},
+        <p class="texto-fundo">C E R T I F I C A M O S que {{ strtoupper($nome) }}, n° USP {{ $aluno->codpes }},
             @if ($aluno->codcurgrd == '81200')
-            filha(o) de {{ "{$aluno->nommaepes} e {$aluno->nompaipes}" }}, nascido(a) aos {{ \Carbon\Carbon::parse($data_nascimento)->locale('pt_BR.utf8')->format('d F Y') }},  
+            filha(o) de {{ "{$nommae} e {$nompai}" }}, nascido(a) aos {{ \Carbon\Carbon::parse($data_nascimento)->locale('pt_BR.utf8')->format('d F Y') }},  
             @endif
             portador(a) do RG 
             @if(strlen($aluno->numdocidf) == 9) 
