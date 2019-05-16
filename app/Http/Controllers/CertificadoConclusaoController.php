@@ -53,7 +53,7 @@ class CertificadoConclusaoController extends Controller
                                                                     CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
                                                                     CASE WHEN DATEPART(mm, h.dtaini) >= 7 THEN '2' ELSE '1' END
                                         ORDER BY v.codcurgrd, p.nompes "));
-        $data_colacao = Carbon::parse($request->data_colacao)->format('Y-m-d');
+        $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->format('Y-m-d');
         $start_html = '<html><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><body>';
         $end_html = '</body></html>';
         $cursos = $this->cursos();
