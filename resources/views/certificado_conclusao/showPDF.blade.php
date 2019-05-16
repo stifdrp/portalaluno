@@ -27,12 +27,13 @@
     #texto {
         font-family: "Tajawal", sans-serif;
         text-align: justify;
-        font-size: 11pt;
-        /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+        font-size: 12pt;
+        /* font-family: "Tajawal"; */
     }
 
     .texto-fundo {
         font-family: "Tajawal", sans-serif;
+        font-size: 12pt;
     }
 
     /* https://ourcodeworld.com/articles/read/688/how-to-configure-a-watermark-in-dompdf */
@@ -52,15 +53,24 @@
     }
 
     .texto-pequeno {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-family: "Tajawal";
         font-size: 8pt;
         text-align: justify;
+        line-height: 0.7em;
     }
 
     .texto-pequeno-footer {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-family: "Tajawal";
         font-size: 8pt;
         text-align: center;
+        line-height: 0.7em;
+    }
+
+    .texto-pequeno-header {
+        font-family: "Tajawal", sans-serif;
+        font-size: 11pt;
+        text-align: center;
+        line-height: 1em;
     }
 
     .texto-direita {
@@ -83,17 +93,16 @@
         left: 0px;
     }
 </style>
-{{ \Carbon\Carbon::setlocale('pt_BR') }}
 <header>
     <div class="row">
         <div class="col-md-10 col-md-offset-8">
             <img src="img/logo_cabecalho.jpg" height="120px" width="600px" />
         </div>
     </div>
-    <center>
-        <p>CNPJ: 63.025.530/0094-03<br>
-            Serviço de Graduação</p>
-        <hr>
+    <p class="texto-pequeno-header">CNPJ: 63.025.530/0094-03<br>
+        Serviço de Graduação</p>
+    <hr>
+     <center>
         <br><br>
         <h4>CERTIFICADO DE CONCLUSÃO DE CURSO</h4>
     </center>
@@ -134,8 +143,8 @@
         <br><br>
         <!-- <div class="container">  pull-right-->
             <div class="row ">
-                <div class="col-xs-5">__________________________________<br><center>Prof. Dr. André Lucirton Costa<br>Diretor</p></center></div>
-                <div class="col-xs-5 pull-right">__________________________________<br><center>Cristina Bernardi Lima<br>Assistente Acadêmica</p></center></div>
+                <div class="col-xs-5">____________________________________________<br><center>Prof. Dr. André Lucirton Costa<br>Diretor</p></center></div>
+                <div class="col-xs-5 pull-right">____________________________________________<br><center>Cristina Bernardi Lima<br>Assistente Acadêmica</p></center></div>
             </div>
         <!-- </div> -->
     </div>
