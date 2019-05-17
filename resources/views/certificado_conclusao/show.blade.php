@@ -1,30 +1,19 @@
 @extends('adminlte::page')
 
 @section('content')
-<!-- <style>
-    div {
-        font-family: DejaVu Sans;
-    }
-</style>  -->
 <div class="form-group">
     <div class="row pull-right">
-        <div class="col-sm-4">
-            <a href="{{ route('certificado_conclusao.index') }}" class="btn btn-info">NOVO</a>
+        <div class="col-sm-5">
+            <a href="{{ route('certificado_conclusao.index') }}" class="btn btn-info">Nova busca</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <form action="{{ route('certificado_conclusao.showPDF') }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
                 <input type="hidden" value="{{ $codpes }}" name="codpes">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-file-pdf-o"></i>PDF</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-file-pdf-o"></i>GERAR PDF</button>
             </form>
         </div>
-        <!-- <div class="col-sm-3">
-            <form action="{{ route('certificado_conclusao.index') }}" method="post">
-                {{ csrf_field() }}
-               <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-file-excel-o"></i>EXCEL</button>
-            </form>
-        </div> -->
     </div>
 </div>
 <br>
@@ -69,17 +58,22 @@
                                 @endif
                                 <td class="text-center">{{ $aluno->dtanas }}</td>
                                 <td class="text-center">{{ $aluno->tipdocidf }}</td>
-                                @if(strlen($aluno->numdocidf) == 9) 
+                                @if((strlen($aluno->numdocidf) == 9) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0]))) 
                                     <td class="text-center">{{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
-                                @elseif(strlen($aluno->numdocidf) == 8)
+                                @elseif((strlen($aluno->numdocidf) == 8) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
                                     <td class="text-center">{{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
                                 @else
-                                    <td class="text-center">{{ ($aluno->numdocidf) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
+                                    @if (isset($aluno->estado_rg))
+                                        <td class="text-center">{{ ($aluno->numdocidf) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
+                                    @else 
+                                        <td class="text-center">{{ ($aluno->numdocidf) . "/{$aluno->sglorgexdidf}" }}</td>
+                                    @endif
                                 @endif
                                 <td class="text-center">{{ $aluno->dtaexdidf }}</td>
                                 <td class="text-center">{{ $aluno->codcurgrd }}</td>
                                 @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
-                                <td>{{ "{$cidade} - {$aluno->sglest}" }}</td>
+                                @php ($estado = \ForceUTF8\Encoding::fixUTF8($aluno->nomest))
+                                <td>{{ "{$cidade} - {$estado}" }}</td>
                             </tr>
                         @endforeach
                     </tbody>

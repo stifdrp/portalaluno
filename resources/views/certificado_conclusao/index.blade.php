@@ -36,7 +36,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-info">Salvar</button>
+                    <button type="submit" class="btn btn-info">Gerar listagem de alunos</button>
                     <!-- <input type="button" onclick="log();" class="btn btn-info" value="Checar informações" /> -->
                     <a href="{{ route('certificado_conclusao.index') }}" class="btn btn-default">Cancelar</a>
                 </div>

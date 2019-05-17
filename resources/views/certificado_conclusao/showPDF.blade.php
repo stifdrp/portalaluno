@@ -131,15 +131,17 @@
             @if ($aluno->codcurgrd == '81200')
             filh{{$artigo}} de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, no Estado de {{ $estado }}, nascid{{$artigo}} aos {{ $data_nascimento }},  
             @endif
-            @if(strlen($aluno->numdocidf) == 9) 
-                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
+            @if((strlen($aluno->numdocidf) == 9) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} 
                 {{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
-            @elseif(strlen($aluno->numdocidf) == 8)
-                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
-                {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
+            @elseif((strlen($aluno->numdocidf) == 8) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
             @else
-                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
-                {{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
+                @if (isset($aluno->estado_rg))
+                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} {{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
+                @else 
+                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} {{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}," }}
+                @endif 
             @endif
             expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }}
             @if (($aluno->codcurgrd == '81300') || ($aluno->codcurgrd == '81301'))

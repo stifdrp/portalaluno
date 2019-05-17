@@ -29,10 +29,11 @@ class CertificadoConclusaoController extends Controller
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
-                                            l.cidloc, l.sglest, c.codlocnas
+                                            l.cidloc, l.sglest, c.codlocnas, e.nomest
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
+                                                        INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
                                         WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = $request->data_colacao;
@@ -46,10 +47,11 @@ class CertificadoConclusaoController extends Controller
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
-                                            l.cidloc, l.sglest, c.codlocnas
+                                            l.cidloc, l.sglest, c.codlocnas, e.nomest
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
+                                                        INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
                                         WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
@@ -67,7 +69,7 @@ class CertificadoConclusaoController extends Controller
             $nommae = Encoding::fixUTF8($aluno->nommaepes);
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
             $cidade = Encoding::fixUTF8($aluno->cidloc);
-            $estado = $this->estados($aluno->sglest);
+            $estado = Encoding::fixUTF8($aluno->nomest);
             $artigo = ($aluno->sexpes == 'M') ? 'o' :  'a';
             $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 
                                                                          'data_nascimento', 'cursos',
@@ -108,41 +110,4 @@ class CertificadoConclusaoController extends Controller
             81301 => 'Economia Empresarial e Controladoria',
         ];
     }
-
-    public static function estados($estado)
-    {
-        $estados = [
-                    'AC' => 'Acre',
-                    'AL' => 'Alagoas',
-                    'AM' => 'Amazonas',
-                    'AP' => 'Amapá',
-                    'BA' => 'Bahia',
-                    'CE' => 'Ceará',
-                    'DF' => 'Distrito Federal',
-                    'ES' => 'Espírito Santo',
-                    'FN' => 'Fernando de Noronha',
-                    'GB' => 'Guanabara',
-                    'GO' => 'Goiás',
-                    'MA' => 'Maranhão',
-                    'MG' => 'Minas Gerais',
-                    'MS' => 'Mato Grosso do Sul',
-                    'MT' => 'Mato Grosso',
-                    'PA' => 'Pará',
-                    'PB' => 'Paraíba',
-                    'PE' => 'Pernambuco',
-                    'PI' => 'Piauí',
-                    'PR' => 'Paraná',
-                    'RJ' => 'Rio de Janeiro',
-                    'RN' => 'Rio Grande do Norte',
-                    'RO' => 'Rondônia',
-                    'RR' => 'Roraima',
-                    'RS' => 'Rio Grande do Sul',
-                    'SC' => 'Santa Catarina',
-                    'SE' => 'Sergipe',
-                    'SP' => 'São Paulo',
-                    'TO' => 'Tocantins'
-        ];
-        return $estados[$estado];
-    }
-
  }
