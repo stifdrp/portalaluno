@@ -43,6 +43,8 @@ class CertificadoConclusaoController extends Controller
 
     public function showPDF(Request $request)
     {
+        // Adicionado extensão no tempo de processamento, pois no server demorou mais e retornou fatal error
+        set_time_limit(300);
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
