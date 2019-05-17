@@ -28,11 +28,13 @@ class CertificadoConclusaoController extends Controller
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
-                                            sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot
+                                            sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot,
+                                            l.cidloc, l.sglest, c.codlocnas
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN HABILPROGGR h on (p.codpes = h.codpes AND v.codcurgrd = h.codcur AND v.codhab = h.codhab)
                                                         INNER JOIN CURRICULOGR cg on (v.codcurgrd = cg.codcur AND v.codhab = cg.codhab)
+                                                        INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
                                         WHERE p.codpes IN ($request->codpes)
                                                 AND cg.codcrl LIKE CAST(h.codcur AS VARCHAR) + '%' + 
                                                                     CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
@@ -48,11 +50,13 @@ class CertificadoConclusaoController extends Controller
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
-                                            sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot
+                                            sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot,
+                                            l.cidloc, l.sglest, c.codlocnas
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN HABILPROGGR h on (p.codpes = h.codpes AND v.codcurgrd = h.codcur AND v.codhab = h.codhab)
                                                         INNER JOIN CURRICULOGR cg on (v.codcurgrd = cg.codcur AND v.codhab = cg.codhab)
+                                                        INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
                                         WHERE p.codpes IN ($request->codpes)
                                                 AND cg.codcrl LIKE CAST(h.codcur AS VARCHAR) + '%' + 
                                                                     CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
@@ -73,9 +77,12 @@ class CertificadoConclusaoController extends Controller
             $nome = Encoding::fixUTF8($aluno->nompes);
             $nommae = Encoding::fixUTF8($aluno->nommaepes);
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
+            $cidade = Encoding::fixUTF8($aluno->cidloc);
+            $estado = $this->estados($aluno->sglest);
             $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 
                                                                          'data_nascimento', 'cursos',
-                                                                         'nome', 'nommae', 'nompai'))->render();
+                                                                         'nome', 'nommae', 'nompai',
+                                                                         'cidade', 'estado'))->render();
             // Se não for o último aluno, adiciona uma quebra de página
             if ($i != count($alunos) - 1) {
                 $html .= '<div class="page-break"></div>';
@@ -110,6 +117,42 @@ class CertificadoConclusaoController extends Controller
             81300 => 'Economia Empresarial e Controladoria',
             81301 => 'Economia Empresarial e Controladoria',
         ];
+    }
+
+    public static function estados($estado)
+    {
+        $estados = [
+                    'AC' => 'Acre',
+                    'AL' => 'Alagoas',
+                    'AM' => 'Amazonas',
+                    'AP' => 'Amapá',
+                    'BA' => 'Bahia',
+                    'CE' => 'Ceará',
+                    'DF' => 'Distrito Federal',
+                    'ES' => 'Espírito Santo',
+                    'FN' => 'Fernando de Noronha',
+                    'GB' => 'Guanabara',
+                    'GO' => 'Goiás',
+                    'MA' => 'Maranhão',
+                    'MG' => 'Minas Gerais',
+                    'MS' => 'Mato Grosso do Sul',
+                    'MT' => 'Mato Grosso',
+                    'PA' => 'Pará',
+                    'PB' => 'Paraíba',
+                    'PE' => 'Pernambuco',
+                    'PI' => 'Piauí',
+                    'PR' => 'Paraná',
+                    'RJ' => 'Rio de Janeiro',
+                    'RN' => 'Rio Grande do Norte',
+                    'RO' => 'Rondônia',
+                    'RR' => 'Roraima',
+                    'RS' => 'Rio Grande do Sul',
+                    'SC' => 'Santa Catarina',
+                    'SE' => 'Sergipe',
+                    'SP' => 'São Paulo',
+                    'TO' => 'Tocantins'
+        ];
+        return $estados[$estado];
     }
 
  }

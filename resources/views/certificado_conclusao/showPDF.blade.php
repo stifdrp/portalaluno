@@ -2,8 +2,8 @@
     @page {
         /* margin: 2cm; */
         margin-top: 1cm;
-        margin-left: 3cm;
-        margin-right: 3cm;
+        margin-left: 2.5cm;
+        margin-right: 2.5cm;
         margin-bottom: 1cm;
     }
 
@@ -27,13 +27,15 @@
     #texto {
         font-family: "Tajawal", sans-serif;
         text-align: justify;
-        font-size: 12pt;
+        font-size: 11pt;
         /* font-family: "Tajawal"; */
     }
 
     .texto-fundo {
         font-family: "Tajawal", sans-serif;
-        font-size: 12pt;
+        font-size: 11pt;
+        /* line-height: 1em; */
+    }
     }
 
     /* https://ourcodeworld.com/articles/read/688/how-to-configure-a-watermark-in-dompdf */
@@ -59,6 +61,13 @@
         line-height: 0.7em;
     }
 
+    .texto-assinatura {
+        position: fixed;
+        top: 650px;
+        /* left: 80px; */
+         line-height: 0.8em;
+    }
+
     .texto-pequeno-footer {
         font-family: "Tajawal";
         font-size: 8pt;
@@ -77,6 +86,12 @@
         font-family: "Tajawal", sans-serif;
         font-size: 11pt;
         text-align: right;
+    }
+
+    .traco {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 11pt;
+        /* text-align: right; */
     }
 
     #texto p::first-line {
@@ -108,20 +123,19 @@
     </center>
     <br><br>
 </header>
-<!-- ('d \\de M \\de Y') -->
-<!-- Ciências Contábeis -->
 
 <body>
     <div id="texto">
         <div id="watermark"><img src="img/logo_fearp_pb.jpg" height="100%" width="100%"></div>
-        <p class="texto-fundo">C E R T I F I C A M O S que {{ strtoupper($nome) }}, n° USP {{ $aluno->codpes }},
+        <p class="texto-fundo">C E R T I F I C A M O S que <b>{{ strtoupper($nome) }}</b>, n° USP {{ $aluno->codpes }},
             @if ($aluno->codcurgrd == '81200')
-            filha(o) de {{ "{$nommae} e {$nompai}" }}, nascido(a) aos {{ $data_nascimento }},  
+            filha(o) de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, no Estado de {{ $estado }}, nascido(a) aos {{ $data_nascimento }},  
             @endif
-            portador(a) do RG 
             @if(strlen($aluno->numdocidf) == 9) 
+                portador(a) do RG 
                 {{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}," }}
             @elseif(strlen($aluno->numdocidf) == 8)
+                portador(a) do RG 
                 {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}," }}
             @endif
             expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }} desta Faculdade em 8 de dezembro de 2018
@@ -135,18 +149,16 @@
             Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.
         </p>
 
-        <br><br>
+        <br>
         <p class="texto-direita">
             Ribeirão Preto, {{ \Carbon\Carbon::now()->formatLocalized('%d de %B de %Y') }}.
         </p>
 
-        <br><br>
-        <!-- <div class="container">  pull-right-->
-            <div class="row ">
-                <div class="col-xs-5">____________________________________________<br><center>Prof. Dr. André Lucirton Costa<br>Diretor</p></center></div>
-                <div class="col-xs-5 pull-right">____________________________________________<br><center>Cristina Bernardi Lima<br>Assistente Acadêmica</p></center></div>
-            </div>
-        <!-- </div> -->
+        <!-- <br><br> -->
+        <div class="row texto-assinatura">
+            <div class="col-xs-5"><p class="traco">___________________________________</p><center>Prof. Dr. André Lucirton Costa<br>Diretor</p></center></div>
+            <div class="col-xs-5 pull-right"><p class="traco">___________________________________</p><center>Cristina Bernardi Lima<br>Assistente Acadêmica</p></center></div>
+        </div>
     </div>
     <br><br>
 </body>

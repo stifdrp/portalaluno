@@ -51,6 +51,7 @@
                             <th class="text-center">Data Expedição</th>
                             <th class="text-center">Curso</th>
                             <th class="text-center">Carga horária</th>
+                            <th class="text-center">Local Nascimento</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,6 +78,7 @@
                                 <td class="text-center">{{ $aluno->dtaexdidf }}</td>
                                 <td class="text-center">{{ $aluno->codcurgrd }}</td>
                                 <td class="text-center">{{ $aluno->cgahortot }}</td>
+                                <td>{{ "{$aluno->cidloc} - {$aluno->sglest}" }}</td>
                             </tr>
                         @endforeach
                     </tbody>
