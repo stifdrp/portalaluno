@@ -129,13 +129,13 @@
         <div id="watermark"><img src="img/logo_fearp_pb.jpg" height="100%" width="100%"></div>
         <p class="texto-fundo">C E R T I F I C A M O S que <b>{{ strtoupper($nome) }}</b>, n° USP {{ $aluno->codpes }},
             @if ($aluno->codcurgrd == '81200')
-            filha(o) de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, no Estado de {{ $estado }}, nascido(a) aos {{ $data_nascimento }},  
+            filh{{$artigo}} de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, no Estado de {{ $estado }}, nascid{{$artigo}} aos {{ $data_nascimento }},  
             @endif
             @if(strlen($aluno->numdocidf) == 9) 
-                portador(a) do RG 
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
                 {{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}," }}
             @elseif(strlen($aluno->numdocidf) == 8)
-                portador(a) do RG 
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
                 {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}," }}
             @endif
             expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }} desta Faculdade em 8 de dezembro de 2018

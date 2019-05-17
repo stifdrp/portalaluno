@@ -26,7 +26,7 @@ class CertificadoConclusaoController extends Controller
     public function show(Request $request)
     {
         $alunos = DB::connection('replicado')->
-                        select(DB::raw("SELECT DISTINCT p.codpes, p.nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
+                        select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot,
                                             l.cidloc, l.sglest, c.codlocnas
@@ -39,7 +39,7 @@ class CertificadoConclusaoController extends Controller
                                                 AND cg.codcrl LIKE CAST(h.codcur AS VARCHAR) + '%' + 
                                                                     CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
                                                                     CASE WHEN DATEPART(mm, h.dtaini) >= 7 THEN '2' ELSE '1' END
-                                        ORDER BY v.codcurgrd, p.nompes "));
+                                        ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = $request->data_colacao;
         $codpes = $request->codpes;
         return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'codpes'));
@@ -48,7 +48,7 @@ class CertificadoConclusaoController extends Controller
     public function showPDF(Request $request)
     {
         $alunos = DB::connection('replicado')->
-                        select(DB::raw("SELECT DISTINCT p.codpes, p.nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
+                        select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot,
                                             l.cidloc, l.sglest, c.codlocnas
@@ -61,7 +61,7 @@ class CertificadoConclusaoController extends Controller
                                                 AND cg.codcrl LIKE CAST(h.codcur AS VARCHAR) + '%' + 
                                                                     CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
                                                                     CASE WHEN DATEPART(mm, h.dtaini) >= 7 THEN '2' ELSE '1' END
-                                        ORDER BY v.codcurgrd, p.nompes "));
+                                        ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
         $start_html = '<html>
                         <link href="https://fonts.googleapis.com/css?family=Jura|Quicksand|Tajawal" rel="stylesheet">
@@ -72,17 +72,17 @@ class CertificadoConclusaoController extends Controller
         $i = 0;
         foreach($alunos as $aluno) {
             $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->formatLocalized('%d de %B de %Y');
-            // $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->format('Y-m-d');
             $data_nascimento = Carbon::parse(str_replace('/', '-', $aluno->dtanas))->formatLocalized('%d de %B de %Y');
-            $nome = Encoding::fixUTF8($aluno->nompes);
+            $nome = Encoding::fixUTF8($aluno->nompesttd);
             $nommae = Encoding::fixUTF8($aluno->nommaepes);
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
             $cidade = Encoding::fixUTF8($aluno->cidloc);
             $estado = $this->estados($aluno->sglest);
+            $artigo = ($aluno->sexpes == 'M') ? 'o' :  'a';
             $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 
                                                                          'data_nascimento', 'cursos',
                                                                          'nome', 'nommae', 'nompai',
-                                                                         'cidade', 'estado'))->render();
+                                                                         'cidade', 'estado', 'artigo'))->render();
             // Se não for o último aluno, adiciona uma quebra de página
             if ($i != count($alunos) - 1) {
                 $html .= '<div class="page-break"></div>';
