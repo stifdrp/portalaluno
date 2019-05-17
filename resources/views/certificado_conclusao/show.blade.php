@@ -50,7 +50,6 @@
                             <th class="text-center">Num. Documento</th>
                             <th class="text-center">Data Expedição</th>
                             <th class="text-center">Curso</th>
-                            <th class="text-center">Carga horária</th>
                             <th class="text-center">Local Nascimento</th>
                         </tr>
                     </thead>
@@ -59,7 +58,7 @@
                             <tr role="row">
                                 <td class="text-center">{{ $aluno->codpes }}</td>
                                 @php ($nome = \ForceUTF8\Encoding::fixUTF8($aluno->nompes))
-                                <td>{{ $nome }}</td>
+                                <td>{{ mb_strtoupper($nome) }}</td>
                                 @php ($nommae = \ForceUTF8\Encoding::fixUTF8($aluno->nommaepes))
                                 <!-- Ciências Contábeis mostra filiação completa -->
                                 @if ($aluno->codcurgrd == '81200')
@@ -71,13 +70,14 @@
                                 <td class="text-center">{{ $aluno->dtanas }}</td>
                                 <td class="text-center">{{ $aluno->tipdocidf }}</td>
                                 @if(strlen($aluno->numdocidf) == 9) 
-                                    <td class="text-center">{{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}" }}</td>
+                                    <td class="text-center">{{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
                                 @elseif(strlen($aluno->numdocidf) == 8)
-                                    <td class="text-center">{{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}" }}</td>
+                                    <td class="text-center">{{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
+                                @else
+                                    <td class="text-center">{{ ($aluno->numdocidf) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
                                 @endif
                                 <td class="text-center">{{ $aluno->dtaexdidf }}</td>
                                 <td class="text-center">{{ $aluno->codcurgrd }}</td>
-                                <td class="text-center">{{ $aluno->cgahortot }}</td>
                                 @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
                                 <td>{{ "{$cidade} - {$aluno->sglest}" }}</td>
                             </tr>

@@ -28,17 +28,12 @@ class CertificadoConclusaoController extends Controller
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
-                                            sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot,
+                                            sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
                                             l.cidloc, l.sglest, c.codlocnas
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
-                                                        INNER JOIN HABILPROGGR h on (p.codpes = h.codpes AND v.codcurgrd = h.codcur AND v.codhab = h.codhab)
-                                                        INNER JOIN CURRICULOGR cg on (v.codcurgrd = cg.codcur AND v.codhab = cg.codhab)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
-                                        WHERE p.codpes IN ($request->codpes)
-                                                AND cg.codcrl LIKE CAST(h.codcur AS VARCHAR) + '%' + 
-                                                                    CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
-                                                                    CASE WHEN DATEPART(mm, h.dtaini) >= 7 THEN '2' ELSE '1' END
+                                        WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = $request->data_colacao;
         $codpes = $request->codpes;
@@ -50,17 +45,12 @@ class CertificadoConclusaoController extends Controller
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
-                                            sglorgexdidf, p.sglest, v.codcurgrd, cg.cgahortot,
+                                            sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
                                             l.cidloc, l.sglest, c.codlocnas
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
-                                                        INNER JOIN HABILPROGGR h on (p.codpes = h.codpes AND v.codcurgrd = h.codcur AND v.codhab = h.codhab)
-                                                        INNER JOIN CURRICULOGR cg on (v.codcurgrd = cg.codcur AND v.codhab = cg.codhab)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
-                                        WHERE p.codpes IN ($request->codpes)
-                                                AND cg.codcrl LIKE CAST(h.codcur AS VARCHAR) + '%' + 
-                                                                    CAST(h.codhab AS VARCHAR) + CAST(FORMAT(h.dtaini, 'yy') AS VARCHAR) + 
-                                                                    CASE WHEN DATEPART(mm, h.dtaini) >= 7 THEN '2' ELSE '1' END
+                                        WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
         $start_html = '<html>
@@ -73,7 +63,7 @@ class CertificadoConclusaoController extends Controller
         foreach($alunos as $aluno) {
             $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->formatLocalized('%d de %B de %Y');
             $data_nascimento = Carbon::parse(str_replace('/', '-', $aluno->dtanas))->formatLocalized('%d de %B de %Y');
-            $nome = Encoding::fixUTF8($aluno->nompesttd);
+            $nome = strtoupper(Encoding::fixUTF8($aluno->nompesttd)); 
             $nommae = Encoding::fixUTF8($aluno->nommaepes);
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
             $cidade = Encoding::fixUTF8($aluno->cidloc);

@@ -127,23 +127,25 @@
 <body>
     <div id="texto">
         <div id="watermark"><img src="img/logo_fearp_pb.jpg" height="100%" width="100%"></div>
-        <p class="texto-fundo">C E R T I F I C A M O S que <b>{{ strtoupper($nome) }}</b>, n° USP {{ $aluno->codpes }},
+        <p class="texto-fundo">C E R T I F I C A M O S que <b>{{ mb_strtoupper($nome) }}</b>, n° USP {{ $aluno->codpes }},
             @if ($aluno->codcurgrd == '81200')
             filh{{$artigo}} de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, no Estado de {{ $estado }}, nascid{{$artigo}} aos {{ $data_nascimento }},  
             @endif
             @if(strlen($aluno->numdocidf) == 9) 
                 {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
-                {{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}," }}
+                {{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
             @elseif(strlen($aluno->numdocidf) == 8)
                 {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
-                {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->sglest}," }}
-            @endif
-            expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }} desta Faculdade em 8 de dezembro de 2018
-            @if ($aluno->codcurgrd == '81200')
-            , com carga horária total de 3030 horas.
+                {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
             @else
-            .
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do RG 
+                {{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
             @endif
+            expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }}
+            @if (($aluno->codcurgrd == '81300') || ($aluno->codcurgrd == '81301'))
+                na habilitação {{ ($aluno->codhab == '101' ? 'em Economia' : 'em Contabilidade') }},
+            @endif
+            desta Faculdade em 8 de dezembro de 2018{{($aluno->codcurgrd == '81200') ? ", com carga horária total de 3030 horas." : "."}}
         </p>
         <p>
             Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.
