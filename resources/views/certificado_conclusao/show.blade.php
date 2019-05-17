@@ -78,7 +78,8 @@
                                 <td class="text-center">{{ $aluno->dtaexdidf }}</td>
                                 <td class="text-center">{{ $aluno->codcurgrd }}</td>
                                 <td class="text-center">{{ $aluno->cgahortot }}</td>
-                                <td>{{ "{$aluno->cidloc} - {$aluno->sglest}" }}</td>
+                                @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
+                                <td>{{ "{$cidade} - {$aluno->sglest}" }}</td>
                             </tr>
                         @endforeach
                     </tbody>
