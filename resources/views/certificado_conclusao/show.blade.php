@@ -73,7 +73,12 @@
                                 <td class="text-center">{{ $aluno->codcurgrd }}</td>
                                 @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
                                 @php ($estado = \ForceUTF8\Encoding::fixUTF8($aluno->nomest))
+                                @if ($aluno->codpas == 1)
                                 <td>{{ "{$cidade} - {$estado}" }}</td>
+                                @else
+                                    @php ($pais = \ForceUTF8\Encoding::fixUTF8($aluno->nompas))
+                                    <td>{{ "{$cidade} - {$estado} - {$pais}" }}</td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

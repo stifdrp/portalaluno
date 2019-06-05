@@ -29,11 +29,12 @@ class CertificadoConclusaoController extends Controller
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
-                                            l.cidloc, l.sglest, c.codlocnas, e.nomest
+                                            l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
                                                         INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
+                                                        INNER JOIN PAIS ps ON (ps.codpas = l.codpas)
                                         WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = $request->data_colacao;
@@ -49,11 +50,12 @@ class CertificadoConclusaoController extends Controller
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
-                                            l.cidloc, l.sglest, c.codlocnas, e.nomest
+                                            l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
                                                         INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
+                                                        INNER JOIN PAIS ps ON (ps.codpas = l.codpas)
                                         WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
@@ -72,11 +74,12 @@ class CertificadoConclusaoController extends Controller
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
             $cidade = Encoding::fixUTF8($aluno->cidloc);
             $estado = Encoding::fixUTF8($aluno->nomest);
+            $pais = Encoding::fixUTF8($aluno->nompas);
             $artigo = ($aluno->sexpes == 'M') ? 'o' :  'a';
             $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 
                                                                          'data_nascimento', 'cursos',
                                                                          'nome', 'nommae', 'nompai',
-                                                                         'cidade', 'estado', 'artigo'))->render();
+                                                                         'cidade', 'estado', 'artigo', 'pais'))->render();
             // Se não for o último aluno, adiciona uma quebra de página
             if ($i != count($alunos) - 1) {
                 $html .= '<div class="page-break"></div>';
@@ -105,8 +108,8 @@ class CertificadoConclusaoController extends Controller
         return [
             81002 => 'Administração',
             81003 => 'Administração',
-            81100 => 'Economia',
-            81101 => 'Economia',
+            81100 => 'Ciências Econômicas',
+            81101 => 'Ciências Econômicas',
             81200 => 'Ciências Contábeis',
             81300 => 'Economia Empresarial e Controladoria',
             81301 => 'Economia Empresarial e Controladoria',

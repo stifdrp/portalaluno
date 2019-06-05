@@ -72,7 +72,7 @@
         font-family: "Tajawal";
         font-size: 8pt;
         text-align: center;
-        line-height: 0.7em;
+        line-height: 0.8em;
     }
 
     .texto-pequeno-header {
@@ -114,8 +114,7 @@
             <img src="img/logo_cabecalho.jpg" height="120px" width="600px" />
         </div>
     </div>
-    <p class="texto-pequeno-header">CNPJ: 63.025.530/0094-03<br>
-        Serviço de Graduação</p>
+    <p class="texto-pequeno-header">Serviço de Graduação</p>
     <hr>
      <center>
         <br><br>
@@ -129,29 +128,32 @@
         <div id="watermark"><img src="img/logo_fearp_pb.jpg" height="100%" width="100%"></div>
         <p class="texto-fundo">C E R T I F I C A M O S que <b>{{ mb_strtoupper($nome) }}</b>, n° USP {{ $aluno->codpes }},
             @if ($aluno->codcurgrd == '81200')
-            filh{{$artigo}} de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, no Estado de {{ $estado }}, nascid{{$artigo}} aos {{ $data_nascimento }},  
+                filh{{$artigo}} de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, Estado de {{ $estado }}, 
+                @if ((isset($pais)) && (!is_null($pais)) && ($pais != 'Brasil'))
+                    {{$pais}},
+                @endif
+                nascid{{$artigo}} aos {{ $data_nascimento }},
             @endif
             @if((strlen($aluno->numdocidf) == 9) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
-                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} 
-                {{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
             @elseif((strlen($aluno->numdocidf) == 8) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
-                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} {{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
             @else
                 @if (isset($aluno->estado_rg))
-                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} {{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
+                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
                 @else 
-                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }} {{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}," }}
+                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}," }}
                 @endif 
             @endif
             expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }}
             @if (($aluno->codcurgrd == '81300') || ($aluno->codcurgrd == '81301'))
-                na habilitação {{ ($aluno->codhab == '101' ? 'em Economia' : 'em Contabilidade') }},
+                na habilitação {{ ($aluno->codhab == '101' ? 'em Economia' : 'em Contabilidade') }} desta Faculdade,
+            @else
+                desta Faculdade
             @endif
-            desta Faculdade em 8 de dezembro de 2018{{($aluno->codcurgrd == '81200') ? ", com carga horária total de 3030 horas." : "."}}
+            em 8 de dezembro de 2018{{($aluno->codcurgrd == '81200') ? ", com carga horária total de 3030 horas." : "."}}
         </p>
-        <p>
-            Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.
-        </p>
+        <p>Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.</p>
 
         <br>
         <p class="texto-direita">
@@ -167,21 +169,21 @@
     <br><br>
 </body>
 <footer>
-    <p class="texto-pequeno">
-        A Universidade de São Paulo foi reconhecida pelo Decreto 6.283, de 25/01/1934.<br>
+    <p class="texto-pequeno">A Universidade de São Paulo foi reconhecida pelo Decreto 6.283, de 25/01/1934.<br/>
         @if ($aluno->codcurgrd == '81200')
-        A renovação do reconhecimento do curso de Ciências Contábeis foi feita pela Portaria CEE-GP-11, de 02/02/2018, publicada no Diário Oficial do Estado de São Paulo em 03/02/2018.</p>
+            A renovação do reconhecimento do curso de Ciências Contábeis foi feita pela Portaria CEE-GP-11, de 02/02/2018, publicada no Diário Oficial do Estado de São Paulo em 03/02/2018.</p>
         @elseif (($aluno->codcurgrd == '81003') || ($aluno->codcurgrd == '81002'))
-        A renovação do reconhecimento do curso de Administração foi feita pela Portaria CEE-GP-655, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
+            A renovação do reconhecimento do curso de Administração foi feita pela Portaria CEE-GP-655, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
         @elseif (($aluno->codcurgrd == '81300') || ($aluno->codcurgrd == '81301'))
-        A renovação do reconhecimento do curso de Economia Empresarial e Controladoria foi feita pela Portaria CEE-GP-657, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
+            A renovação do reconhecimento do curso de Economia Empresarial e Controladoria foi feita pela Portaria CEE-GP-657, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
         @elseif (($aluno->codcurgrd == '81100') || ($aluno->codcurgrd == '81101'))
-        A renovação do reconhecimento do curso de Ciências Econômicas foi feita pela Portaria CEE/GP 86, de 10/03/2015, publicada no Diário Oficial do Estado de São Paulo em 11/03/2015.
+            A renovação do reconhecimento do curso de Ciências Econômicas foi feita pela Portaria CEE/GP 86, de 10/03/2015, publicada no Diário Oficial do Estado de São Paulo em 11/03/2015.
         @endif
-        </p>
+    </p>
     <hr>
     <p class="texto-pequeno-footer">
         Avenida Bandeirantes, 3.900 - Monte Alegre - CEP 14040-905 - Ribeirão Preto-SP - Brasil<br>
-        Fone 16 3315-3888 | E-mail atendimentosg@fearp.usp.br| www.fearp.usp.br | <img src="img/logo_facebook.jpg" height="11px" width="11px" /> fearpusp | <img src="img/logo_twitter.jpg" height="11px" width="11px" /> @fearp_usp
+        Fone 16 3315-3888 | E-mail atendimentosg@fearp.usp.br| www.fearp.usp.br | <img src="img/logo_facebook.jpg" height="11px" width="11px" /> fearpusp | <img src="img/logo_twitter.jpg" height="11px" width="11px" /> @fearp_usp<br>
+        CNPJ: 63.025.530/0094-03
     </p>
 </footer>
