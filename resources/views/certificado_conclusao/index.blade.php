@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="col-md-8">
+<div class="col-md-10">
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -29,7 +29,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="data_colacao" class="col-sm-2 control-label">Data Colação</label>
+                    <label for="data_conclusao" class="col-sm-2 control-label">Conclusão (curso) em:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="data" name="data_conclusao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
+                    </div>
+                <!-- </div>
+                <div class="form-group"> -->
+                    <label for="data_colacao" class="col-sm-2 control-label">Colação em:</label>
                     <div class="col-sm-4">
                         <input class="form-control" id="data" name="data_colacao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
                     </div>

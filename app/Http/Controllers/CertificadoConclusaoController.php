@@ -29,7 +29,7 @@ class CertificadoConclusaoController extends Controller
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
-                                            l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas
+                                            l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
@@ -38,8 +38,9 @@ class CertificadoConclusaoController extends Controller
                                         WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = $request->data_colacao;
+        $data_conclusao = $request->data_conclusao;
         $codpes = $request->codpes;
-        return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'codpes'));
+        return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'codpes', 'data_conclusao'));
     }
 
     public function showPDF(Request $request)
@@ -50,7 +51,7 @@ class CertificadoConclusaoController extends Controller
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg, v.codcurgrd, v.codhab,
-                                            l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas
+                                            l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
@@ -59,6 +60,7 @@ class CertificadoConclusaoController extends Controller
                                         WHERE p.codpes IN ($request->codpes) AND v.codcurgrd IS NOT NULL
                                         ORDER BY v.codcurgrd, p.nompesttd "));
         $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
+        $data_conclusao = Carbon::parse(str_replace('/', '-', $request->data_conclusao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
         $start_html = '<html>
                         <link href="https://fonts.googleapis.com/css?family=Jura|Quicksand|Tajawal" rel="stylesheet">
                         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><body>';
@@ -76,10 +78,11 @@ class CertificadoConclusaoController extends Controller
             $estado = Encoding::fixUTF8($aluno->nomest);
             $pais = Encoding::fixUTF8($aluno->nompas);
             $artigo = ($aluno->sexpes == 'M') ? 'o' :  'a';
+            $rg = $aluno->numdocfmt;
             $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 
                                                                          'data_nascimento', 'cursos',
                                                                          'nome', 'nommae', 'nompai',
-                                                                         'cidade', 'estado', 'artigo', 'pais'))->render();
+                                                                         'cidade', 'estado', 'artigo', 'pais', 'data_conclusao', 'rg'))->render();
             // Se não for o último aluno, adiciona uma quebra de página
             if ($i != count($alunos) - 1) {
                 $html .= '<div class="page-break"></div>';
@@ -94,14 +97,7 @@ class CertificadoConclusaoController extends Controller
         ]);
 
         $pdf = PDF::loadHTML($html);
-        return $pdf->download();
-
-        // $pdf->output();
-        // $dom_pdf = $pdf->getDomPDF();
-
-        // return $pdf->download();
-        // return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'codpes'));
-        // dd($request);
+        return $pdf->download("certificados_conclusao_curso_{$request->data_colacao}.pdf");
     }
 
     public function cursos() {
@@ -115,4 +111,4 @@ class CertificadoConclusaoController extends Controller
             81301 => 'Economia Empresarial e Controladoria',
         ];
     }
- }
+}

@@ -134,16 +134,10 @@
                 @endif
                 nascid{{$artigo}} aos {{ $data_nascimento }},
             @endif
-            @if((strlen($aluno->numdocidf) == 9) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
-                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
-            @elseif((strlen($aluno->numdocidf) == 8) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
-                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
-            @else
-                @if (isset($aluno->estado_rg))
-                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
-                @else 
-                    {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ $aluno->tipdocidf }}{{ $aluno->numdocidf . "/{$aluno->sglorgexdidf}," }}
-                @endif 
+            @if (isset($aluno->estado_rg))
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ @trim($aluno->tipdocidf) }} {{ $rg . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}," }}
+            @else 
+                {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ @trim($aluno->tipdocidf) }} {{ $rg . "/{$aluno->sglorgexdidf}," }}
             @endif
             expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$aluno->codcurgrd] }}
             @if (($aluno->codcurgrd == '81300') || ($aluno->codcurgrd == '81301'))
@@ -151,13 +145,13 @@
             @else
                 desta Faculdade
             @endif
-            em 8 de dezembro de 2018{{($aluno->codcurgrd == '81200') ? ", com carga horária total de 3030 horas." : "."}}
+            em {{ $data_conclusao }}{{($aluno->codcurgrd == '81200') ? ", com carga horária total de 3030 horas." : "."}}
         </p>
         <p>Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.</p>
 
         <br>
         <p class="texto-direita">
-            Ribeirão Preto, {{ \Carbon\Carbon::now()->formatLocalized('%d de %B de %Y') }}.
+            Ribeirão Preto, {{ $data_colacao }}.
         </p>
 
         <!-- <br><br> -->

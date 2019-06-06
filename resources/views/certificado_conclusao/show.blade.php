@@ -10,6 +10,7 @@
             <form action="{{ route('certificado_conclusao.showPDF') }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
+                <input type="hidden" value="{{ $data_conclusao }}" name="data_conclusao">
                 <input type="hidden" value="{{ $codpes }}" name="codpes">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-file-pdf-o"></i>GERAR PDF</button>
             </form>
@@ -21,14 +22,16 @@
 <div class="box-body">
     <h3 class="text-center">Dados dos alunos</h3>
     <div class="col-sm-12">
+        <b>Data conclusão:</b> {{ $data_conclusao }}
+        <br>
         <b>Data colação:</b> {{ $data_colacao }}
         <br>
-        <b>Emissão:</b> {{ \Carbon\Carbon::now()->format('d/m/Y') }}
+        <b>Emissão:</b> {{ $data_colacao }}
     </div>
     <div id="alunos" class="dataTables_wrapper form-inline dt-bootstrap">
         <div class="row">
             <div class="col-sm-12">
-                <table id="alunos_table" class="table table-bordered table-hover dataTable" role="grid">
+                <table id="alunos_table" class="table table-bordered table-hover table-condensed" role="grid">
                     <thead>
                         <tr role="row">
                             <th class="text-center">NUSP</th>
@@ -58,17 +61,7 @@
                                 @endif
                                 <td class="text-center">{{ $aluno->dtanas }}</td>
                                 <td class="text-center">{{ $aluno->tipdocidf }}</td>
-                                @if((strlen($aluno->numdocidf) == 9) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0]))) 
-                                    <td class="text-center">{{ @vsprintf('%s%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
-                                @elseif((strlen($aluno->numdocidf) == 8) && ($aluno->tipdocidf = 'RG') && (is_numeric($aluno->numdocidf[0])))
-                                    <td class="text-center">{{ @vsprintf('%s.%s%s%s.%s%s%s-%s', str_split($aluno->numdocidf)) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
-                                @else
-                                    @if (isset($aluno->estado_rg))
-                                        <td class="text-center">{{ ($aluno->numdocidf) . "/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
-                                    @else 
-                                        <td class="text-center">{{ ($aluno->numdocidf) . "/{$aluno->sglorgexdidf}" }}</td>
-                                    @endif
-                                @endif
+                                <td class="text-center">{{ "{$aluno->numdocfmt}/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
                                 <td class="text-center">{{ $aluno->dtaexdidf }}</td>
                                 <td class="text-center">{{ $aluno->codcurgrd }}</td>
                                 @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
