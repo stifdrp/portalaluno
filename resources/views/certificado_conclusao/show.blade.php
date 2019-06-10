@@ -53,7 +53,7 @@
                                 <td>{{ mb_strtoupper($nome) }}</td>
                                 @php ($nommae = \ForceUTF8\Encoding::fixUTF8($aluno->nommaepes))
                                 <!-- Ciências Contábeis mostra filiação completa -->
-                                @if ($aluno->codcurgrd == '81200')
+                                @if ($alunos_curso_habil[$aluno->codpes]['codcur'] == '81200')
                                     @php ($nompai = \ForceUTF8\Encoding::fixUTF8($aluno->nompaipes))
                                     <td>{{ "{$nommae} e {$nompai}" }}</td>
                                 @else
@@ -63,7 +63,7 @@
                                 <td class="text-center">{{ $aluno->tipdocidf }}</td>
                                 <td class="text-center">{{ "{$aluno->numdocfmt}/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
                                 <td class="text-center">{{ $aluno->dtaexdidf }}</td>
-                                <td class="text-center">{{ $aluno->codcurgrd }}</td>
+                                <td class="text-center">{{ $alunos_curso_habil[$aluno->codpes]['codcur'] }}</td>
                                 @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
                                 @php ($estado = \ForceUTF8\Encoding::fixUTF8($aluno->nomest))
                                 @if ($aluno->codpas == 1)
