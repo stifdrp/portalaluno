@@ -47,14 +47,13 @@ class CertificadoConclusaoController extends Controller
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
-                                            sglorgexdidf, p.sglest AS estado_rg, --v.codcurgrd, v.codhab,
+                                            sglorgexdidf, p.sglest AS estado_rg, 
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
-                                                        -- INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
                                                         INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
                                                         INNER JOIN PAIS ps ON (ps.codpas = l.codpas)
-                                        WHERE p.codpes IN ($request->codpes) --AND v.codcurgrd IS NOT NULL
+                                        WHERE p.codpes IN ($request->codpes)
                                         ORDER BY p.nompesttd "));
         $data_colacao = $request->data_colacao;
         $data_conclusao = $request->data_conclusao;
@@ -88,20 +87,19 @@ class CertificadoConclusaoController extends Controller
         $alunos = DB::connection('replicado')->
                         select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
-                                            sglorgexdidf, p.sglest AS estado_rg,-- v.codcurgrd, v.codhab,
+                                            sglorgexdidf, p.sglest AS estado_rg,
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
-                                                        --INNER JOIN VINCULOPESSOAUSP v on (p.codpes = v.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
                                                         INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
                                                         INNER JOIN PAIS ps ON (ps.codpas = l.codpas)
-                                        WHERE p.codpes IN ($request->codpes) --AND v.codcurgrd IS NOT NULL
+                                        WHERE p.codpes IN ($request->codpes)
                                         ORDER BY p.nompesttd "));
-        $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
-        $data_conclusao = Carbon::parse(str_replace('/', '-', $request->data_conclusao))->formatLocalized('%d de %B de %Y');//format('Y-m-d');
+        $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');
+        $data_conclusao = Carbon::parse(str_replace('/', '-', $request->data_conclusao))->formatLocalized('%d de %B de %Y');
         $start_html = '<html>
                         <link href="https://fonts.googleapis.com/css?family=Jura|Quicksand|Tajawal" rel="stylesheet">
-                        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><body>';
+                        <link rel="stylesheet" href="css/bootstrap-3-3-7.min.css"><body>';
         $end_html = '</body></html>';
         $cursos = $this->cursos();
         $html = $start_html;
@@ -141,6 +139,8 @@ class CertificadoConclusaoController extends Controller
         return $pdf->download("certificados_conclusao_curso_{$request->data_colacao}.pdf");
     }
 
+    // Array utilizada para escrever o nome do curso
+    // por extenso no arquivo PDF gerado
     public function cursos() {
         return [
             81002 => 'Administração',

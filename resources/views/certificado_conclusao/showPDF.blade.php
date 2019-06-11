@@ -1,6 +1,5 @@
 <style>
     @page {
-        /* margin: 2cm; */
         margin-top: 1cm;
         margin-left: 2.5cm;
         margin-right: 2.5cm;
@@ -28,14 +27,11 @@
         font-family: "Tajawal", sans-serif;
         text-align: justify;
         font-size: 11pt;
-        /* font-family: "Tajawal"; */
     }
 
     .texto-fundo {
         font-family: "Tajawal", sans-serif;
         font-size: 11pt;
-        /* line-height: 1em; */
-    }
     }
 
     /* https://ourcodeworld.com/articles/read/688/how-to-configure-a-watermark-in-dompdf */
@@ -51,7 +47,6 @@
 
         /** Your watermark should be behind every content**/
         z-index: -1000;
-        /* opacity: 0.5; */
     }
 
     .texto-pequeno {
@@ -64,7 +59,6 @@
     .texto-assinatura {
         position: fixed;
         top: 650px;
-        /* left: 80px; */
          line-height: 0.8em;
     }
 
@@ -91,7 +85,6 @@
     .traco {
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         font-size: 11pt;
-        /* text-align: right; */
     }
 
     #texto p::first-line {
@@ -154,7 +147,6 @@
             Ribeirão Preto, {{ $data_colacao }}.
         </p>
 
-        <!-- <br><br> -->
         <div class="row texto-assinatura">
             <div class="col-xs-5"><p class="traco">___________________________________</p><center>Prof. Dr. André Lucirton Costa<br>Diretor</p></center></div>
             <div class="col-xs-5 pull-right"><p class="traco">___________________________________</p><center>Cristina Bernardi Lima<br>Assistente Acadêmica</p></center></div>

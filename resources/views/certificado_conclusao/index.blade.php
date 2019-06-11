@@ -25,9 +25,8 @@
                 <div class="form-group">
                     <label for="codpes" class="col-sm-2 control-label">Números USP</label>
                     <div class="col-sm-10">
-                        <textarea rows="3" class="form-control" id="codpes" name="codpes" autofocus required placeholder="Insira os números USP serados por vírgula"></textarea>
+                        <textarea rows="3" class="form-control" id="codpes" name="codpes" autofocus required placeholder="Insira os números USP separados por vírgula"></textarea>
                     </div>
-                </div>
                 <div class="form-group">
                     <label for="data_conclusao" class="col-sm-2 control-label">Conclusão (curso) em:</label>
                     <div class="col-sm-4">
@@ -43,7 +42,6 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <button type="submit" class="btn btn-info">Gerar listagem de alunos</button>
-                    <!-- <input type="button" onclick="log();" class="btn btn-info" value="Checar informações" /> -->
                     <a href="{{ route('certificado_conclusao.index') }}" class="btn btn-default">Cancelar</a>
                 </div>
                 <!-- /.box-footer -->
@@ -51,10 +49,4 @@
         </form>
     </div>
 </div>
-
-<script>
-    function log() {
-        console.log('oi');
-    }
-</script>
 @stop
