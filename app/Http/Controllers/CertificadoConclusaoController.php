@@ -30,7 +30,7 @@ class CertificadoConclusaoController extends Controller
          * será importante para definir os cursos/habilitações
          * pois tabela VINCULOPESSOAUSP teve de ser 'removida' da query original
          */
-        $alunos_nusp = explode(',', str_replace(' ', '', $request->codpes));
+        $alunos_nusp = explode(',', str_replace(array("\n", "\r"), '', str_replace(' ', '', $request->codpes)));
 
         foreach ($alunos_nusp as $aluno) {
             $alunos_cursos = DB::connection('replicado')->
