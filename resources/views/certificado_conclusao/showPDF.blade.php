@@ -163,7 +163,7 @@
         @elseif (($curso == '81300') || ($curso == '81301'))
             A renovação do reconhecimento do curso de Economia Empresarial e Controladoria foi feita pela Portaria CEE-GP-657, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
         @elseif (($curso == '81100') || ($curso == '81101'))
-            A renovação do reconhecimento do curso de Ciências Econômicas foi feita pela Portaria CEE/GP 86, de 10/03/2015, publicada no Diário Oficial do Estado de São Paulo em 11/03/2015.
+            A renovação do reconhecimento do curso de Ciências Econômicas foi feita pela Portaria CEE-GP-450, de 24/10/2019, publicada no Diário Oficial do Estado de São Paulo em 25/10/2019.
         @endif
     </p>
     <hr>
