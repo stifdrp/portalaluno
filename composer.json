@@ -16,7 +16,7 @@
         "laravel/tinker": "^1.0",
         "neitanod/forceutf8": "^2.0",
         "uspdev/senhaunica-socialite": "dev-master",
-        "symfony/translation": "^3.4 || ^4.0 || ^5.0"
+        "symfony/translation": "4.3.8"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
