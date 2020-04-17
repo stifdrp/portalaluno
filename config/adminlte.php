@@ -108,16 +108,30 @@ return [
     */
 
     'menu' => [
-       'Administrativo',
         [
-            'text'       => 'Impressões',
-            'icon' => 'fa-fw fa-print',
-            // 'icon_color' => 'red',
+            'text' => 'Administrativo',
             'submenu' => [
                 [
-                    'text' => 'Certificado Conclusão',
-                    'icon' => 'fa-fw fa-sticky-note-o',
-                    'url' => 'certificado_conclusao',
+                    'text' => 'Formulários',
+                    'icon' => 'fa-fw fa-print',
+                    'submenu' => [
+                        [
+                            'text' => 'Solicitação de Documentos',
+                            'icon' => 'fa-fw fa-sticky-note-o',
+                            'url' => 'admin/formularios/solicitacao_documentos',
+                        ],
+                    ],
+                ], 
+                [
+                    'text' => 'Impressões',
+                    'icon' => 'fa-fw fa-print',
+                    'submenu' => [
+                        [
+                            'text' => 'Certificado Conclusão',
+                            'icon' => 'fa-fw fa-sticky-note-o',
+                            'url' => 'certificado_conclusao',
+                        ],
+                    ],
                 ],
             ],
         ],
