@@ -11,5 +11,6 @@ Route::post('certificado_conclusao', 'CertificadoConclusaoController@show')->nam
 Route::post('certificado_conclusao/pdf', 'CertificadoConclusaoController@showPDF')->name('certificado_conclusao.showPDF');
 
 Route::prefix('admin')->group(function () {
-    Route::get('formularios/solicitacao_documentos', 'SolicitadoDocumentoController@index')->name('formularios.documentos');
+    Route::get('formularios/solicitacao_documentos', 'Admin\SolicitacaoDocumentoController@index')->name('admin.formularios.documentos');
+    Route::post('formularios/solicitacao_documentos', 'Admin\SolicitacaoDocumentoController@store')->name('admin.formularios.documentos.store');
 });
