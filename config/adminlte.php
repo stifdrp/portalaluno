@@ -118,10 +118,10 @@ return [
                         [
                             'text' => 'Solicitação de Documentos',
                             'icon' => 'fa-fw fa-sticky-note-o',
-                            'url' => 'admin/formularios/solicitacao_documentos',
+                            'url' => 'admin/formularios/solicitacao_documentos/index',
                         ],
                     ],
-                ], 
+                ],
                 [
                     'text' => 'Impressões',
                     'icon' => 'fa-fw fa-print',

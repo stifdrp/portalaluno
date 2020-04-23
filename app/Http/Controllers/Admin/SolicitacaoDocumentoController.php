@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 use App\Formulario;
 
 class SolicitacaoDocumentoController extends Controller
@@ -64,7 +66,11 @@ class SolicitacaoDocumentoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $opcoes_status = ["false" => 'Desativado', "true" => 'Ativo'];
+        // retornar o formulário mais recente para este tipo
+        $solicitacao_documentos = Formulario::find($id);
+        // Retornar o form para preenchimento do funcionário
+        return view('solicitacao_documentos.edit', compact('solicitacao_documentos', 'opcoes_status'));
     }
 
     /**
@@ -76,7 +82,36 @@ class SolicitacaoDocumentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $messages = [
+            'required' => 'O campo :attribute deve estar preenchido.',
+            'max' => 'O limite de caracteres foi atingindo.',
+        ];
+
+        // Componente responsável pela validação
+        $validator = Validator::make($request->all(), [
+            'nome' => 'required|max:128',
+            'inicio' => 'required',
+            'status' => 'required',
+        ], $messages);
+
+        // Validação
+        if ($validator->fails()) {
+            return redirect()
+                        ->route('admin.formularios.documentos.edit', ['id' => $id])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $formulario_documento = Formulario::find($id);
+        $formulario_documento->nome = $request->nome;
+        $formulario_documento->inicio = $request->inicio;
+        $formulario_documento->fim = $request->fim;
+        $formulario_documento->status = $request->status;
+
+        $formulario_documento->save();
+
+
+        return redirect()->back();
     }
 
     /**
