@@ -49,7 +49,7 @@
                     <div class="col-sm-6">
                       <select class="form-control" name="status">
                           @foreach ($opcoes_status as $status => $nome_status)
-                              @if ($solicitacao_documentos->status == $key)
+                              @if ($solicitacao_documentos->status == $status)
                                   <option value="{{ $status }}" selected>{{ $nome_status }}</option>
                               @else
                                   <option value="{{ $status }}">{{ $nome_status }}</option>
