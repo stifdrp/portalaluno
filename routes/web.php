@@ -10,9 +10,9 @@ Route::get('certificado_conclusao', 'CertificadoConclusaoController@index')->nam
 Route::post('certificado_conclusao', 'CertificadoConclusaoController@show')->name('certificado_conclusao.show');
 Route::post('certificado_conclusao/pdf', 'CertificadoConclusaoController@showPDF')->name('certificado_conclusao.showPDF');
 
-Route::prefix('admin')->group(function () {
-    Route::get('formularios/solicitacao_documentos', 'Admin\SolicitacaoDocumentoController@index')->name('admin.formularios.documentos.index');
-    Route::get('formularios/solicitacao_documentos/index', 'Admin\SolicitacaoDocumentoController@index')->name('admin.formularios.documentos.index');
-    Route::get('formularios/solicitacao_documentos/{id}/edit', 'Admin\SolicitacaoDocumentoController@edit')->name('admin.formularios.documentos.edit');
-    Route::post('formularios/solicitacao_documentos/{id}', 'Admin\SolicitacaoDocumentoController@update')->name('admin.formularios.documentos.update');
+Route::prefix('admin/formularios')->group(function () {
+    Route::get('solicitacao_documentos', 'Admin\SolicitacaoDocumentoController@index')->name('admin.formularios.documentos.index');
+    Route::get('solicitacao_documentos/index', 'Admin\SolicitacaoDocumentoController@index')->name('admin.formularios.documentos.index');
+    Route::get('solicitacao_documentos/{id}/edit', 'Admin\SolicitacaoDocumentoController@edit')->name('admin.formularios.documentos.edit');
+    Route::post('solicitacao_documentos/{id}', 'Admin\SolicitacaoDocumentoController@update')->name('admin.formularios.documentos.update');
 });

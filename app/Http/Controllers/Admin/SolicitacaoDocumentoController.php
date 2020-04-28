@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DocumentoDisponivelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Formulario;
+use App\DocumentoDisponivel;
 
 class SolicitacaoDocumentoController extends Controller
 {
@@ -21,8 +23,11 @@ class SolicitacaoDocumentoController extends Controller
         $solicitacao_documentos_id = getenv('FORM_DOCUMENTOS');
         // retornar o formulário mais recente para este tipo
         $solicitacao_documentos = Formulario::find($solicitacao_documentos_id);
+        $documentos_disponiveis = DocumentoDisponivel::where('formulario_id', $solicitacao_documentos_id)
+                                                        ->orderBy('documento')
+                                                        ->get();
         // Retornar o form para preenchimento do funcionário
-        return view('solicitacao_documentos.index', compact('solicitacao_documentos'));
+        return view('solicitacao_documentos.index', compact('solicitacao_documentos', 'documentos_disponiveis'));
     }
 
     /**
@@ -69,8 +74,11 @@ class SolicitacaoDocumentoController extends Controller
         $opcoes_status = ["false" => 'Desativado', "true" => 'Ativo'];
         // retornar o formulário mais recente para este tipo
         $solicitacao_documentos = Formulario::find($id);
+        $documentos_disponiveis = DocumentoDisponivel::where('formulario_id', $id)
+                                                        ->orderBy('documento')
+                                                        ->get();
         // Retornar o form para preenchimento do funcionário
-        return view('solicitacao_documentos.edit', compact('solicitacao_documentos', 'opcoes_status'));
+        return view('solicitacao_documentos.edit', compact('solicitacao_documentos', 'opcoes_status', 'documentos_disponiveis'));
     }
 
     /**
@@ -82,6 +90,17 @@ class SolicitacaoDocumentoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request);
+        // Garantir que se os documentos forem alterados,
+        // caso existem alterações, elas foram concluídas com sucesso
+        $docs_ok = true;
+        if ((!empty($request->documentos)) && (count($request->documentos))) {
+            $documento_disponivel = new DocumentoDisponivelController();
+            $docs_ok = $documento_disponivel->store($request, $id);
+            // DocumentoDisponivelController::store($request);
+            // dd($request->documentos);
+        }
+
         $messages = [
             'required' => 'O campo :attribute deve estar preenchido.',
             'max' => 'O limite de caracteres foi atingindo.',
@@ -111,7 +130,7 @@ class SolicitacaoDocumentoController extends Controller
         $formulario_documento->save();
 
 
-        return redirect()->back();
+        return redirect()->route('admin.formularios.documentos.index');
     }
 
     /**
