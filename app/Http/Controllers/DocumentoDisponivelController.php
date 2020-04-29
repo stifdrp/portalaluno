@@ -40,7 +40,17 @@ class DocumentoDisponivelController extends Controller
         DB::beginTransaction();
         try {
             foreach ($request->documentos['nome'] as $key => $nome) {
-                $documento = DocumentoDisponivel::findOrNew($request->documentos['id'][$key]);
+                $documento = DocumentoDisponivel::find($request->documentos['id'][$key]);
+                if (($documento) && (!is_null($documento))) {
+                    if (in_array($request->documentos['id'][$key], $request->documentos['ativo'])) {
+                        $documento->status = true;
+                    } else {
+                        $documento->status = false;
+                    }
+                } else {
+                    $documento = new DocumentoDisponivel;
+                    $documento->status = true;
+                }
                 $documento->documento = $nome;
                 $documento->descricao = $request->documentos['descricao'][$key];
                 $documento->formulario_id = $formulario_id;

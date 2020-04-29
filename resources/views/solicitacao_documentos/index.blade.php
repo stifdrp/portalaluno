@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container col-md-6">
+<div class="container col-md-10">
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

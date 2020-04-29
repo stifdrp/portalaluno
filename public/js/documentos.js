@@ -89,6 +89,6 @@ $documento_add.addEventListener('click', (e) => {
 
 // Exclusão de algum documento
 $("body").on("click", "#botao_delete", function(e) {
-    const $documento = this.parentNode.parentNode.parentNode;
-    $documento.remove();
+    const $documento_li = this.parentNode.parentNode.parentNode;
+    $documento_li.remove();
 });

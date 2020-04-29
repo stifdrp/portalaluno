@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container col-md-6">
+<div class="container col-md-10">
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -56,18 +56,27 @@
             <br>
             <div class="card">
                 <div class="card-header">
-                    Documentos Disponíveis <button type="button" class="btn btn-primary btn-sm" id="documento_add"><i class="far fa-plus-square"></i></button>
+                    Documentos Disponíveis <button type="button" class="btn btn-primary btn-sm" id="documento_add"> <i class="far fa-plus-square"></i> Clique para adicionar um novo</button>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush" id="lista_documentos">
                         @foreach($documentos_disponiveis as $key => $documento)
-                            <li class="list-group-item">
+                            @if ($documento->status == '1')
+                                <li class="list-group-item">
+                            @else
+                                <li class="list-group-item" style="text-decoration: line-through">
+                            @endif
                                 <div class="input-group">
                                     <input type="hidden" class="form-control" name="documentos[id][]" value="{{ $documento->id }}">
                                     <input type="text" class="form-control" name="documentos[nome][]" value="{{ $documento->documento }}" required>
                                     <input type="text" class="form-control" name="documentos[descricao][]" value="{{ $documento->descricao }}" required>
-                                    <div class="input-group-append">
-                                        <a id="botao_delete" class="btn btn-outline-secondary btn-danger"><i class="fas fa-minus-circle"></i></a>
+                                    <div class="form-check">
+                                        @if ($documento->status == '1')
+                                            <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]" checked="checked">
+                                        @elseif ($documento->status == '0')
+                                            <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]">
+                                        @endif
+                                        <label class="form-check-label" for="checkbox_{{ $documento->id }}">Ativado</label>
                                     </div>
                                 </div>
                             </li>

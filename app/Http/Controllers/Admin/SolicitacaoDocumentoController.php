@@ -24,6 +24,7 @@ class SolicitacaoDocumentoController extends Controller
         // retornar o formulário mais recente para este tipo
         $solicitacao_documentos = Formulario::find($solicitacao_documentos_id);
         $documentos_disponiveis = DocumentoDisponivel::where('formulario_id', $solicitacao_documentos_id)
+                                                        ->where('status', true)
                                                         ->orderBy('documento')
                                                         ->get();
         // Retornar o form para preenchimento do funcionário
@@ -75,6 +76,7 @@ class SolicitacaoDocumentoController extends Controller
         // retornar o formulário mais recente para este tipo
         $solicitacao_documentos = Formulario::find($id);
         $documentos_disponiveis = DocumentoDisponivel::where('formulario_id', $id)
+                                                        ->orderBy('status')
                                                         ->orderBy('documento')
                                                         ->get();
         // Retornar o form para preenchimento do funcionário
