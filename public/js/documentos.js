@@ -1,6 +1,15 @@
-// $("inicio").datepicker(() => {
-//
-// });
+// Evitar que o botão para abrir/fechar div dê submit ao form
+const $button_documento_add = document.getElementById('button_documento_add');
+$button_documento_add.addEventListener('click', (e) => {
+    e.preventDefault();
+});
+
+// Evitar que o botão para abrir/fechar div dê submit ao form
+const $button_resposta_add = document.getElementById('button_resposta_add');
+$button_resposta_add.addEventListener('click', (e) => {
+    e.preventDefault();
+});
+
 const $documento_add = document.getElementById('documento_add');
 
 $documento_add.addEventListener('click', (e) => {
@@ -76,16 +85,6 @@ $documento_add.addEventListener('click', (e) => {
     // move foco para input
     $input_nome.focus();
 });
-
-//  document.body.addEventListener('click', (e) => {
-//     if (e.target.id == 'botao_delete') {
-//         console.log(e.target);
-//         e.target.parentNode.parentNode.parentNode.remove();
-//         // const $documento = e.target.parentNode.parentNode.parentNode;
-//         // $documento.remove();
-//         // console.log('vanilla');
-//     }
-// });
 
 // Exclusão de algum documento
 $("body").on("click", "#botao_delete", function(e) {

@@ -54,34 +54,56 @@
             </div>
 
             <br>
-            <div class="card">
-                <div class="card-header">
-                    Documentos Disponíveis <button type="button" class="btn btn-primary btn-sm" id="documento_add"> <i class="far fa-plus-square"></i> Clique para adicionar um novo</button>
+            <div class="accordion">
+                <div class="card">
+                    <div class="card-header" id="cabecalhoDoc">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseDocumentos" id="button_documento_add">
+                            Documentos Disponíveis <button type="button" class="btn btn-primary btn-sm" id="documento_add"> <i class="far fa-plus-square"></i> Clique para adicionar um novo</button>
+                        </button>
+                    </div>
+                    <div id="collapseDocumentos" class="collapse show">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush" id="lista_documentos">
+                                @foreach($documentos_disponiveis as $key => $documento)
+                                    @if ($documento->status == '1')
+                                        <li class="list-group-item">
+                                    @else
+                                        <li class="list-group-item" style="text-decoration: line-through">
+                                    @endif
+                                        <div class="input-group">
+                                            <input type="hidden" class="form-control" name="documentos[id][]" value="{{ $documento->id }}">
+                                            <input type="text" class="form-control" name="documentos[nome][]" value="{{ $documento->documento }}" required>
+                                            <input type="text" class="form-control" name="documentos[descricao][]" value="{{ $documento->descricao }}" required>
+                                            <div class="form-check">
+                                                @if ($documento->status == '1')
+                                                    <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]" checked="checked">
+                                                @elseif ($documento->status == '0')
+                                                    <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]">
+                                                @endif
+                                                <label class="form-check-label" for="checkbox_{{ $documento->id }}">Ativado</label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group list-group-flush" id="lista_documentos">
-                        @foreach($documentos_disponiveis as $key => $documento)
-                            @if ($documento->status == '1')
-                                <li class="list-group-item">
-                            @else
-                                <li class="list-group-item" style="text-decoration: line-through">
-                            @endif
-                                <div class="input-group">
-                                    <input type="hidden" class="form-control" name="documentos[id][]" value="{{ $documento->id }}">
-                                    <input type="text" class="form-control" name="documentos[nome][]" value="{{ $documento->documento }}" required>
-                                    <input type="text" class="form-control" name="documentos[descricao][]" value="{{ $documento->descricao }}" required>
-                                    <div class="form-check">
-                                        @if ($documento->status == '1')
-                                            <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]" checked="checked">
-                                        @elseif ($documento->status == '0')
-                                            <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]">
-                                        @endif
-                                        <label class="form-check-label" for="checkbox_{{ $documento->id }}">Ativado</label>
-                                    </div>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
+
+                <div class="card">
+                    <div class="card-header" id="cabecalhoResp">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseRespostas" id="button_resposta_add">
+                            Respostas Padrão
+                        </button>
+                        <a href="{{ route('admin.formularios.respostas.create', ['formulario_id' => $solicitacao_documentos->id])}}" type="button" class="btn btn-primary btn-sm" id="resposta_add"> <i class="far fa-plus-square"></i> Clique para adicionar uma nova</a>
+                    </div>
+                    <div id="collapseRespostas" class="collapse show">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush" id="lista_respostas">
+                            </ul>
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
