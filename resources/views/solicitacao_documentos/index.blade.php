@@ -52,7 +52,7 @@
             <br>
             <div class="card">
                 <div class="card-header">
-                    Documentos Disponíveis
+                    <strong>Documentos Disponíveis</strong>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush" id="lista_documentos">
@@ -61,9 +61,41 @@
                         @endforeach
                     </ul>
                 </div>
+
             </div>
 
-            <br>
+            <div class="card">
+                <div class="card-header">
+                    <strong>Respostas Padrão</strong>
+                </div>
+
+                <div class="card-body">
+                    @foreach ($respostas as $resposta)
+                        @php ($tipo_id = $resposta->tipo)
+                        @php ($tipo = (array_filter($tipos_respostas, function ($id) use ($tipo_id) {
+                            return $id == $tipo_id;
+                        }, ARRAY_FILTER_USE_KEY)))
+                        <ul class="list-group list-group-flush" id="lista_respostas">
+                            <div class="card">
+                                <div class="card-header">
+                                    <strong>Tipo resposta:</strong> {{ $tipo[$tipo_id]['nome'] }} - {{ $tipo[$tipo_id]['descricao'] }}
+                                </div>
+                                <div class="card-footer">
+                                    <strong>Título:</strong> {{ $resposta->cabecalho }}
+                                </div>
+                                <div class="card-body">
+                                    <strong>Corpo:</strong><br>
+                                    {{ $resposta->corpo }}
+                                </div>
+                                <div class="card-footer">
+                                    <strong>Rodapé:</strong><br>
+                                    {{ $resposta->rodape }}
+                                </div>
+                            </div>
+                        </ul>
+                    @endforeach
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
                     <a href="{{ route('admin.formularios.documentos.edit', ['id' => $solicitacao_documentos->id]) }}" class="btn btn-warning">Editar</a>

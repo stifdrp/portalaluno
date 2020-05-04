@@ -99,15 +99,35 @@
                     </div>
                     <div id="collapseRespostas" class="collapse show">
                         <div class="card-body">
-                            <ul class="list-group list-group-flush" id="lista_respostas">
-                            </ul>
-
+                            @foreach ($respostas as $resposta)
+                                @php ($tipo_id = $resposta->tipo)
+                                @php ($tipo = (array_filter($tipos_respostas, function ($id) use ($tipo_id) {
+                                    return $id == $tipo_id;
+                                }, ARRAY_FILTER_USE_KEY)))
+                                <ul class="list-group list-group-flush" id="lista_respostas">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <strong>Tipo resposta:</strong> {{ $tipo[$tipo_id]['nome'] }} - {{ $tipo[$tipo_id]['descricao'] }}
+                                        </div>
+                                        <div class="card-footer">
+                                            <strong>Título:</strong> {{ $resposta->cabecalho }}
+                                        </div>
+                                        <div class="card-body">
+                                            <strong>Corpo:</strong><br>
+                                            {{ $resposta->corpo }}
+                                        </div>
+                                        <div class="card-footer">
+                                            <strong>Rodapé:</strong><br>
+                                            {{ $resposta->rodape }}
+                                        </div>
+                                    </div>
+                                </ul>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
 
-            <br>
             <!-- /.box-body -->
             <div class="row">
                 <div class="col">

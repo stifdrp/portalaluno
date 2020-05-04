@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col">
                     <label for="cabecalho_resposta" class="control-label">Cabeçalho da resposta</label>
-                    <textarea rows="2" name="corpo_resposta" class="form-control" placeholder="Cabeçalho da resposta"></textarea>
+                    <textarea rows="2" name="cabecalho_resposta" class="form-control" placeholder="Cabeçalho da resposta"></textarea>
                 </div>
             </div>
             <div class="form-row">

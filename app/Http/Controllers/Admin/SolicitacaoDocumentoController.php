@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Formulario;
 use App\DocumentoDisponivel;
+use App\RespostaTemplate;
 
 class SolicitacaoDocumentoController extends Controller
 {
@@ -27,8 +28,14 @@ class SolicitacaoDocumentoController extends Controller
                                                         ->where('status', true)
                                                         ->orderBy('documento')
                                                         ->get();
+        $respostas = RespostaTemplate::where('formulario_id', $solicitacao_documentos_id)
+                                        ->get();
+        $tipos_respostas = RespostaTemplate::tipos_respostas();
         // Retornar o form para preenchimento do funcionário
-        return view('solicitacao_documentos.index', compact('solicitacao_documentos', 'documentos_disponiveis'));
+        return view('solicitacao_documentos.index', compact('solicitacao_documentos',
+                                                            'documentos_disponiveis',
+                                                            'respostas',
+                                                            'tipos_respostas'));
     }
 
     /**
@@ -79,8 +86,15 @@ class SolicitacaoDocumentoController extends Controller
                                                         ->orderBy('status')
                                                         ->orderBy('documento')
                                                         ->get();
+        $respostas = RespostaTemplate::where('formulario_id', $id)
+                                        ->get();
+        $tipos_respostas = RespostaTemplate::tipos_respostas();
         // Retornar o form para preenchimento do funcionário
-        return view('solicitacao_documentos.edit', compact('solicitacao_documentos', 'opcoes_status', 'documentos_disponiveis'));
+        return view('solicitacao_documentos.edit', compact('solicitacao_documentos',
+                                                            'opcoes_status',
+                                                            'documentos_disponiveis',
+                                                            'respostas',
+                                                            'tipos_respostas'));
     }
 
     /**
