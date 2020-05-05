@@ -107,12 +107,16 @@
                                 <ul class="list-group list-group-flush" id="lista_respostas">
                                     <div class="card">
                                         <div class="card-header">
+                                            <div class="form-check">
+                                                @if ($resposta->status == '1')
+                                                    <input class="form-check-input" type="checkbox" value="{{ $resposta->id }}" id="checkbox_{{ $resposta->id }}" name="respostas[ativo][]" checked="checked">
+                                                @elseif ($resposta->status == '0')
+                                                    <input class="form-check-input" type="checkbox" value="{{ $resposta->id }}" id="checkbox_{{ $resposta->id }}" name="respostas[ativo][]">
+                                                @endif
+                                                <label class="form-check-label" for="checkbox_{{ $resposta->id }}">Ativada</label>
+                                                <input type="hidden" name="respostas[id][]" value="{{ $resposta->id }}">
+                                            </div>
                                             <strong>Tipo resposta:</strong> {{ $tipo[$tipo_id]['nome'] }} - {{ $tipo[$tipo_id]['descricao'] }}
-                                            @if ($resposta->status == '1')
-                                                <strong>| Ativa |</strong>
-                                            @elseif ($resposta->status == '0')
-                                                <strong>| Desativada |</strong>
-                                            @endif
                                         </div>
                                         <div class="card-footer">
                                             <strong>Título:</strong> {{ $resposta->cabecalho }}

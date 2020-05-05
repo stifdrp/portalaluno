@@ -29,6 +29,7 @@ class SolicitacaoDocumentoController extends Controller
                                                         ->orderBy('documento')
                                                         ->get();
         $respostas = RespostaTemplate::where('formulario_id', $solicitacao_documentos_id)
+                                        ->where('status', true)
                                         ->get();
         $tipos_respostas = RespostaTemplate::tipos_respostas();
         // Retornar o form para preenchimento do funcionário
@@ -110,11 +111,15 @@ class SolicitacaoDocumentoController extends Controller
         // Garantir que se os documentos forem alterados,
         // caso existem alterações, elas foram concluídas com sucesso
         $docs_ok = true;
-        if ((!empty($request->documentos)) && (count($request->documentos))) {
+        if ((!empty($request->documentos)) && (count($request->documentos) > 0)) {
             $documento_disponivel = new DocumentoDisponivelController();
             $docs_ok = $documento_disponivel->store($request, $id);
-            // DocumentoDisponivelController::store($request);
-            // dd($request->documentos);
+        }
+
+        $respostas_ok = true;
+        if ((!empty($request->respostas)) && (count($request->respostas) > 0)) {
+            $resposta_template = new RespostaTemplateController();
+            $respostas_ok = $resposta_template->update($request, $id);
         }
 
         $messages = [
@@ -140,6 +145,7 @@ class SolicitacaoDocumentoController extends Controller
         $formulario_documento = Formulario::find($id);
         $formulario_documento->nome = $request->nome;
         $formulario_documento->inicio = $request->inicio;
+        // $formulario_documento->inicio = Carbon::parse(date($request->inicio))->format('m/d/Y');
         $formulario_documento->fim = $request->fim;
         $formulario_documento->status = $request->status;
 

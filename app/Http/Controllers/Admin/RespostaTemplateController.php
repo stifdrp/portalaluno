@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Http\Controllers\Controller;
-// use App\Http\Controllers\RespostaTemplateController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Formulario;
@@ -73,6 +74,7 @@ class RespostaTemplateController extends Controller
         $resposta->corpo = $request->corpo_resposta;
         $resposta->rodape = $request->rodape_resposta;
         $resposta->formulario_id = $request->formulario_id;
+        $resposta->status = true;
         $resposta->save();
 
         return redirect()->route('admin.formularios.documentos.edit', ['id' => $request->formulario_id]);
@@ -109,7 +111,27 @@ class RespostaTemplateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Adicionado transação para possível rollback em caso de problema
+        DB::beginTransaction();
+        try {
+            foreach ($request->respostas['id'] as $key => $id) {
+                $resposta = RespostaTemplate::find($id);
+                if (($resposta) && (!is_null($resposta))) {
+                    if (in_array($request->respostas['id'][$key], $request->respostas['ativo'])) {
+                        $resposta->status = true;
+                    } else {
+                        $resposta->status = false;
+                    }
+                }
+                $resposta->save();
+            }
+            // Commita a transação
+            DB::commit();
+            return true;
+        } catch (PDOException $e) {
+            DB::rollback();
+            return false;
+        }
     }
 
     /**

@@ -79,11 +79,6 @@
                             <div class="card">
                                 <div class="card-header">
                                     <strong>Tipo resposta:</strong> {{ $tipo[$tipo_id]['nome'] }} - {{ $tipo[$tipo_id]['descricao'] }}
-                                    @if ($resposta->status == '1')
-                                        <strong>| Ativa |</strong>
-                                    @elseif ($resposta->status == '0')
-                                        <strong>| Desativada |</strong>
-                                    @endif
                                 </div>
                                 <div class="card-footer">
                                     <strong>Título:</strong> {{ $resposta->cabecalho }}
