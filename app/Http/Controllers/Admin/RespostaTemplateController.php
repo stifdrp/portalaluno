@@ -116,12 +116,14 @@ class RespostaTemplateController extends Controller
         try {
             foreach ($request->respostas['id'] as $key => $id) {
                 $resposta = RespostaTemplate::find($id);
-                if (($resposta) && (!is_null($resposta))) {
+                if (($resposta) && (!is_null($resposta)) && (!empty($request->respostas['ativo']))) {
                     if (in_array($request->respostas['id'][$key], $request->respostas['ativo'])) {
                         $resposta->status = true;
                     } else {
                         $resposta->status = false;
                     }
+                } else {
+                    $resposta->status = false;
                 }
                 $resposta->save();
             }

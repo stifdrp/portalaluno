@@ -144,9 +144,8 @@ class SolicitacaoDocumentoController extends Controller
 
         $formulario_documento = Formulario::find($id);
         $formulario_documento->nome = $request->nome;
-        $formulario_documento->inicio = $request->inicio;
-        // $formulario_documento->inicio = Carbon::parse(date($request->inicio))->format('m/d/Y');
-        $formulario_documento->fim = $request->fim;
+        $formulario_documento->inicio = Carbon::createFromFormat('d/m/Y', $request->inicio);
+        $formulario_documento->fim = Carbon::createFromFormat('d/m/Y', $request->fim);
         $formulario_documento->status = $request->status;
 
         $formulario_documento->save();

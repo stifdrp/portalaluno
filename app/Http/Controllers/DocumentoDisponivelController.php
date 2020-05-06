@@ -42,7 +42,7 @@ class DocumentoDisponivelController extends Controller
             foreach ($request->documentos['nome'] as $key => $nome) {
                 $documento = DocumentoDisponivel::find($request->documentos['id'][$key]);
                 if (($documento) && (!is_null($documento))) {
-                    if (in_array($request->documentos['id'][$key], $request->documentos['ativo'])) {
+                    if ((!empty($request->documentos['ativo'])) && (in_array($request->documentos['id'][$key], $request->documentos['ativo']))) {
                         $documento->status = true;
                     } else {
                         $documento->status = false;

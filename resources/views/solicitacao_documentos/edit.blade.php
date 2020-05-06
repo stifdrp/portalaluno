@@ -105,7 +105,11 @@
                                     return $id == $tipo_id;
                                 }, ARRAY_FILTER_USE_KEY)))
                                 <ul class="list-group list-group-flush" id="lista_respostas">
-                                    <div class="card">
+                                    @if ($resposta->status == '1')
+                                        <div class="card">
+                                    @elseif ($resposta->status == '0')
+                                        <div class="card" style="text-decoration: line-through">
+                                    @endif
                                         <div class="card-header">
                                             <div class="form-check">
                                                 @if ($resposta->status == '1')
