@@ -209,9 +209,11 @@ return [
     */
 
     'menu' => [
+        'ADMINISTRATIVO',
         [
             'text' => 'Administrativo',
             'icon' => 'nav-icon fas fa-th',
+            'can'  => 'admin',
             'submenu' => [
                 [
                     'text' => 'Formulários',
@@ -232,13 +234,26 @@ return [
                         [
                             'text' => 'Certificado Conclusão',
                             'icon' => 'far fa-file-pdf',
-                            'url' => 'certificado_conclusao',
+                            'url' => 'admin/certificado_conclusao',
                         ],
                     ],
                 ],
             ],
         ],
-   ],
+
+        'ALUNO',
+        [
+            'text' => 'Alunos',
+            'icon' => 'nav-icon fas fa-th',
+            'submenu' => [
+                [
+                    'text' => 'Avisos',
+                    'icon' => 'fas fa-table',
+                    'url'  => '#',
+                ],
+            ],
+        ],
+    ],
 
     // 'menu' => [
     //     [
