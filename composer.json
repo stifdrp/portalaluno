@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "neitanod/forceutf8": "^2.0",
         "symfony/translation": "4.3.8",
+        "uspdev/replicado": "^1.5",
         "uspdev/senhaunica-socialite": "dev-master"
     },
     "require-dev": {

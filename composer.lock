@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa0e214d9edbdf0964253acdee5bfdfe",
+    "content-hash": "ff5208372d3789aeb1c61957dba13425",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -3942,6 +3942,46 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2019-10-24T08:53:34+00:00"
+        },
+        {
+            "name": "uspdev/replicado",
+            "version": "1.5.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uspdev/replicado.git",
+                "reference": "043204b25c6da77847c0e450ea7896520825c1be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uspdev/replicado/zipball/043204b25c6da77847c0e450ea7896520825c1be",
+                "reference": "043204b25c6da77847c0e450ea7896520825c1be",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo_dblib": "*",
+                "monolog/monolog": "^1.25 || ^2",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Uspdev\\Replicado\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Thiago Gomes Verissimo",
+                    "email": "thiago.verissimo@usp.br",
+                    "homepage": "https://github.com/thiagogomesverissimo"
+                }
+            ],
+            "description": "Classes PHP que consome dados do Replicado USP",
+            "homepage": "https://github.com/uspdev/replicado",
+            "time": "2020-05-19T18:22:53+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",
