@@ -85,7 +85,7 @@ class LoginController extends Controller
             try {
                 $user->save();
                 if ($aluno) {
-                    dd(Aluno::sincronizarDados($user_senhaunica->codpes));
+                    Aluno::sincronizarDados($user_senhaunica->codpes);
                 }
             } catch (PDOException $e) {
                 dd($e->getMessage());

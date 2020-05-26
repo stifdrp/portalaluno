@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RemoveChavePrimariaCodpesTableAlunos extends Migration
+class CreateChavePrimariaCodpesTableAlunos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class RemoveChavePrimariaCodpesTableAlunos extends Migration
      */
     public function up()
     {
-        Schema::table('pedidos', function (Blueprint $table) {
-            $table->dropForeign('pedidos_aluno_codpes_foreign');
+        Schema::table('alunos', function (Blueprint $table) {
+            $table->unsignedBigInteger('id');
+            $table->string('codpes', 20)->unique()->change();
         });
 
-        Schema::table('alunos', function (Blueprint $table) {
-            $table->dropPrimary('codpes');
+        Schema::table('pedidos', function (Blueprint $table) {
+            $table->foreign('aluno_codpes')->references('codpes')->on('alunos');
         });
     }
 
