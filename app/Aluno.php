@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Session;
 use PDOException;
 use Uspdev\Replicado\Graduacao;
 use Uspdev\Replicado\Pessoa;
@@ -27,9 +28,9 @@ class Aluno extends Model
         }
 
         // apenas para testar dados de um aluno
-        if ($nusp == "7112881") {
-            $nusp = "7982169";
-        }
+        //if ($nusp == "7112881") {
+        //$nusp = "7982169";
+        //}
 
         $dados_curso = Graduacao::curso($nusp, env("REPLICADO_CODUND"));
         // email com stamtr = 'S'
@@ -70,6 +71,7 @@ class Aluno extends Model
         $aluno->telefone = $telefone[0];
         try {
             $aluno->save();
+            Session::put(['aluno' => $aluno]);
             return true;
         } catch (PDOException $e) {
             dd($e->getMessage());

@@ -54,11 +54,11 @@ class LoginController extends Controller
         $user_senhaunica = Socialite::driver('senhaunica')->user();
         $admins = explode(',', trim(env('CODPES_ADMINS')));
 
-        if ($user_senhaunica->codpes != '7112881') {
-            $aluno = Graduacao::verifica($user_senhaunica->codpes, env('REPLICADO_CODUND'));
-        } else {
-            $aluno = true;
-        }
+        //if ($user_senhaunica->codpes != '7112881') {
+        $aluno = Graduacao::verifica($user_senhaunica->codpes, env('REPLICADO_CODUND'));
+        //} else {
+        //$aluno = true;
+        //}
         // Verificar se o login é de um funcionário da seção de graduação ou aluno da fea-rp
         if ((!in_array($user_senhaunica->codpes, $admins)) && ($aluno == false)) {
             dd("Sistema exclusivo para Seção de Graduação e/ou Alunos da fea-RP!");
@@ -84,11 +84,15 @@ class LoginController extends Controller
             $user->email = $user_senhaunica->emailUsp;
             try {
                 $user->save();
-                if ($aluno) {
-                    Aluno::sincronizarDados($user_senhaunica->codpes);
-                }
             } catch (PDOException $e) {
                 dd($e->getMessage());
+            }
+
+            // TODO: verificar se no login é o melhor momento de fazer sync
+            // Sincronizar informação da base replicada
+            if ($aluno) {
+                // aqui a função irá retornar true/false
+                Aluno::sincronizarDados($user_senhaunica->codpes);
             }
 
             Auth::login($user, true);

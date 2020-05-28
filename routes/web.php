@@ -1,10 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Session;
+
 Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('callback', 'Auth\LoginController@handleProviderCallback');
 Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('admin/certificado_conclusao')->middleware('can:admin')->group(function () {
     Route::get('/', 'CertificadoConclusaoController@index')->name('certificado_conclusao.index');
