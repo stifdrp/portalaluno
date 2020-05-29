@@ -27,7 +27,7 @@
         <li>Curso: {{ $aluno_session->codigo_curso }} (Habilitação: {{ $aluno_session->codigo_habilitacao }})</li>
         <li>Email: {{ $aluno_session->email_administrativo }}</li>
         @endif
-        <li><a href="#">Trocar perfil aluno</a></li>
+        <li><a href="{{ route('admin.perfil_aluno.index')}}">Trocar perfil aluno</a></li>
     </ul>
 </div>
 @endcan

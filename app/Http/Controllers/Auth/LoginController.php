@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Session;
 use PDOException;
 use Uspdev\Replicado\Graduacao;
 use Uspdev\Replicado\Pessoa;
@@ -59,6 +60,7 @@ class LoginController extends Controller
         //} else {
         //$aluno = true;
         //}
+
         // Verificar se o login é de um funcionário da seção de graduação ou aluno da fea-rp
         if ((!in_array($user_senhaunica->codpes, $admins)) && ($aluno == false)) {
             dd("Sistema exclusivo para Seção de Graduação e/ou Alunos da fea-RP!");
@@ -92,7 +94,10 @@ class LoginController extends Controller
             // Sincronizar informação da base replicada
             if ($aluno) {
                 // aqui a função irá retornar true/false
-                Aluno::sincronizarDados($user_senhaunica->codpes);
+                $aluno_sinc = Aluno::sincronizarDados($user_senhaunica->codpes);
+                // TODO: verificar em que momento será retornado Aluno com todos
+                // dados para setar Session
+                Session::put(['perfil_aluno' => $aluno_sinc]);
             }
 
             Auth::login($user, true);

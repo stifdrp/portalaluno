@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Session;
@@ -32,6 +33,15 @@ class Aluno extends Model
         //$nusp = "7982169";
         //}
 
+        // Atualizar apenas se estiver desatualizado
+        $aluno = Aluno::find($nusp);
+        if ($aluno) {
+            if ($aluno->updated_at > (Carbon::now()->subDays(1))) {
+                // caso esteja atualizado, sai da função
+                return false;
+            }
+        }
+
         $dados_curso = Graduacao::curso($nusp, env("REPLICADO_CODUND"));
         // email com stamtr = 'S'
         $email = Pessoa::email($nusp);
@@ -48,7 +58,6 @@ class Aluno extends Model
         }
 
         // sincronizar dados com a base replicada
-        // em Graduacao::curso() são retornados diversos dados referentes ao curso
         // Como o model aluno está configurado com SoftDeletes,
         // foi necessário verificar também se o registro não foi deletado
         // para não retornar erro de cadastrar um aluno já existente
@@ -71,10 +80,28 @@ class Aluno extends Model
         $aluno->telefone = $telefone[0];
         try {
             $aluno->save();
-            Session::put(['aluno' => $aluno]);
             return true;
         } catch (PDOException $e) {
             dd($e->getMessage());
+        }
+    }
+
+    /** 
+     * @param string número_usp
+     * @return Aluno
+     */
+    public static function getAluno($nusp)
+    {
+        if ($nusp) {
+            $aluno = Aluno::find($nusp);
+
+            // TODO: ainda precisa ver se o aluno não existe na base local
+            // como sync os dados dele
+            if (!$aluno) {
+                $aluno = Aluno::sincronizarDados($nusp);
+            }
+
+            return $aluno;
         }
     }
 }

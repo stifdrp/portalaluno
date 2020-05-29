@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $aluno_session = Session::get('aluno');
+        $aluno_session = Session::get('perfil_aluno');
         return view('home', compact('aluno_session'));
     }
 }

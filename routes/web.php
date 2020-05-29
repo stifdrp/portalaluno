@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Session;
-
 Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('callback', 'Auth\LoginController@handleProviderCallback');
 Route::get('logout', 'Auth\LoginController@logout');
@@ -23,3 +21,6 @@ Route::prefix('admin/formularios')->middleware('can:admin')->group(function () {
     Route::get('resposta_template/create/{formulario_id}', 'Admin\RespostaTemplateController@create')->name('admin.formularios.respostas.create');
     Route::post('resposta_template/store', 'Admin\RespostaTemplateController@store')->name('admin.formularios.respostas.store');
 });
+
+Route::get('/admin/perfil_aluno', 'FuncionarioPerfilAlunoController@index')->name('admin.perfil_aluno.index');
+Route::post('/admin/perfil_aluno', 'FuncionarioPerfilAlunoController@store')->name('admin.perfil_aluno.store');
