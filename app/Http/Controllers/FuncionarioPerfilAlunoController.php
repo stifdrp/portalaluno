@@ -18,12 +18,14 @@ class FuncionarioPerfilAlunoController extends Controller
      */
     public function store(Request $request)
     {
+        // Remover chave 'perfil_aluno' da session
+        Session::forget('perfil_aluno');
         $aluno_perfil = Aluno::getAluno($request->nusp);
         if ($aluno_perfil) {
-            Session::forget('perfil_aluno');
             Session::put(['perfil_aluno' => $aluno_perfil]);
+            return redirect()->route('home');
+        } else {
+            return redirect()->back()->withErrors(['Aluno não encontrado!']);;
         }
-
-        return redirect()->route('home');
     }
 }

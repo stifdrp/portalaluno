@@ -28,11 +28,6 @@ class Aluno extends Model
             return false;
         }
 
-        // apenas para testar dados de um aluno
-        //if ($nusp == "7112881") {
-        //$nusp = "7982169";
-        //}
-
         // Atualizar apenas se estiver desatualizado
         $aluno = Aluno::find($nusp);
         if ($aluno) {
@@ -40,6 +35,12 @@ class Aluno extends Model
                 // caso esteja atualizado, sai da função
                 return false;
             }
+        }
+
+        // verificar inicialmente se o aluno está administrativo
+        $aluno_ativo = Graduacao::verifica($nusp, env("REPLICADO_CODUND"));
+        if (!$aluno_ativo) {
+            return false;
         }
 
         $dados_curso = Graduacao::curso($nusp, env("REPLICADO_CODUND"));
@@ -95,10 +96,11 @@ class Aluno extends Model
         if ($nusp) {
             $aluno = Aluno::find($nusp);
 
-            // TODO: ainda precisa ver se o aluno não existe na base local
-            // como sync os dados dele
+            // TODO melhorar a sincronia dessa function pois se o aluno não existente
+            // na primeira tentativa retorna erro, mesmo inserindo no BD
+            // na segunda tentativa retorna corretamente
             if (!$aluno) {
-                $aluno = Aluno::sincronizarDados($nusp);
+                Aluno::sincronizarDados($nusp);
             }
 
             return $aluno;

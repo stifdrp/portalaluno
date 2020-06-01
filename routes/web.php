@@ -22,5 +22,7 @@ Route::prefix('admin/formularios')->middleware('can:admin')->group(function () {
     Route::post('resposta_template/store', 'Admin\RespostaTemplateController@store')->name('admin.formularios.respostas.store');
 });
 
-Route::get('/admin/perfil_aluno', 'FuncionarioPerfilAlunoController@index')->name('admin.perfil_aluno.index');
-Route::post('/admin/perfil_aluno', 'FuncionarioPerfilAlunoController@store')->name('admin.perfil_aluno.store');
+Route::prefix('admin/perfil_aluno')->middleware('can:admin')->group(function () {
+    Route::get('/', 'FuncionarioPerfilAlunoController@index')->name('admin.perfil_aluno.index');
+    Route::post('/', 'FuncionarioPerfilAlunoController@store')->name('admin.perfil_aluno.store');
+});
