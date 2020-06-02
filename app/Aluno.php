@@ -96,11 +96,10 @@ class Aluno extends Model
         if ($nusp) {
             $aluno = Aluno::find($nusp);
 
-            // TODO melhorar a sincronia dessa function pois se o aluno não existente
-            // na primeira tentativa retorna erro, mesmo inserindo no BD
-            // na segunda tentativa retorna corretamente
             if (!$aluno) {
                 Aluno::sincronizarDados($nusp);
+                // Após sincronizar os dados, busca-se o aluno novamente
+                $aluno = Aluno::find($nusp);
             }
 
             return $aluno;

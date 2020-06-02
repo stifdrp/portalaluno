@@ -21,9 +21,9 @@
         <form class="form" action="{{ route('admin.perfil_aluno.store') }}" method="POST">
             {{ csrf_field() }}
             <div class="row">
-                <div class="col">
+                <div class="col-2">
                     <label for="nusp" class="control-label">Número USP da(o) aluna(o)</label>
-                    <input type="text" class="form-control" name="nusp">
+                    <input type="text" class="form-control" name="nusp" autofocus>
                 </div>
             </div>
             <br>
