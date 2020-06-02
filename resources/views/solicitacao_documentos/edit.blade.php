@@ -4,13 +4,13 @@
 
 <div class="container col-md-10">
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
     <!-- Horizontal Form -->
     <div class="container-fluid">
@@ -42,13 +42,13 @@
                 <div class="col">
                     <label for="status" class="control-label">Status</label>
                     <select class="form-control" name="status">
-                      @foreach ($opcoes_status as $status => $nome_status)
-                          @if ($solicitacao_documentos->status == $status)
-                              <option value="{{ $status }}" selected>{{ $nome_status }}</option>
-                          @else
-                              <option value="{{ $status }}">{{ $nome_status }}</option>
-                          @endif
-                      @endforeach
+                        @foreach ($opcoes_status as $status => $nome_status)
+                        @if ($solicitacao_documentos->status == $status)
+                        <option value="{{ $status }}" selected>{{ $nome_status }}</option>
+                        @else
+                        <option value="{{ $status }}">{{ $nome_status }}</option>
+                        @endif
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -65,25 +65,25 @@
                         <div class="card-body">
                             <ul class="list-group list-group-flush" id="lista_documentos">
                                 @foreach($documentos_disponiveis as $key => $documento)
-                                    @if ($documento->status == '1')
-                                        <li class="list-group-item">
+                                @if ($documento->status == '1')
+                                <li class="list-group-item">
                                     @else
-                                        <li class="list-group-item" style="text-decoration: line-through">
+                                <li class="list-group-item" style="text-decoration: line-through">
                                     @endif
-                                        <div class="input-group">
-                                            <input type="hidden" class="form-control" name="documentos[id][]" value="{{ $documento->id }}">
-                                            <input type="text" class="form-control" name="documentos[nome][]" value="{{ $documento->documento }}" required>
-                                            <input type="text" class="form-control" name="documentos[descricao][]" value="{{ $documento->descricao }}" required>
-                                            <div class="form-check">
-                                                @if ($documento->status == '1')
-                                                    <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]" checked="checked">
-                                                @elseif ($documento->status == '0')
-                                                    <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]">
-                                                @endif
-                                                <label class="form-check-label" for="checkbox_{{ $documento->id }}">Ativado</label>
-                                            </div>
+                                    <div class="input-group">
+                                        <input type="hidden" class="form-control" name="documentos[id][]" value="{{ $documento->id }}">
+                                        <input type="text" class="form-control" name="documentos[nome][]" value="{{ $documento->documento }}" required>
+                                        <input type="text" class="form-control" name="documentos[descricao][]" value="{{ $documento->descricao }}" required>
+                                        <div class="form-check">
+                                            @if ($documento->status == '1')
+                                            <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]" checked="checked">
+                                            @elseif ($documento->status == '0')
+                                            <input class="form-check-input" type="checkbox" value="{{ $documento->id }}" id="checkbox_{{ $documento->id }}" name="documentos[ativo][]">
+                                            @endif
+                                            <label class="form-check-label" for="checkbox_{{ $documento->id }}">Ativado</label>
                                         </div>
-                                    </li>
+                                    </div>
+                                </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -100,22 +100,20 @@
                     <div id="collapseRespostas" class="collapse show">
                         <div class="card-body">
                             @foreach ($respostas as $resposta)
-                                @php ($tipo_id = $resposta->tipo)
-                                @php ($tipo = (array_filter($tipos_respostas, function ($id) use ($tipo_id) {
-                                    return $id == $tipo_id;
-                                }, ARRAY_FILTER_USE_KEY)))
-                                <ul class="list-group list-group-flush" id="lista_respostas">
-                                    @if ($resposta->status == '1')
-                                        <div class="card">
+                            @php ($tipo_id = $resposta->tipo)
+                            @php ($tipo = (array_filter($tipos_respostas, (fn ($id) => $id == $tipo_id), ARRAY_FILTER_USE_KEY)))
+                            <ul class="list-group list-group-flush" id="lista_respostas">
+                                @if ($resposta->status == '1')
+                                <div class="card">
                                     @elseif ($resposta->status == '0')
-                                        <div class="card" style="text-decoration: line-through">
-                                    @endif
+                                    <div class="card" style="text-decoration: line-through">
+                                        @endif
                                         <div class="card-header">
                                             <div class="form-check">
                                                 @if ($resposta->status == '1')
-                                                    <input class="form-check-input" type="checkbox" value="{{ $resposta->id }}" id="checkbox_{{ $resposta->id }}" name="respostas[ativo][]" checked="checked">
+                                                <input class="form-check-input" type="checkbox" value="{{ $resposta->id }}" id="checkbox_{{ $resposta->id }}" name="respostas[ativo][]" checked="checked">
                                                 @elseif ($resposta->status == '0')
-                                                    <input class="form-check-input" type="checkbox" value="{{ $resposta->id }}" id="checkbox_{{ $resposta->id }}" name="respostas[ativo][]">
+                                                <input class="form-check-input" type="checkbox" value="{{ $resposta->id }}" id="checkbox_{{ $resposta->id }}" name="respostas[ativo][]">
                                                 @endif
                                                 <label class="form-check-label" for="checkbox_{{ $resposta->id }}">Ativada</label>
                                                 <input type="hidden" name="respostas[id][]" value="{{ $resposta->id }}">
@@ -134,7 +132,7 @@
                                             {{ $resposta->rodape }}
                                         </div>
                                     </div>
-                                </ul>
+                            </ul>
                             @endforeach
                         </div>
                     </div>
@@ -155,5 +153,5 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('js/documentos.js') }}"></script>
+<script src="{{ asset('js/documentos.js') }}"></script>
 @endsection

@@ -4,13 +4,13 @@
 
 <div class="container col-md-10">
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
     <div class="container-fluid">
@@ -42,9 +42,9 @@
                 <div class="col">
                     <label for="status" class="col-sm-2 control-label">Status</label>
                     @if ($solicitacao_documentos->status === false)
-                        <input class="form-control" id="status" name="status" value="Desativado" readonly>
+                    <input class="form-control" id="status" name="status" value="Desativado" readonly>
                     @elseif ($solicitacao_documentos->status === true)
-                        <input class="form-control" id="status" name="status" value="Ativo" readonly>
+                    <input class="form-control" id="status" name="status" value="Ativo" readonly>
                     @endif
                 </div>
             </div>
@@ -57,7 +57,7 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush" id="lista_documentos">
                         @foreach($documentos_disponiveis as $key => $documento)
-                            <li class="form-group-item form-control">{{ $documento->documento }} ({{ $documento->descricao }})</li>
+                        <li class="form-group-item form-control">{{ $documento->documento }} ({{ $documento->descricao }})</li>
                         @endforeach
                     </ul>
                 </div>
@@ -71,28 +71,26 @@
 
                 <div class="card-body">
                     @foreach ($respostas as $resposta)
-                        @php ($tipo_id = $resposta->tipo)
-                        @php ($tipo = (array_filter($tipos_respostas, function ($id) use ($tipo_id) {
-                            return $id == $tipo_id;
-                        }, ARRAY_FILTER_USE_KEY)))
-                        <ul class="list-group list-group-flush" id="lista_respostas">
-                            <div class="card">
-                                <div class="card-header">
-                                    <strong>Tipo resposta:</strong> {{ $tipo[$tipo_id]['nome'] }} - {{ $tipo[$tipo_id]['descricao'] }}
-                                </div>
-                                <div class="card-footer">
-                                    <strong>Título:</strong> {{ $resposta->cabecalho }}
-                                </div>
-                                <div class="card-body">
-                                    <strong>Corpo:</strong><br>
-                                    {{ $resposta->corpo }}
-                                </div>
-                                <div class="card-footer">
-                                    <strong>Rodapé:</strong><br>
-                                    {{ $resposta->rodape }}
-                                </div>
+                    @php ($tipo_id = $resposta->tipo)
+                    @php ($tipo = (array_filter($tipos_respostas, (fn ($id) => $id == $tipo_id), ARRAY_FILTER_USE_KEY)))
+                    <ul class="list-group list-group-flush" id="lista_respostas">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Tipo resposta:</strong> {{ $tipo[$tipo_id]['nome'] }} - {{ $tipo[$tipo_id]['descricao'] }}
                             </div>
-                        </ul>
+                            <div class="card-footer">
+                                <strong>Título:</strong> {{ $resposta->cabecalho }}
+                            </div>
+                            <div class="card-body">
+                                <strong>Corpo:</strong><br>
+                                {{ $resposta->corpo }}
+                            </div>
+                            <div class="card-footer">
+                                <strong>Rodapé:</strong><br>
+                                {{ $resposta->rodape }}
+                            </div>
+                        </div>
+                    </ul>
                     @endforeach
                 </div>
             </div>

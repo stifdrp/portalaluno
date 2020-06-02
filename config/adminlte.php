@@ -251,6 +251,11 @@ return [
                     'icon' => 'fas fa-table',
                     'url'  => '#',
                 ],
+                [
+                    'text' => 'Solicitar Documento',
+                    'icon' => 'fas fa-table',
+                    'url'  => 'aluno/solicitacao_documentos/create',
+                ],
             ],
         ],
     ],
