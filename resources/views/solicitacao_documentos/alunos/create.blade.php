@@ -4,12 +4,19 @@
 
 <div class="container col-md-10">
     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+    <div class="col-6">
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>
+                    {{ $error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
     @endif
 
@@ -21,7 +28,12 @@
         @if ($aluno_session)
         <div class="card">
             <div class="card-header">
+                @if (Auth::user()->perfil === 'Funcionario')
+                <strong>Perfil do aluno (acesso simulado por funcionário)</strong>
+                @endif
+                @if (Auth::user()->perfil === 'Aluno')
                 <strong>Meus dados</strong>
+                @endif
             </div>
             <div class="card-body">
                 <div class="row">
@@ -43,7 +55,12 @@
         <form class="form" action="{{ route('aluno.solicitacao_documentos.store')}}" method="POST">
             {{ csrf_field() }}
             <!-- TODO verificar se número USP será recuperado do login ou da session-->
-            <input type="hidden" name="codpes" value="{{ Auth::user()->username }}">
+            @if (Auth::user()->perfil === 'Funcionario')
+            <input type="hidden" name="aluno_codpes" value="{{ $aluno_session->codpes }}">
+            @endif
+            @if (Auth::user()->perfil === 'Aluno')
+            <input type="hidden" name="aluno_codpes" value="{{ Auth::user()->username }}">
+            @endif
             <div class="row">
                 <div class="col">
                     <label for="nome" class="control-label">Título</label>
@@ -51,8 +68,8 @@
                 </div>
 
                 <div class="col">
-                    <label for="data_pedido" class="control-label">Data pedido:</label>
-                    <input class="form-control" id="data_pedido" name="data_pedido" value="{{\Carbon\Carbon::now()->format('d/m/Y')}}" readonly>
+                    <label for="data_hora_abertura" class="control-label">Data/Horário pedido:</label>
+                    <input class="form-control" id="data_hora_abertura" name="data_hora_abertura" value="{{\Carbon\Carbon::now()->format('d/m/Y H:i:s')}}" readonly>
                 </div>
             </div>
 
@@ -78,7 +95,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <strong>Justificativa</strong>
+                    <strong>Finalidade/Observações (preenchimento obrigatório)</strong>
                 </div>
 
                 <div class="card-body">
@@ -88,7 +105,7 @@
             <div class="row">
                 <div class="col">
                     <button type="submit" class="btn btn-primary">Salvar</button>
-                    <a href="{{ route('aluno.solicitacao_documentos.create') }}" class="btn btn-default">Cancelar</a>
+                    <a href="{{ route('home') }}" class="btn btn-default">Cancelar</a>
                 </div>
             </div>
         </form>

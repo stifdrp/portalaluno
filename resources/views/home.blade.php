@@ -30,5 +30,21 @@
         <li><a href="{{ route('admin.perfil_aluno.index')}}">Trocar perfil aluno</a></li>
     </ul>
 </div>
+@if ($errors->any())
+<div class="col-6">
+    <div class="alert alert-info">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>
+                {{ $error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+</div>
+@endif
 @endcan
 @stop

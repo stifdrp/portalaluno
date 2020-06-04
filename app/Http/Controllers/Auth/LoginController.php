@@ -97,7 +97,7 @@ class LoginController extends Controller
                 $aluno_sinc = Aluno::sincronizarDados($user_senhaunica->codpes);
                 // TODO: verificar em que momento será retornado Aluno com todos
                 // dados para setar Session
-                Session::put(['perfil_aluno' => $aluno_sinc]);
+                Session::put(['dados_aluno' => $aluno_sinc]);
             }
 
             Auth::login($user, true);
