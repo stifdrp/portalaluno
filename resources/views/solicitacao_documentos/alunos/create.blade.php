@@ -99,7 +99,7 @@
                 </div>
 
                 <div class="card-body">
-                    <textarea class="form-control" rows="4" name="justificativa" required></textarea>
+                    <textarea class="form-control" rows="4" name="justificativa" required>{{ old('justificativa') }}</textarea>
                 </div>
             </div>
             <div class="row">

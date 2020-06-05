@@ -18,7 +18,9 @@ class Pedido extends Model
 
     public function enviarEmail($email_destino)
     {
-        dd($this);
-        dd($email_destino);
+        //dd($this);
+        //dd($email_destino);
+        //return 'email enviado com sucesso!';
+        return false;
     }
 }

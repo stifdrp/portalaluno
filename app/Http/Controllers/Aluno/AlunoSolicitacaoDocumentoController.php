@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDOException;
 
@@ -73,19 +74,19 @@ class AlunoSolicitacaoDocumentoController extends Controller
 
         $aluno = Aluno::find($request->aluno_codpes);
 
-        // estrutura tabela Pedidos
-        // id, justificativa, abertura, status, data_hora_resposta, codpes_func, corpo_resposta_finalizacao, aluno_id, formulario_id, aluno_codpes
-        $pedido = new Pedido();
-        $pedido->data_hora_abertura = $request->data_hora_abertura;
-        $pedido->aluno_codpes = $request->aluno_codpes;
-        $pedido->aluno_id = $aluno->id;
-        $solicitacao_documentos_id = getenv('FORM_DOCUMENTOS');
-        $pedido->formulario_id = $solicitacao_documentos_id;
-
-        // TODO verificar melhor forma de salvar o pedido e os documentos solicitados
-        // com uso de Transaction
+        DB::beginTransaction();
         try {
+            // estrutura tabela Pedidos
+            // id, justificativa, abertura, status, data_hora_resposta, codpes_func, corpo_resposta_finalizacao, aluno_id, formulario_id, aluno_codpes
+            $pedido = new Pedido();
+            $pedido->data_hora_abertura = $request->data_hora_abertura;
+            $pedido->aluno_codpes = $request->aluno_codpes;
+            $pedido->aluno_id = $aluno->id;
+            $pedido->justificativa = $request->justificativa;
+            $solicitacao_documentos_id = getenv('FORM_DOCUMENTOS');
+            $pedido->formulario_id = $solicitacao_documentos_id;
             $pedido->save();
+
             // salvar cada documento solicitado
             foreach ($request->documento_solicitado as $documento) {
                 $documento_solicitado = new DocumentoSolicitado();
@@ -93,9 +94,16 @@ class AlunoSolicitacaoDocumentoController extends Controller
                 $documento_solicitado->pedido_id = $pedido->id;
                 $documento_solicitado->save();
             }
-            $pedido->enviarEmail($email_destino);
+
+            if ($pedido->enviarEmail($email_destino)) {
+                DB::commit();
+                return redirect()->route('home');
+            } else {
+                return back()->withErrors('Não foi possível encaminhar e-mail, por isso, o pedido não foi salvo! Tente novamente!')->withInput();
+            }
         } catch (PDOException $e) {
-            dd($e->getMessage());
+            DB::rollBack();
+            return redirect()->back()->withErrors($e->getMessage());
         }
     }
 }
