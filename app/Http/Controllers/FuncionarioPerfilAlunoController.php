@@ -28,4 +28,11 @@ class FuncionarioPerfilAlunoController extends Controller
             return redirect()->back()->withErrors(['Aluno não encontrado!']);;
         }
     }
+
+
+    public function destroy()
+    {
+        Session::forget('perfil_aluno');
+        return back();
+    }
 }

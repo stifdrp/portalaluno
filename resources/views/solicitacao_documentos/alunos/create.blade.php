@@ -83,14 +83,21 @@
                         @foreach ($documentos_disponiveis as $key => $documento)
                         <li class="form-group-item form-control">
                             <label>
+                                @if (!empty(old('documento_solicitado')))
+                                @if (in_array($documento->id, old('documento_solicitado')))
+                                <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}" checked>
+                                @else
                                 <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}">
+                                @endif
+                                @else
+                                <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}">
+                                @endif
                                 {{ $documento->documento }} ({{ $documento->descricao }})
                             </label>
                         </li>
                         @endforeach
                     </ul>
                 </div>
-
             </div>
 
             <div class="card">

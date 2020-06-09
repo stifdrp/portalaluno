@@ -26,8 +26,10 @@
         </li>
         <li>Curso: {{ $aluno_session->codigo_curso }} (Habilitação: {{ $aluno_session->codigo_habilitacao }})</li>
         <li>Email: {{ $aluno_session->email_administrativo }}</li>
+        <br><a href="{{ route('admin.perfil_aluno.destroy')}}" class="btn btn-outline-danger">Sair do perfil de aluna(o)</a>
+        @else
+        <a href="{{ route('admin.perfil_aluno.index')}}" class="btn btn-outline-primary">Simular acesso como aluna(o)</a>
         @endif
-        <li><a href="{{ route('admin.perfil_aluno.index')}}">Trocar perfil aluno</a></li>
     </ul>
 </div>
 @if ($errors->any())

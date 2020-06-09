@@ -25,6 +25,7 @@ Route::prefix('admin/formularios')->middleware('can:admin')->group(function () {
 Route::prefix('admin/perfil_aluno')->middleware('can:admin')->group(function () {
     Route::get('/', 'FuncionarioPerfilAlunoController@index')->name('admin.perfil_aluno.index');
     Route::post('/', 'FuncionarioPerfilAlunoController@store')->name('admin.perfil_aluno.store');
+    Route::get('/sair', 'FuncionarioPerfilAlunoController@destroy')->name('admin.perfil_aluno.destroy');
 });
 
 
