@@ -25,18 +25,20 @@ class SolicitacaoDocumentoController extends Controller
         // retornar o formulário mais recente para este tipo
         $solicitacao_documentos = Formulario::find($solicitacao_documentos_id);
         $documentos_disponiveis = DocumentoDisponivel::where('formulario_id', $solicitacao_documentos_id)
-                                                        ->where('status', true)
-                                                        ->orderBy('documento')
-                                                        ->get();
+            ->where('status', true)
+            ->orderBy('documento')
+            ->get();
         $respostas = RespostaTemplate::where('formulario_id', $solicitacao_documentos_id)
-                                        ->where('status', true)
-                                        ->get();
+            ->where('status', true)
+            ->get();
         $tipos_respostas = RespostaTemplate::tipos_respostas();
         // Retornar o form para preenchimento do funcionário
-        return view('solicitacao_documentos.index', compact('solicitacao_documentos',
-                                                            'documentos_disponiveis',
-                                                            'respostas',
-                                                            'tipos_respostas'));
+        return view('solicitacao_documentos.index', compact(
+            'solicitacao_documentos',
+            'documentos_disponiveis',
+            'respostas',
+            'tipos_respostas'
+        ));
     }
 
     /**
@@ -84,18 +86,20 @@ class SolicitacaoDocumentoController extends Controller
         // retornar o formulário mais recente para este tipo
         $solicitacao_documentos = Formulario::find($id);
         $documentos_disponiveis = DocumentoDisponivel::where('formulario_id', $id)
-                                                        ->orderBy('status')
-                                                        ->orderBy('documento')
-                                                        ->get();
+            ->orderBy('status')
+            ->orderBy('documento')
+            ->get();
         $respostas = RespostaTemplate::where('formulario_id', $id)
-                                        ->get();
+            ->get();
         $tipos_respostas = RespostaTemplate::tipos_respostas();
         // Retornar o form para preenchimento do funcionário
-        return view('solicitacao_documentos.edit', compact('solicitacao_documentos',
-                                                            'opcoes_status',
-                                                            'documentos_disponiveis',
-                                                            'respostas',
-                                                            'tipos_respostas'));
+        return view('solicitacao_documentos.edit', compact(
+            'solicitacao_documentos',
+            'opcoes_status',
+            'documentos_disponiveis',
+            'respostas',
+            'tipos_respostas'
+        ));
     }
 
     /**
@@ -107,13 +111,14 @@ class SolicitacaoDocumentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request);
+        // TODO: melhorar aqui, ao editar a solicitacao_documentos
+        // a opção de Ativo/Desativado
         // Garantir que se os documentos forem alterados,
         // caso existem alterações, elas foram concluídas com sucesso
         $docs_ok = true;
         if ((!empty($request->documentos)) && (count($request->documentos) > 0)) {
             $documento_disponivel = new DocumentoDisponivelController();
-            $docs_ok = $documento_disponivel->store($request, $id);
+            $docs_ok = $documento_disponivel->update($request);
         }
 
         $respostas_ok = true;
@@ -137,9 +142,9 @@ class SolicitacaoDocumentoController extends Controller
         // Validação
         if ($validator->fails()) {
             return redirect()
-                        ->route('admin.formularios.documentos.edit', ['id' => $id])
-                        ->withErrors($validator)
-                        ->withInput();
+                ->route('admin.formularios.documentos.edit', ['id' => $id])
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $formulario_documento = Formulario::find($id);

@@ -23,4 +23,9 @@ class Pedido extends Model
         //return 'email enviado com sucesso!';
         return false;
     }
+
+    public function documentos_solicitados()
+    {
+        return $this->hasMany('App\DocumentoSolicitado');
+    }
 }

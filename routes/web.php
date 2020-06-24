@@ -20,6 +20,9 @@ Route::prefix('admin/formularios')->middleware('can:admin')->group(function () {
     Route::post('solicitacao_documentos/{id}', 'Admin\SolicitacaoDocumentoController@update')->name('admin.formularios.documentos.update');
     Route::get('resposta_template/create/{formulario_id}', 'Admin\RespostaTemplateController@create')->name('admin.formularios.respostas.create');
     Route::post('resposta_template/store', 'Admin\RespostaTemplateController@store')->name('admin.formularios.respostas.store');
+    Route::get('documentos_disponiveis/create/{formulario_id}', 'DocumentoDisponivelController@create')->name('admin.formularios.documentos_disponiveis.create');
+    Route::post('documentos_disponiveis/store', 'DocumentoDisponivelController@store')->name('admin.formularios.documentos_disponiveis.store');
+    Route::post('documentos_disponiveis/update', 'DocumentoDisponivelController@update')->name('admin.formularios.documentos_disponiveis.update');
 });
 
 Route::prefix('admin/perfil_aluno')->middleware('can:admin')->group(function () {

@@ -58,8 +58,9 @@
                 <div class="card">
                     <div class="card-header" id="cabecalhoDoc">
                         <button class="btn btn-link" data-toggle="collapse" data-target="#collapseDocumentos" id="button_documento_add">
-                            Documentos Disponíveis <button type="button" class="btn btn-primary btn-sm" id="documento_add"> <i class="far fa-plus-square"></i> Clique para adicionar um novo</button>
+                            Documentos Disponíveis
                         </button>
+                        <a href="{{ route('admin.formularios.documentos_disponiveis.create', ['formulario_id' => $solicitacao_documentos->id])}}" type="button" class="btn btn-primary btn-sm" id="resposta_add"> <i class="far fa-plus-square"></i> Documentos Disponíveis </a>
                     </div>
                     <div id="collapseDocumentos" class="collapse show">
                         <div class="card-body">

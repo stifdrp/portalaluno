@@ -20,4 +20,9 @@ class DocumentoSolicitado extends Model
     protected $dates = ['deleted_at'];
 
     protected $table = 'documentos_solicitados';
+
+    public function pedido()
+    {
+        return $this->belongsTo('App\Pedido');
+    }
 }
