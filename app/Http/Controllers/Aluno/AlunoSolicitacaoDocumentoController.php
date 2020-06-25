@@ -9,6 +9,7 @@ use App\Formulario;
 use App\RespostaTemplate;
 use App\Http\Controllers\Controller;
 use App\Pedido;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,20 +32,15 @@ class AlunoSolicitacaoDocumentoController extends Controller
             $solicitacao_documentos_id = getenv('FORM_DOCUMENTOS');
             // retornar o formulário mais recente para este tipo
             $solicitacao_documentos = Formulario::find($solicitacao_documentos_id);
-            $documentos_disponiveis = DocumentoDisponivel::select()
+            $documentos_disponiveis = DocumentoDisponivel::select('*')
                 ->where('formulario_id', $solicitacao_documentos_id)
+                ->orderBy('documento')
                 ->get();
-            $respostas = RespostaTemplate::where('formulario_id', $solicitacao_documentos_id)
-                ->where('status', true)
-                ->get();
-            $tipos_respostas = RespostaTemplate::tipos_respostas();
             return view(
                 'solicitacao_documentos.alunos.create',
                 compact(
                     'solicitacao_documentos',
                     'documentos_disponiveis',
-                    'respostas',
-                    'tipos_respostas',
                     'aluno_session',
                 )
             );
@@ -79,7 +75,7 @@ class AlunoSolicitacaoDocumentoController extends Controller
             // estrutura tabela Pedidos
             // id, justificativa, abertura, status, data_hora_resposta, codpes_func, corpo_resposta_finalizacao, aluno_id, formulario_id, aluno_codpes
             $pedido = new Pedido();
-            $pedido->data_hora_abertura = $request->data_hora_abertura;
+            $pedido->data_hora_abertura = Carbon::createFromFormat('d/m/Y H:i:s', $request->data_hora_abertura)->format('Y-m-d H:i:s');
             $pedido->aluno_codpes = $request->aluno_codpes;
             $pedido->aluno_id = $aluno->id;
             $pedido->justificativa = $request->justificativa;
@@ -90,6 +86,12 @@ class AlunoSolicitacaoDocumentoController extends Controller
             // salvar cada documento solicitado
             foreach ($request->documento_solicitado as $documento) {
                 $documento_solicitado = new DocumentoSolicitado();
+                if (array_key_exists($documento, $request->detalhe_opcional)) {
+                    //if (!is_null($request->detalhe_opcional[$documento][0])) 
+                    $documento_solicitado->detalhes_opcionais = $request->detalhe_opcional[$documento][0];
+                } else {
+                    $documento_solicitado->detalhes_opcionais = "";
+                }
                 $documento_solicitado->documento_disponivel_id = $documento;
                 $documento_solicitado->pedido_id = $pedido->id;
                 $documento_solicitado->save();

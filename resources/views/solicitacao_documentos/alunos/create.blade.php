@@ -81,8 +81,8 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush" id="lista_documentos">
                         @foreach ($documentos_disponiveis as $key => $documento)
-                        <li class="form-group-item form-control">
-                            <label>
+                        <li class="form-group-item form-control col-10 row" id="li_documento_solicitado">
+                            <label class="col-10">
                                 @if (!empty(old('documento_solicitado')))
                                 @if (in_array($documento->id, old('documento_solicitado')))
                                 <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}" checked>
@@ -93,6 +93,10 @@
                                 <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}">
                                 @endif
                                 {{ $documento->documento }} ({{ $documento->descricao }})
+                                <!--inserir detalhes_opcionais-->
+                                @if ($documento->detalhes_opcionais === true)
+                                <input class="form-control" name="detalhe_opcional[{{ $documento->id }}][]" id="detalhe_opcional" placeholder="Informações adicionais">
+                                @endif
                             </label>
                         </li>
                         @endforeach
