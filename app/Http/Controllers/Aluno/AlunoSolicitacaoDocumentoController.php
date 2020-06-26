@@ -8,6 +8,7 @@ use App\DocumentoSolicitado;
 use App\Formulario;
 use App\RespostaTemplate;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PedidoController;
 use App\Pedido;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -87,7 +88,6 @@ class AlunoSolicitacaoDocumentoController extends Controller
             foreach ($request->documento_solicitado as $documento) {
                 $documento_solicitado = new DocumentoSolicitado();
                 if (array_key_exists($documento, $request->detalhe_opcional)) {
-                    //if (!is_null($request->detalhe_opcional[$documento][0])) 
                     $documento_solicitado->detalhes_opcionais = $request->detalhe_opcional[$documento][0];
                 } else {
                     $documento_solicitado->detalhes_opcionais = "";
@@ -97,7 +97,9 @@ class AlunoSolicitacaoDocumentoController extends Controller
                 $documento_solicitado->save();
             }
 
-            if ($pedido->enviarEmail($email_destino)) {
+            //if ($pedido->enviarEmail($email_destino)) {
+            $pedido_controller = new PedidoController();
+            if ($pedido_controller->ship($pedido->id, $email_destino)) {
                 DB::commit();
                 return redirect()->route('home');
             } else {

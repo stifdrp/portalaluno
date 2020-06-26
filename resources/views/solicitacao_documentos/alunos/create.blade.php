@@ -84,18 +84,26 @@
                         <li class="form-group-item form-control col-10 row" id="li_documento_solicitado">
                             <label class="col-10">
                                 @if (!empty(old('documento_solicitado')))
-                                @if (in_array($documento->id, old('documento_solicitado')))
-                                <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}" checked>
-                                @else
-                                <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}">
-                                @endif
+                                    @if (in_array($documento->id, old('documento_solicitado')))
+                                        <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}" checked>
+                                    @else
+                                        <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}">
+                                    @endif
                                 @else
                                 <input type="checkbox" name="documento_solicitado[]" value="{{ $documento->id }}">
                                 @endif
                                 {{ $documento->documento }} ({{ $documento->descricao }})
-                                <!--inserir detalhes_opcionais-->
-                                @if ($documento->detalhes_opcionais === true)
-                                <input class="form-control" name="detalhe_opcional[{{ $documento->id }}][]" id="detalhe_opcional" placeholder="Informações adicionais">
+                                @php // Inserir detalhes opcionais @endphp
+                                @if (!empty(old('detalhe_opcional')))
+                                    @if (array_key_exists($documento->id, old('detalhe_opcional')))
+                                        @php // Definir apenas a posição correta no array old @endphp
+                                        @php $detalhe_opcional_atual = "detalhe_opcional.{$documento->id}.0" @endphp
+                                        <input class="form-control" name="detalhe_opcional[{{ $documento->id }}][]" id="detalhe_opcional" value="{{ old($detalhe_opcional_atual) }}">
+                                    @endif
+                                @else
+                                    @if ($documento->detalhes_opcionais === true)
+                                        <input class="form-control" name="detalhe_opcional[{{ $documento->id }}][]" id="detalhe_opcional" placeholder="Informações adicionais">
+                                    @endif
                                 @endif
                             </label>
                         </li>

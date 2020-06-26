@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\RespostaTemplate;
 
 class Pedido extends Model
 {
@@ -16,16 +17,43 @@ class Pedido extends Model
      */
     protected $dates = ['deleted_at'];
 
-    public function enviarEmail($email_destino)
-    {
-        //dd($this);
-        //dd($email_destino);
-        //return 'email enviado com sucesso!';
-        return false;
-    }
+    //public function enviarEmail($email_destino)
+    //{
+    ////dd($this);
+    ////dd($email_destino);
+    ////return 'email enviado com sucesso!';
+    //return false;
+    //}
 
     public function documentos_solicitados()
     {
         return $this->hasMany('App\DocumentoSolicitado');
+    }
+
+    public function respostas_template()
+    {
+        return $this->hasMany('App\RespostaTemplate');
+    }
+
+    public function resposta_inicial($pedidoId)
+    {
+        if (is_null($pedidoId)) {
+            return false;
+        }
+        $pedido = Pedido::find($pedidoId);
+
+        $resposta_padrao = RespostaTemplate::select('cabecalho', 'corpo', 'rodape')
+            ->where([
+                'formulario_id' => $pedido->formulario_id,
+                'tipo' => 0,
+                'status' => true,
+            ])
+            ->get();
+
+        if ($resposta_padrao->isNotEmpty()) {
+            return $resposta_padrao->first();
+        } else {
+            return false;
+        }
     }
 }
