@@ -38,13 +38,7 @@ Route::prefix('aluno/solicitacao_documentos')->group(function () {
 });
 
 
-// TODO: verificar como trazer os nomes dos documentos solicitados
 Route::get('mailable', function () {
-    //->with('documentos_disponiveis');
-    $pedido = App\Pedido::find(12);
-    dd($pedido->documentos_solicitados[0]->documento_disponivel->documento);
-
-    //$transacao->lancamentos[0]->centro_gerencial->grupo_orcamentario->grupo 
-
+    $pedido = App\Pedido::find(148);
     return (new App\Mail\PedidoSolicitadoEnviado($pedido))->render();
 });

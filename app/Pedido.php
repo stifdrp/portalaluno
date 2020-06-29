@@ -35,12 +35,11 @@ class Pedido extends Model
         return $this->hasMany('App\RespostaTemplate');
     }
 
-    public function resposta_inicial($pedidoId)
+    public function resposta_inicial(Pedido $pedido)
     {
-        if (is_null($pedidoId)) {
+        if (is_null($pedido)) {
             return false;
         }
-        $pedido = Pedido::find($pedidoId);
 
         $resposta_padrao = RespostaTemplate::select('cabecalho', 'corpo', 'rodape')
             ->where([

@@ -19,16 +19,19 @@ class PedidoController extends Controller
      */
     public function ship($pedidoId, $email_pedido)
     {
-        // TODO: verificar como trazer os nomes dos documentos solicitados
-        $pedido = Pedido::findOrFail($pedidoId)->with('documentos_disponiveis');
-        dd($pedido);
-        if ($pedido) {
-            // TODO: verificar melhor forma de trazer a resposta, por id do pedido ou pedido obj
-            $resposta_padrao =  $pedido->resposta_inicial($pedido->id);
+        $pedido = Pedido::findOrFail($pedidoId);
+        //if ($pedido) {
+        //// TODO: verificar melhor forma de trazer a resposta, por id do pedido ou pedido obj
+        //$resposta_padrao =  $pedido->resposta_inicial($pedido->id);
+        //}
+
+        //return (new PedidoSolicitadoEnviado($pedido))->render();
+        Mail::to($email_pedido)->send(new PedidoSolicitadoEnviado($pedido));
+
+        if (Mail::failures()) {
+            return false;
         }
 
-        //$pedido, $resposta_padrao
-        Mail::to($email_pedido)->send(new PedidoSolicitadoEnviado($pedido));
-        return false;
+        return redirect()->back()->with('success', 'E-mail enviado com sucesso');
     }
 }

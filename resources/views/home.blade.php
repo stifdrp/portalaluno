@@ -32,6 +32,14 @@
         @endif
     </ul>
 </div>
+<!-- Mensagem de retorno que a transação foi salva com sucesso -->
+@if (session()->has('success'))
+<div class="alert alert-success" id="div-sucesso">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    {{ session()->get('success') }}
+</div>
+@endif
+
 @if ($errors->any())
 <div class="col-6">
     <div class="alert alert-info">

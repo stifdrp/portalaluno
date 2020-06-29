@@ -101,7 +101,7 @@ class AlunoSolicitacaoDocumentoController extends Controller
             $pedido_controller = new PedidoController();
             if ($pedido_controller->ship($pedido->id, $email_destino)) {
                 DB::commit();
-                return redirect()->route('home');
+                return redirect()->route('home')->with('success', 'Solicitação de Documentos efetuado com sucesso!');
             } else {
                 return back()->withErrors('Não foi possível encaminhar e-mail, por isso, o pedido não foi salvo! Tente novamente!')->withInput();
             }

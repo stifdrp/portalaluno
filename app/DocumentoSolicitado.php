@@ -28,6 +28,6 @@ class DocumentoSolicitado extends Model
 
     public function documento_disponivel()
     {
-        return $this->belongsToMany('App\DocumentoDisponivel');
+        return $this->belongsTo('App\DocumentoDisponivel');
     }
 }
