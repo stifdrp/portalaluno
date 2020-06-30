@@ -87,8 +87,12 @@ class AlunoSolicitacaoDocumentoController extends Controller
             // salvar cada documento solicitado
             foreach ($request->documento_solicitado as $documento) {
                 $documento_solicitado = new DocumentoSolicitado();
-                if (array_key_exists($documento, $request->detalhe_opcional)) {
-                    $documento_solicitado->detalhes_opcionais = $request->detalhe_opcional[$documento][0];
+                if (isset($request->detalhe_opcional)) {
+                    if (array_key_exists($documento, $request->detalhe_opcional)) {
+                        $documento_solicitado->detalhes_opcionais = $request->detalhe_opcional[$documento][0];
+                    } else {
+                        $documento_solicitado->detalhes_opcionais = "";
+                    }
                 } else {
                     $documento_solicitado->detalhes_opcionais = "";
                 }

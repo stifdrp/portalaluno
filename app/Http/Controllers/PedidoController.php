@@ -20,12 +20,7 @@ class PedidoController extends Controller
     public function ship($pedidoId, $email_pedido)
     {
         $pedido = Pedido::findOrFail($pedidoId);
-        //if ($pedido) {
-        //// TODO: verificar melhor forma de trazer a resposta, por id do pedido ou pedido obj
-        //$resposta_padrao =  $pedido->resposta_inicial($pedido->id);
-        //}
 
-        //return (new PedidoSolicitadoEnviado($pedido))->render();
         Mail::to($email_pedido)->send(new PedidoSolicitadoEnviado($pedido));
 
         if (Mail::failures()) {

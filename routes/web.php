@@ -39,6 +39,6 @@ Route::prefix('aluno/solicitacao_documentos')->group(function () {
 
 
 Route::get('mailable', function () {
-    $pedido = App\Pedido::find(148);
-    return (new App\Mail\PedidoSolicitadoEnviado($pedido))->render();
-});
+    $pedido = App\Pedido::all();
+    return (new App\Mail\PedidoSolicitadoEnviado($pedido->last()))->render();
+})->middleware('can:admin');
