@@ -55,4 +55,14 @@ class Pedido extends Model
             return false;
         }
     }
+
+    public function aluno()
+    {
+        return $this->belongsTo('App\Aluno');
+    }
+
+    public function formulario()
+    {
+        return $this->belongsTo('App\Formulario');
+    }
 }

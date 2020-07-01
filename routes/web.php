@@ -42,3 +42,7 @@ Route::get('mailable', function () {
     $pedido = App\Pedido::all();
     return (new App\Mail\PedidoSolicitadoEnviado($pedido->last()))->render();
 })->middleware('can:admin');
+
+Route::prefix('admin/pedidos')->middleware('can:admin')->group(function () {
+    Route::get('index', 'Admin\PedidoController@index')->name('admin.pedidos.index');
+});

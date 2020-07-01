@@ -217,7 +217,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Formulários',
-                    'icon' => 'fas fa-table',
+                    'icon' => 'fas fa-edit',
                     'submenu' => [
                         [
                             'text' => 'Solicitação de Documentos',
@@ -227,6 +227,19 @@ return [
                         ],
                     ],
                 ],
+                [
+                    'text' => 'Pedidos',
+                    'icon' => 'fas fa-table',
+                    'submenu' => [
+                        [
+                            'text' => 'A finalizar',
+                            'icon' => 'far fa-file-alt',
+                            'url' => 'admin/pedidos/index/',
+                            'active' => ['admin/pedidos', 'admin/pedidos/index']
+                        ],
+                    ],
+                ],
+
                 [
                     'text' => 'Impressões',
                     'icon' => 'fas fa-print',
