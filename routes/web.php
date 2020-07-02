@@ -44,5 +44,17 @@ Route::get('mailable', function () {
 })->middleware('can:admin');
 
 Route::prefix('admin/pedidos')->middleware('can:admin')->group(function () {
+    Route::get('/', 'Admin\PedidoController@index')->name('admin.pedidos.index');
     Route::get('index', 'Admin\PedidoController@index')->name('admin.pedidos.index');
+    Route::get('show/{pedido}', 'Admin\PedidoController@show')->name('admin.pedidos.show');
+    Route::post('/', 'Admin\PedidoController@update')->name('admin.pedidos.update');
 });
+
+Route::get('resposta_mail', function () {
+    $pedido = App\Pedido::select('*')
+        ->where('data_hora_resposta', '<>', null)
+        ->orderBy('data_hora_resposta', 'desc')
+        ->get();
+    return (new App\Mail\PedidoFinalizadoEnviado($pedido->first()))->render();
+})->middleware('can:admin');
+

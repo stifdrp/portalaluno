@@ -65,4 +65,26 @@ class Pedido extends Model
     {
         return $this->belongsTo('App\Formulario');
     }
+
+
+    public function resposta_final(Pedido $pedido)
+    {
+        if (is_null($pedido)) {
+            return false;
+        }
+
+        $resposta_padrao = RespostaTemplate::select('cabecalho', 'corpo', 'rodape')
+            ->where([
+                'formulario_id' => $pedido->formulario_id,
+                'tipo' => 1,
+                'status' => true,
+            ])
+            ->get();
+
+        if ($resposta_padrao->isNotEmpty()) {
+            return $resposta_padrao->first();
+        } else {
+            return false;
+        }
+    }
 }

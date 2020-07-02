@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\EnviarPedidoController;
 use Illuminate\Http\Request;
 use App\Pedido;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -18,10 +22,35 @@ class PedidoController extends Controller
         return view('admin.pedidos.index', compact('pedidos'));
     }
 
-    // TODO: implementar show Pedido para mostrar o pedido completo
-    // e dar opção para responder
     public function show(Pedido $pedido)
     {
-        return view('admin.pedidos.show', compact('pedido'));
+        if ($pedido) {
+            return view('admin.pedidos.show', compact('pedido'));
+        }
+    }
+
+
+    public function update(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $pedido = Pedido::find($request->pedido_id);
+            $pedido->data_hora_resposta = Carbon::parse(now())->format('Y-m-d H:i:s');
+            $pedido->corpo_resposta_finalizacao = $request->resposta_corpo;
+            $pedido->codpes_func = Auth::user()->username;
+            $pedido->save();
+
+            $pedido_controller = new EnviarPedidoController();
+            if ($pedido_controller->ship_finalizacao($pedido->id, $request->email_destino)) {
+                DB::commit();
+                return redirect()->route('admin.pedidos.index')->with('success', 'Pedido finalizado com sucesso!');
+            } else {
+                DB::rollBack();
+                return redirect()->back()->withErrors('Não foi possível finalizar o pedido!');
+            }
+        } catch (PDOException $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors($e->getMessage());
+        }
     }
 }

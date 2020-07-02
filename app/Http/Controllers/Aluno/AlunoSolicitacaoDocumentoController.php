@@ -8,7 +8,7 @@ use App\DocumentoSolicitado;
 use App\Formulario;
 use App\RespostaTemplate;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\EnviarPedidoController;
 use App\Pedido;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -101,9 +101,8 @@ class AlunoSolicitacaoDocumentoController extends Controller
                 $documento_solicitado->save();
             }
 
-            //if ($pedido->enviarEmail($email_destino)) {
-            $pedido_controller = new PedidoController();
-            if ($pedido_controller->ship($pedido->id, $email_destino)) {
+            $envio_pedido = new EnviarPedidoController();
+            if ($envio_pedido->ship_solicitacao($pedido->id, $email_destino)) {
                 DB::commit();
                 return redirect()->route('home')->with('success', 'Solicitação de Documentos efetuado com sucesso!');
             } else {
