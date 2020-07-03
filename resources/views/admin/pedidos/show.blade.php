@@ -15,7 +15,7 @@
     <!-- Horizontal Form -->
     <div class="container-fluid">
         <div class="content-header">
-            <h3 class="box-title">Finalizar Pedido #{{ $pedido-> id }}</h3>
+            <h3 class="box-title text-center">Finalizar Pedido #{{ $pedido-> id }}</h3>
         </div>
 
         <div class="card">
@@ -64,6 +64,7 @@
                     <label for="inicio" class="control-label">Corpo</label>
                     <textarea class="form-control" rows="6" id="inicio" name="resposta_corpo" required>{{ $pedido->resposta_final($pedido)->corpo }}</textarea>
                 </div>
+
                 <div class="col">
                     <label for="inicio" class="control-label">Rodapé</label>
                     <textarea class="form-control" rows="7" id="inicio" name="resposta_rodape" disabled>{{ $pedido->resposta_final($pedido)->rodape }}</textarea>
@@ -71,6 +72,7 @@
             </div>
         </div>
         <button class="btn btn-primary">Salvar</button>
+        <a href="{{ route('admin.pedidos.index') }}" class="btn btn-default">Cancelar</a>
     </form>
 </div>
 </div>

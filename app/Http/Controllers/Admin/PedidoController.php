@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Pedido;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Datatables;
 
 class PedidoController extends Controller
 {
@@ -17,13 +18,17 @@ class PedidoController extends Controller
         $pedidos = Pedido::select('*')
             ->where('data_hora_resposta', null)
             ->orderBy('data_hora_abertura')
-            ->get();
+            ->paginate(30);
 
         return view('admin.pedidos.index', compact('pedidos'));
     }
 
     public function show(Pedido $pedido)
     {
+        if (!empty($pedido->data_hora_resposta)) {
+            return redirect()->route('admin.pedidos.index')->withErrors('Pedido já finalizado!');
+        }
+
         if ($pedido) {
             return view('admin.pedidos.show', compact('pedido'));
         }
