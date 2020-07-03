@@ -29,8 +29,10 @@ class PedidoController extends Controller
             return redirect()->route('admin.pedidos.index')->withErrors('Pedido já finalizado!');
         }
 
-        if ($pedido) {
+        if ($pedido->resposta_final($pedido)) {
             return view('admin.pedidos.show', compact('pedido'));
+        } else {
+            return redirect()->route('admin.pedidos.index')->withErrors('Não há resposta final para este tipo de Pedido!');
         }
     }
 
