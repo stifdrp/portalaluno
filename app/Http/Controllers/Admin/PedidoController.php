@@ -32,7 +32,11 @@ class PedidoController extends Controller
         if ($pedido->resposta_final($pedido)) {
             return view('admin.pedidos.show', compact('pedido'));
         } else {
-            return redirect()->route('admin.pedidos.index')->withErrors('Não há resposta final para este tipo de Pedido!');
+            // caso não tenha encontrado uma resposta padrão para finalizar pedido
+            // retorna erro e indica verificar
+            $link = route('admin.formularios.documentos.index');
+            return redirect()->route('admin.pedidos.index')->withErrors("Não há resposta padrão de finalização para este tipo de Pedido!<br>
+                                                                         <a href={$link}>Verifique aqui</a>");
         }
     }
 
