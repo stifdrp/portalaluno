@@ -87,4 +87,13 @@ class Pedido extends Model
             return false;
         }
     }
+
+    public static function quantidadePedidosPendentes()
+    {
+        $pedidos_pendentes = Pedido::select('id')
+            ->where('data_hora_resposta', null)
+            ->get();
+
+        return count($pedidos_pendentes);
+    }
 }
