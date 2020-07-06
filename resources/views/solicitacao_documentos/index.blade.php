@@ -82,12 +82,12 @@
                                 <strong>Título:</strong> {{ $resposta->cabecalho }}
                             </div>
                             <div class="card-body">
-                                <strong>Corpo:</strong><br>
-                                {{ $resposta->corpo }}
+                                <label for="inicio" class="control-label">Corpo</label>
+                                <textarea class="form-control" rows="6" id="inicio" name="resposta_corpo" disabled>{{ $resposta->corpo }}</textarea>
                             </div>
                             <div class="card-footer">
                                 <strong>Rodapé:</strong><br>
-                                {{ $resposta->rodape }}
+                                <textarea class="form-control" rows="7" id="inicio" name="resposta_rodape" disabled>{{ $resposta->rodape }}</textarea>
                             </div>
                         </div>
                     </ul>
