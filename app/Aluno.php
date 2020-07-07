@@ -30,11 +30,9 @@ class Aluno extends Model
 
         // Atualizar apenas se estiver desatualizado
         $aluno = Aluno::find($nusp);
-        if ($aluno) {
-            if ($aluno->updated_at > (Carbon::now()->subDays(1))) {
-                // caso esteja atualizado, sai da função
-                return false;
-            }
+        if (($aluno) && ($aluno->updated_at > (Carbon::now()->subDays(1)))) {
+            // caso esteja atualizado, sai da função
+            return false;
         }
 
         // verificar inicialmente se o aluno está administrativo
@@ -94,14 +92,8 @@ class Aluno extends Model
     public static function getAluno($nusp)
     {
         if ($nusp) {
+            Aluno::sincronizarDados($nusp);
             $aluno = Aluno::find($nusp);
-
-            if (!$aluno) {
-                Aluno::sincronizarDados($nusp);
-                // Após sincronizar os dados, busca-se o aluno novamente
-                $aluno = Aluno::find($nusp);
-            }
-
             return $aluno;
         }
     }

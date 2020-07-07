@@ -106,9 +106,6 @@ class DocumentoDisponivelController extends Controller
                 } else {
                     $documento->status = false;
                 }
-            } else {
-                $documento = new DocumentoDisponivel;
-                $documento->status = true;
             }
             $documento->save();
         }
