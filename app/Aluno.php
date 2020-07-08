@@ -35,7 +35,7 @@ class Aluno extends Model
             return false;
         }
 
-        // verificar inicialmente se o aluno está administrativo
+        // verificar inicialmente se o aluno está ativo
         $aluno_ativo = Graduacao::verifica($nusp, env("REPLICADO_CODUND"));
         if (!$aluno_ativo) {
             return false;
@@ -93,8 +93,7 @@ class Aluno extends Model
     {
         if ($nusp) {
             Aluno::sincronizarDados($nusp);
-            $aluno = Aluno::find($nusp);
-            return $aluno;
+            return Aluno::find($nusp);
         }
     }
 }

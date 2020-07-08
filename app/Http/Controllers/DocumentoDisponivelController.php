@@ -10,16 +10,6 @@ use App\Formulario;
 class DocumentoDisponivelController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -40,11 +30,8 @@ class DocumentoDisponivelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // TODO verificar novo método para salvar os documentos_disponiveis
-    // a partir de view própria
     public function store(Request $request)
     {
-        // Adicionado transação para possível rollback em caso de problema
         DB::beginTransaction();
         try {
             $documento = new DocumentoDisponivel;
@@ -52,41 +39,19 @@ class DocumentoDisponivelController extends Controller
             $documento->documento = $request->nome;
             $documento->descricao = $request->descricao;
             $documento->formulario_id = $request->formulario_id;
+            $documento->detalhes_opcionais = false;
+
             if (isset($request->detalhes_opcionais) && ($request->detalhes_opcionais == true)) {
                 $documento->detalhes_opcionais = true;
-            } else {
-                $documento->detalhes_opcionais = false;
             }
             $documento->save();
-            // Commita a transação
+
             DB::commit();
             return back()->with('msg', 'Documento Disponível salvo com sucesso');
         } catch (PDOException $e) {
             DB::rollback();
             return back()->withErrors('error', 'Documento Disponível salvo com sucesso');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -100,25 +65,15 @@ class DocumentoDisponivelController extends Controller
     {
         foreach ($request->documentos['nome'] as $key => $nome) {
             $documento = DocumentoDisponivel::find($request->documentos['id'][$key]);
-            if (($documento) && (!is_null($documento))) {
-                if ((!empty($request->documentos['ativo'])) && (in_array($request->documentos['id'][$key], $request->documentos['ativo']))) {
-                    $documento->status = true;
-                } else {
-                    $documento->status = false;
-                }
+            $documento->status = false;
+            if ((($documento)
+                    && (!is_null($documento)))
+                && ((!empty($request->documentos['ativo']))
+                    && (in_array($request->documentos['id'][$key], $request->documentos['ativo'])))
+            ) {
+                $documento->status = true;
             }
             $documento->save();
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

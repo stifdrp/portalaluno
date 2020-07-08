@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PedidoFinalizadoEnviado;
+use App\Mail\PedidoSolicitadoEnviado;
 use App\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;

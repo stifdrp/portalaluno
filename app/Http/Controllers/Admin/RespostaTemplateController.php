@@ -13,16 +13,6 @@ use App\RespostaTemplate;
 class RespostaTemplateController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -31,8 +21,8 @@ class RespostaTemplateController extends Controller
     {
         if ($id) {
             $formulario = Formulario::select('id', 'nome')
-                                                ->where('id', $id)
-                                                ->get();
+                ->where('id', $id)
+                ->get();
         }
         $tipos = RespostaTemplate::tipos_respostas();
         return view('resposta_template.create', compact('formulario', 'tipos'));
@@ -48,12 +38,10 @@ class RespostaTemplateController extends Controller
     {
         $messages = [
             'required' => 'O campo :attribute deve estar preenchido.',
-            // 'max' => 'O limite de caracteres foi atingindo.',
         ];
 
         // Componente responsável pela validação
         $validator = Validator::make($request->all(), [
-            // 'nome' => 'required|max:128',
             'tipo' => 'required',
             'cabecalho_resposta' => 'required',
             'corpo_resposta' => 'required',
@@ -63,9 +51,8 @@ class RespostaTemplateController extends Controller
         // Validação
         if ($validator->fails()) {
             return redirect()
-                        ->route('admin.formularios.resposta.create', ['id' => $request->formulario_id])
-                        ->withErrors($validator)
-                        ->withInput();
+                ->route('admin.formularios.resposta.create', ['id' => $request->formulario_id])
+                ->withErrors($validator)->withInput();
         }
 
         $resposta = new RespostaTemplate();
@@ -78,28 +65,6 @@ class RespostaTemplateController extends Controller
         $resposta->save();
 
         return redirect()->route('admin.formularios.documentos.edit', ['id' => $request->formulario_id]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -116,12 +81,8 @@ class RespostaTemplateController extends Controller
         try {
             foreach ($request->respostas['id'] as $key => $id) {
                 $resposta = RespostaTemplate::find($id);
-                if (($resposta) && (!is_null($resposta)) && (!empty($request->respostas['ativo']))) {
-                    if (in_array($request->respostas['id'][$key], $request->respostas['ativo'])) {
-                        $resposta->status = true;
-                    } else {
-                        $resposta->status = false;
-                    }
+                if ((($resposta) && (!is_null($resposta)) && (!empty($request->respostas['ativo']))) && (in_array($request->respostas['id'][$key], $request->respostas['ativo']))) {
+                    $resposta->status = true;
                 } else {
                     $resposta->status = false;
                 }
@@ -134,16 +95,5 @@ class RespostaTemplateController extends Controller
             DB::rollback();
             return false;
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

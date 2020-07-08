@@ -58,8 +58,8 @@ class LoginController extends Controller
 
         // Verificar se o login é de um funcionário da seção de graduação ou aluno da fea-rp
         if ((!in_array($user_senhaunica->codpes, $admins)) && ($aluno == false)) {
-            dd("Sistema exclusivo para Seção de Graduação e/ou Alunos da fea-RP!");
-            return redirect()->back()->with("error", "Sistema exclusivo para Seção de Graduação e/ou Alunos da fea-RP!");
+            echo ("Sistema exclusivo para Seção de Graduação e/ou Alunos da fea-RP!");
+            exit;
         }
 
         // Caso usuário não exista, insere um novo
@@ -78,13 +78,13 @@ class LoginController extends Controller
         try {
             $user->save();
         } catch (PDOException $e) {
-            dd($e->getMessage());
+            echo "Erro: {$e->getMessage()}";
+            exit;
         }
 
         // TODO: verificar se no login é o melhor momento de fazer sync
-        // Sincronizar informação da base replicada
         if ($aluno) {
-            // aqui a função irá retornar true/false
+            // Sincronizar informação da base replicada
             $aluno_sinc = Aluno::sincronizarDados($user_senhaunica->codpes);
             Session::put(['dados_aluno' => Aluno::getAluno($user_senhaunica->codpes)]);
         }
@@ -95,6 +95,7 @@ class LoginController extends Controller
 
     public function logout()
     {
+        Session::flush();
         Auth::logout();
         return redirect('/');
     }

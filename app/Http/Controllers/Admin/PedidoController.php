@@ -52,13 +52,12 @@ class PedidoController extends Controller
             $pedido->save();
 
             $pedido_controller = new EnviarPedidoController();
-            if ($pedido_controller->ship_finalizacao($pedido->id, $request->email_destino)) {
-                DB::commit();
-                return redirect()->route('admin.pedidos.index')->with('success', 'Pedido finalizado com sucesso!');
-            } else {
+            if (!($pedido_controller->ship_finalizacao($pedido->id, $request->email_destino))) {
                 DB::rollBack();
                 return redirect()->back()->withErrors('Não foi possível finalizar o pedido!');
             }
+            DB::commit();
+            return redirect()->route('admin.pedidos.index')->with('success', 'Pedido finalizado com sucesso!');
         } catch (PDOException $e) {
             DB::rollBack();
             return redirect()->back()->withErrors($e->getMessage());

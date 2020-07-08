@@ -25,12 +25,10 @@ class RespostaTemplate extends Model
 
     public static function tipos_respostas()
     {
-        $tipos = [
+        return [
             ['id' => "0", 'nome' => "Resposta inicial", 'descricao' => "E-mail inicial enviado ao aluno"],
             ['id' => "1", 'nome' => "Resposta final [SIM]", 'descricao' => "E-mail de finalização enviado ao aluno"],
             ['id' => "2", 'nome' => "Resposta final [NÃO]", 'descricao' => "E-mail de finalização enviado ao aluno"],
         ];
-
-        return $tipos;
     }
 }

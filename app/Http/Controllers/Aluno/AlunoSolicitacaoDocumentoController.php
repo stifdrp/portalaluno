@@ -28,26 +28,27 @@ class AlunoSolicitacaoDocumentoController extends Controller
             $aluno_session = Session::get('dados_aluno');
         }
 
-        if ($aluno_session) {
-            // .env com dados referentes ao formulário solicitação de documentos
-            $solicitacao_documentos_id = getenv('FORM_DOCUMENTOS');
-            // retornar o formulário mais recente para este tipo
-            $solicitacao_documentos = Formulario::find($solicitacao_documentos_id);
-            $documentos_disponiveis = DocumentoDisponivel::select('*')
-                ->where('formulario_id', $solicitacao_documentos_id)
-                ->orderBy('documento')
-                ->get();
-            return view(
-                'solicitacao_documentos.alunos.create',
-                compact(
-                    'solicitacao_documentos',
-                    'documentos_disponiveis',
-                    'aluno_session',
-                )
-            );
-        } else {
+        // Caso falhe já retorna o erro
+        if (!$aluno_session) {
             return redirect()->route('home')->withErrors('Dados de aluno não encontrado!');
         }
+
+        // .env com dados referentes ao formulário solicitação de documentos
+        $solicitacao_documentos_id = getenv('FORM_DOCUMENTOS');
+        // retornar o formulário mais recente para este tipo
+        $solicitacao_documentos = Formulario::find($solicitacao_documentos_id);
+        $documentos_disponiveis = DocumentoDisponivel::select('*')
+            ->where('formulario_id', $solicitacao_documentos_id)
+            ->orderBy('documento')
+            ->get();
+        return view(
+            'solicitacao_documentos.alunos.create',
+            compact(
+                'solicitacao_documentos',
+                'documentos_disponiveis',
+                'aluno_session',
+            )
+        );
     }
 
     public function store(Request $request)
@@ -87,14 +88,10 @@ class AlunoSolicitacaoDocumentoController extends Controller
             // salvar cada documento solicitado
             foreach ($request->documento_solicitado as $documento) {
                 $documento_solicitado = new DocumentoSolicitado();
-                if (isset($request->detalhe_opcional)) {
-                    if (array_key_exists($documento, $request->detalhe_opcional)) {
-                        $documento_solicitado->detalhes_opcionais = $request->detalhe_opcional[$documento][0];
-                    } else {
-                        $documento_solicitado->detalhes_opcionais = "";
-                    }
-                } else {
-                    $documento_solicitado->detalhes_opcionais = "";
+                $documento_solicitado->detalhes_opcionais = "";
+                // caso encontre detalhes_opcionais, atualiza o valor
+                if ((isset($request->detalhe_opcional)) && (array_key_exists($documento, $request->detalhe_opcional))) {
+                    $documento_solicitado->detalhes_opcionais = $request->detalhe_opcional[$documento][0];
                 }
                 $documento_solicitado->documento_disponivel_id = $documento;
                 $documento_solicitado->pedido_id = $pedido->id;
@@ -102,12 +99,11 @@ class AlunoSolicitacaoDocumentoController extends Controller
             }
 
             $envio_pedido = new EnviarPedidoController();
-            if ($envio_pedido->ship_solicitacao($pedido->id, $email_destino)) {
-                DB::commit();
-                return redirect()->route('home')->with('success', 'Solicitação de Documentos efetuado com sucesso!');
-            } else {
+            if (!($envio_pedido->ship_solicitacao($pedido->id, $email_destino))) {
                 return back()->withErrors('Não foi possível encaminhar e-mail, por isso, o pedido não foi salvo! Tente novamente!')->withInput();
             }
+            DB::commit();
+            return redirect()->route('home')->with('success', 'Solicitação de Documentos efetuado com sucesso!');
         } catch (PDOException $e) {
             DB::rollBack();
             return redirect()->back()->withErrors($e->getMessage());
