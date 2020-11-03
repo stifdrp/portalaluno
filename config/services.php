@@ -48,7 +48,8 @@ return [
         'client_id' => env('SENHAUNICA_KEY'),
         'client_secret' => env('SENHAUNICA_SECRET'),
         'callback_id' => env('SENHAUNICA_CALLBACK_ID'),
-         'redirect' => '/',
-    ], 
+        'dev' => env('SENHAUNICA_DEV'),
+        'redirect' => '/',
+    ],
 
 ];
