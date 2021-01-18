@@ -149,7 +149,7 @@
 
         <div class="row texto-assinatura">
             <div class="col-xs-5"><p class="traco">___________________________________</p><center>Prof. Dr. André Lucirton Costa<br>Diretor</p></center></div>
-            <div class="col-xs-5 pull-right"><p class="traco">___________________________________</p><center>Cristina Bernardi Lima<br>Assistente Acadêmica</p></center></div>
+            <div class="col-xs-5 pull-right"><p class="traco">___________________________________</p><center>Rita de Cassia Diniz Saraiva<br>Assistente Acadêmica substituta</p></center></div>
         </div>
     </div>
     <br><br>
