@@ -17,4 +17,9 @@ class Formulario extends Model
     protected $dates = ['deleted_at'];
 
     protected $table = 'formularios';
+
+    public function documentos_disponiveis()
+    {
+        return $this->hasMany("App\DocumentoDisponivel");
+    }
 }

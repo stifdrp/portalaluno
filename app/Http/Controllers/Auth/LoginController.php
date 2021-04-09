@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Aluno;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Session;
+use PDOException;
+use Uspdev\Replicado\Graduacao;
+use Uspdev\Replicado\Pessoa;
 
 class LoginController extends Controller
 {
@@ -47,32 +52,51 @@ class LoginController extends Controller
 
     public function handleProviderCallback()
     {
-        // $user = Socialite::driver('senhaunica')->user();
-        // aqui vc pode inserir o usuário no banco de dados local, fazer o login etc.
         $user_senhaunica = Socialite::driver('senhaunica')->user();
         $admins = explode(',', trim(env('CODPES_ADMINS')));
-        if (in_array($user_senhaunica->codpes, $admins)) {
-            $user = User::find($user_senhaunica->codpes);
-            if (is_null($user)) {
-                $user = new User;
-                $user->id = $user_senhaunica->codpes;
-                $user->username = $user_senhaunica->codpes;
-                $user->name = $user_senhaunica->nompes;
-                $user->email = $user_senhaunica->emailUsp;
-                $user->save();
-            }
+        $aluno = Graduacao::verifica($user_senhaunica->codpes, env('REPLICADO_CODUND'));
 
-            Auth::login($user, true);
-            return redirect('/');
-        } else {
-            dd('Login não autorizado!');
+        // Verificar se o login é de um funcionário da seção de graduação ou aluno da fea-rp
+        if ((!in_array($user_senhaunica->codpes, $admins)) && ($aluno == false)) {
+            echo ("Sistema exclusivo para Seção de Graduação e/ou Alunos da fea-RP!");
+            exit;
         }
+
+        // Caso usuário não exista, insere um novo
+        $user = User::firstOrNew(['id' => $user_senhaunica->codpes]);
+        $user->perfil = 'Aluno';
+
+        // Caso número USP esteja no array admins define perfil como 'funcionário'
+        if (in_array($user_senhaunica->codpes, $admins)) {
+            $user->perfil = 'Funcionario';
+        }
+
+        $user->id = $user_senhaunica->codpes;
+        $user->username = $user_senhaunica->codpes;
+        $user->name = $user_senhaunica->nompes;
+        $user->email = $user_senhaunica->emailUsp;
+        try {
+            $user->save();
+        } catch (PDOException $e) {
+            echo "Erro: {$e->getMessage()}";
+            exit;
+        }
+
+        // TODO: verificar se no login é o melhor momento de fazer sync
+        if ($aluno) {
+            // Sincronizar informação da base replicada
+            $aluno_sinc = Aluno::sincronizarDados($user_senhaunica->codpes);
+            Session::put(['dados_aluno' => Aluno::getAluno($user_senhaunica->codpes)]);
+        }
+
+        Auth::login($user, true);
+        return redirect('/');
     }
 
     public function logout()
     {
+        Session::flush();
         Auth::logout();
         return redirect('/');
-    }   
-    
+    }
 }

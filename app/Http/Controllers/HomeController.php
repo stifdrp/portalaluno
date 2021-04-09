@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Pedido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $aluno_session = Session::get('perfil_aluno');
+        $qtde_pedidos_pendentes = Pedido::quantidadePedidosPendentes();
+        return view('home', compact('aluno_session', 'qtde_pedidos_pendentes'));
     }
 }
