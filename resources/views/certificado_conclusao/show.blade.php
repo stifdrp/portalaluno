@@ -3,10 +3,10 @@
 @section('content')
 <div class="form-group">
     <div class="row pull-right">
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <a href="{{ route('certificado_conclusao.index') }}" class="btn btn-info">Nova busca</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <form action="{{ route('certificado_conclusao.showPDF') }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
@@ -15,10 +15,10 @@
                 <input type="hidden" value="{{ $cargo_assistente }}" name="cargo_assistente">
                 <input type="hidden" value="{{ $codpes }}" name="codpes">
                 <input type="hidden" value="regular" name="tipo">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-file-pdf-o"></i>GERAR PDF</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-file-pdf"></i>GERAR PDF</button>
             </form>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <form action="{{ route('certificado_conclusao.showPDF') }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
@@ -27,7 +27,7 @@
                 <input type="hidden" value="{{ $cargo_assistente }}" name="cargo_assistente">
                 <input type="hidden" value="{{ $codpes }}" name="codpes">
                 <input type="hidden" value="provisorio" name="tipo">
-                <button type="submit" class="btn btn-default"><i class="fa fa-fw fa-file-pdf-o"></i>GERAR PDF Provisório</button>
+                <button type="submit" class="btn btn-secondary"><i class="fa fa-fw fa-file-pdf"></i>GERAR PDF Provisório</button>
             </form>
         </div>
     </div>
