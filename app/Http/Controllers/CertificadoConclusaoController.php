@@ -33,8 +33,7 @@ class CertificadoConclusaoController extends Controller
         $alunos_nusp = explode(',', str_replace(array("\n", "\r"), '', str_replace(' ', '', $request->codpes)));
 
         foreach ($alunos_nusp as $aluno) {
-            $alunos_cursos = DB::connection('replicado')->
-                                            select(DB::raw("SELECT TOP 1 codcur, codhab 
+            $alunos_cursos = DB::connection('replicado')->select(DB::raw("SELECT TOP 1 codcur, codhab 
                                                             FROM HABILPROGGR
                                                             WHERE codpes={$aluno}
                                                             ORDER BY dtaini DESC"));
@@ -43,9 +42,8 @@ class CertificadoConclusaoController extends Controller
                 $alunos_curso_habil[$aluno]['codhab'] = $alunos_cursos[0]->codhab;
             }
         }
-        
-        $alunos = DB::connection('replicado')->
-                        select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
+
+        $alunos = DB::connection('replicado')->select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg, 
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
@@ -58,7 +56,9 @@ class CertificadoConclusaoController extends Controller
         $data_colacao = $request->data_colacao;
         $data_conclusao = $request->data_conclusao;
         $codpes = $request->codpes;
-        return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'codpes', 'data_conclusao', 'alunos_curso_habil'));
+        $nome_assistente = $request->nome_assistente;
+        $cargo_assistente = $request->cargo_assistente;
+        return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'codpes', 'data_conclusao', 'alunos_curso_habil', 'nome_assistente', 'cargo_assistente'));
     }
 
     public function showPDF(Request $request)
@@ -73,8 +73,7 @@ class CertificadoConclusaoController extends Controller
         $alunos_nusp = explode(',', str_replace(' ', '', $request->codpes));
 
         foreach ($alunos_nusp as $aluno) {
-            $alunos_cursos = DB::connection('replicado')->
-                                            select(DB::raw("SELECT TOP 1 codcur, codhab 
+            $alunos_cursos = DB::connection('replicado')->select(DB::raw("SELECT TOP 1 codcur, codhab 
                                                             FROM HABILPROGGR
                                                             WHERE codpes={$aluno}
                                                             ORDER BY dtaini DESC"));
@@ -84,8 +83,7 @@ class CertificadoConclusaoController extends Controller
             }
         }
 
-        $alunos = DB::connection('replicado')->
-                        select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
+        $alunos = DB::connection('replicado')->select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
                                             tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
                                             sglorgexdidf, p.sglest AS estado_rg,
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
@@ -104,10 +102,10 @@ class CertificadoConclusaoController extends Controller
         $cursos = $this->cursos();
         $html = $start_html;
         $i = 0;
-        foreach($alunos as $aluno) {
+        foreach ($alunos as $aluno) {
             $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->formatLocalized('%d de %B de %Y');
             $data_nascimento = Carbon::parse(str_replace('/', '-', $aluno->dtanas))->formatLocalized('%d de %B de %Y');
-            $nome = strtoupper(Encoding::fixUTF8($aluno->nompesttd)); 
+            $nome = strtoupper(Encoding::fixUTF8($aluno->nompesttd));
             $nommae = Encoding::fixUTF8($aluno->nommaepes);
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
             $cidade = Encoding::fixUTF8($aluno->cidloc);
@@ -117,11 +115,33 @@ class CertificadoConclusaoController extends Controller
             $pais = Encoding::fixUTF8($aluno->nompas);
             $artigo = ($aluno->sexpes == 'M') ? 'o' :  'a';
             $rg = $aluno->numdocfmt;
-            $html .= View::make('certificado_conclusao.showPDF', compact('aluno', 'data_colacao', 'data_expedicao', 
-                                                                         'data_nascimento', 'cursos',
-                                                                         'nome', 'nommae', 'nompai',
-                                                                         'cidade', 'estado', 'artigo', 'pais', 'data_conclusao', 'rg',
-                                                                         'curso', 'habil'))->render();
+            $nome_assistente = $request->nome_assistente;
+            $cargo_assistente = $request->cargo_assistente;
+            if ($request->tipo == 'regular') {
+                $pdf = 'certificado_conclusao.showPDF';
+            } else if ($request->tipo == 'provisorio') {
+                $pdf = 'certificado_conclusao.showPDFProvisorio';
+            }
+            $html .= View::make($pdf, compact(
+                'aluno',
+                'data_colacao',
+                'data_expedicao',
+                'data_nascimento',
+                'cursos',
+                'nome',
+                'nommae',
+                'nompai',
+                'cidade',
+                'estado',
+                'artigo',
+                'pais',
+                'data_conclusao',
+                'rg',
+                'curso',
+                'habil',
+                'nome_assistente',
+                'cargo_assistente'
+            ))->render();
             // Se não for o último aluno, adiciona uma quebra de página
             if ($i != count($alunos) - 1) {
                 $html .= '<div class="page-break"></div>';
@@ -141,7 +161,8 @@ class CertificadoConclusaoController extends Controller
 
     // Array utilizada para escrever o nome do curso
     // por extenso no arquivo PDF gerado
-    public function cursos() {
+    public function cursos()
+    {
         return [
             81002 => 'Administração',
             81003 => 'Administração',

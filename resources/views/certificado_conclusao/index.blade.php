@@ -4,13 +4,13 @@
 
 <div class="col-md-10">
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
     <!-- Horizontal Form -->
     <div class="box box-info">
@@ -28,7 +28,7 @@
                         <textarea rows="3" class="form-control" id="codpes" name="codpes" autofocus required placeholder="Insira os números USP separados por vírgula"></textarea>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <label for="data_conclusao" class="col-sm-2 control-label">Conclusão (curso) em:</label>
                     <div class="col-sm-4">
                         <input class="form-control" id="data" name="data_conclusao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
@@ -37,6 +37,16 @@
                     <label for="data_colacao" class="col-sm-2 control-label">Colação em:</label>
                     <div class="col-sm-4">
                         <input class="form-control" id="data" name="data_colacao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="nome_assistente" class="col-sm-2 control-label">Nome assistente:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="data" name="nome_assistente" value="Cristina Bernardi Lima" required>
+                    </div>
+                    <label for="cargo_assistente" class="col-sm-2 control-label">Cargo assistente:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="data" name="cargo_assistente" value="Assistente Acadêmica" required>
                     </div>
                 </div>
                 <!-- /.box-body -->

@@ -3,16 +3,31 @@
 @section('content')
 <div class="form-group">
     <div class="row pull-right">
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <a href="{{ route('certificado_conclusao.index') }}" class="btn btn-info">Nova busca</a>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <form action="{{ route('certificado_conclusao.showPDF') }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
                 <input type="hidden" value="{{ $data_conclusao }}" name="data_conclusao">
+                <input type="hidden" value="{{ $nome_assistente }}" name="nome_assistente">
+                <input type="hidden" value="{{ $cargo_assistente }}" name="cargo_assistente">
                 <input type="hidden" value="{{ $codpes }}" name="codpes">
+                <input type="hidden" value="regular" name="tipo">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-file-pdf-o"></i>GERAR PDF</button>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <form action="{{ route('certificado_conclusao.showPDF') }}" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
+                <input type="hidden" value="{{ $data_conclusao }}" name="data_conclusao">
+                <input type="hidden" value="{{ $nome_assistente }}" name="nome_assistente">
+                <input type="hidden" value="{{ $cargo_assistente }}" name="cargo_assistente">
+                <input type="hidden" value="{{ $codpes }}" name="codpes">
+                <input type="hidden" value="provisorio" name="tipo">
+                <button type="submit" class="btn btn-default"><i class="fa fa-fw fa-file-pdf-o"></i>GERAR PDF Provisório</button>
             </form>
         </div>
     </div>
@@ -47,32 +62,32 @@
                     </thead>
                     <tbody>
                         @foreach ($alunos as $aluno)
-                            <tr role="row">
-                                <td class="text-center">{{ $aluno->codpes }}</td>
-                                @php ($nome = \ForceUTF8\Encoding::fixUTF8($aluno->nompes))
-                                <td>{{ mb_strtoupper($nome) }}</td>
-                                @php ($nommae = \ForceUTF8\Encoding::fixUTF8($aluno->nommaepes))
-                                <!-- Ciências Contábeis mostra filiação completa -->
-                                @if ($alunos_curso_habil[$aluno->codpes]['codcur'] == '81200')
-                                    @php ($nompai = \ForceUTF8\Encoding::fixUTF8($aluno->nompaipes))
-                                    <td>{{ "{$nommae} e {$nompai}" }}</td>
-                                @else
-                                    <td>{{ $nommae }}</td>
-                                @endif
-                                <td class="text-center">{{ $aluno->dtanas }}</td>
-                                <td class="text-center">{{ $aluno->tipdocidf }}</td>
-                                <td class="text-center">{{ "{$aluno->numdocfmt}/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
-                                <td class="text-center">{{ $aluno->dtaexdidf }}</td>
-                                <td class="text-center">{{ $alunos_curso_habil[$aluno->codpes]['codcur'] }}</td>
-                                @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
-                                @php ($estado = \ForceUTF8\Encoding::fixUTF8($aluno->nomest))
-                                @if ($aluno->codpas == 1)
-                                <td>{{ "{$cidade} - {$estado}" }}</td>
-                                @else
-                                    @php ($pais = \ForceUTF8\Encoding::fixUTF8($aluno->nompas))
-                                    <td>{{ "{$cidade} - {$estado} - {$pais}" }}</td>
-                                @endif
-                            </tr>
+                        <tr role="row">
+                            <td class="text-center">{{ $aluno->codpes }}</td>
+                            @php ($nome = \ForceUTF8\Encoding::fixUTF8($aluno->nompes))
+                            <td>{{ mb_strtoupper($nome) }}</td>
+                            @php ($nommae = \ForceUTF8\Encoding::fixUTF8($aluno->nommaepes))
+                            <!-- Ciências Contábeis mostra filiação completa -->
+                            @if ($alunos_curso_habil[$aluno->codpes]['codcur'] == '81200')
+                            @php ($nompai = \ForceUTF8\Encoding::fixUTF8($aluno->nompaipes))
+                            <td>{{ "{$nommae} e {$nompai}" }}</td>
+                            @else
+                            <td>{{ $nommae }}</td>
+                            @endif
+                            <td class="text-center">{{ $aluno->dtanas }}</td>
+                            <td class="text-center">{{ $aluno->tipdocidf }}</td>
+                            <td class="text-center">{{ "{$aluno->numdocfmt}/{$aluno->sglorgexdidf}-{$aluno->estado_rg}" }}</td>
+                            <td class="text-center">{{ $aluno->dtaexdidf }}</td>
+                            <td class="text-center">{{ $alunos_curso_habil[$aluno->codpes]['codcur'] }}</td>
+                            @php ($cidade = \ForceUTF8\Encoding::fixUTF8($aluno->cidloc))
+                            @php ($estado = \ForceUTF8\Encoding::fixUTF8($aluno->nomest))
+                            @if ($aluno->codpas == 1)
+                            <td>{{ "{$cidade} - {$estado}" }}</td>
+                            @else
+                            @php ($pais = \ForceUTF8\Encoding::fixUTF8($aluno->nompas))
+                            <td>{{ "{$cidade} - {$estado} - {$pais}" }}</td>
+                            @endif
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

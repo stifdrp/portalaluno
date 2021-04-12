@@ -58,7 +58,7 @@
 
     .texto-assinatura {
         position: fixed;
-        top: 650px;
+        top: 730px;
         line-height: 0.8em;
     }
 
@@ -97,7 +97,7 @@
 
     footer {
         position: absolute;
-        top: 850px;
+        top: 940px;
         left: 0px;
     }
 </style>
@@ -132,7 +132,7 @@
             @else
             {{ ($artigo == 'o') ? "portador" : "portador{$artigo}" }} do {{ @trim($aluno->tipdocidf) }} {{ $rg . "/{$aluno->sglorgexdidf}," }}
             @endif
-            expedido em {{ $data_expedicao }}, concluiu o curso de {{ $cursos[$curso] }}
+            expedido em {{ $data_expedicao }}, cumpriu os créditos necessários para conclusão do curso de {{ $cursos[$curso] }}
             @if (($curso == '81300') || ($curso == '81301'))
             na habilitação {{ ($habil == '101' ? 'em Economia' : 'em Contabilidade') }} desta Faculdade,
             @else
@@ -140,9 +140,9 @@
             @endif
             em {{ $data_conclusao }}{{($curso == '81200') ? ", com carga horária total de 3030 horas." : "."}}
         </p>
-        <p>Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.</p>
-
-        <br>
+        <p>Certificamos, ainda, que participou da colação de grau remota em {{ $data_colacao }} e que a regularização do ato dependerá da assinatura d{{$artigo}} formand{{$artigo}} em livro de registros da Unidade.</p>
+        <p>Em vista do Decreto do Estado de São Paulo n.º 65.563, de 11 de março de 2021, que “institui medidas emergenciais, de caráter temporário e excepcional, destinadas ao enfrentamento da pandemia de COVID-19, e dá providências correlatas”, o atendimento para assinatura do livro só poderá ocorrer quando houver condições seguras e a devida autorização para retomarmos as atividades presenciais.</p>
+        <br><br><br><br><br><br><br><br>
         <p class="texto-direita">
             Ribeirão Preto, {{ $data_colacao }}.
         </p>
