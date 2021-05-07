@@ -141,7 +141,7 @@
             em {{ $data_conclusao }}{{($curso == '81200') ? ", com carga horária total de 3030 horas." : "."}}
         </p>
         <p>Certificamos, ainda, que participou da colação de grau remota em {{ $data_colacao }} e que a regularização do ato dependerá da assinatura d{{$artigo}} formand{{$artigo}} em livro de registros da Unidade.</p>
-        <p>Em vista do Comunicado do GT Plano USP de Readequação do Ano Acadêmico (GT PRAA), de 6 de abril de 2021, que prorroga até o final do mês de abril as restrições de acesso aos Campi da USP, considerando que não houve melhoria nas condições epidemiológicas e que os hospitais e equipamentos de saúde também continuam em situação crítica, o atendimento para assinatura presencial do livro só poderá ocorrer quando houver condições sanitárias seguras e a devida autorização para retomarmos as atividades presenciais.</p>
+        <p>Em vista do Comunicado do GT Plano USP de Readequação do Ano Acadêmico (GT PRAA), de 5 de maio de 2021, considerando a situação ainda preocupante da pandemia no país e, em particular no Estado de São Paulo, deve ser evitada a realização de atividades que possam levar a aglomerações de pessoas. Desta forma, estamos aguardando novas orientações para a retomada das atividades presenciais e a realização do atendimento para assinatura do livro.</p>
         <br>
         <p class="texto-direita">
             Ribeirão Preto, {{ $data_colacao }}.
