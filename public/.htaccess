@@ -19,3 +19,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+<IfModule mime_module>
+       AddHandler application/x-httpd-ea-php74 .php .phtml
+</IfModule>
