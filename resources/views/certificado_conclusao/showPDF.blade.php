@@ -144,7 +144,7 @@
 
         <br>
         <p class="texto-direita">
-            Ribeirão Preto, {{ $data_colacao }}.
+            Ribeirão Preto, {{ $data_documento }}.
         </p>
 
         <div class="row texto-assinatura">

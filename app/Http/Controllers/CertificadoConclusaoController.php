@@ -55,10 +55,11 @@ class CertificadoConclusaoController extends Controller
                                         ORDER BY p.nompesttd "));
         $data_colacao = $request->data_colacao;
         $data_conclusao = $request->data_conclusao;
+        $data_documento = $request->data_documento;
         $codpes = $request->codpes;
         $nome_assistente = $request->nome_assistente;
         $cargo_assistente = $request->cargo_assistente;
-        return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'codpes', 'data_conclusao', 'alunos_curso_habil', 'nome_assistente', 'cargo_assistente'));
+        return view('certificado_conclusao.show', compact('alunos', 'data_colacao', 'data_documento', 'codpes', 'data_conclusao', 'alunos_curso_habil', 'nome_assistente', 'cargo_assistente'));
     }
 
     public function showPDF(Request $request)
@@ -95,6 +96,7 @@ class CertificadoConclusaoController extends Controller
                                         ORDER BY p.nompesttd "));
         $data_colacao = Carbon::parse(str_replace('/', '-', $request->data_colacao))->formatLocalized('%d de %B de %Y');
         $data_conclusao = Carbon::parse(str_replace('/', '-', $request->data_conclusao))->formatLocalized('%d de %B de %Y');
+        $data_documento = Carbon::parse(str_replace('/', '-', $request->data_documento))->formatLocalized('%d de %B de %Y');
         $start_html = '<html>
                         <link href="https://fonts.googleapis.com/css?family=Jura|Quicksand|Tajawal" rel="stylesheet">
                         <link rel="stylesheet" href="css/bootstrap-3-3-7.min.css"><body>';
@@ -105,6 +107,7 @@ class CertificadoConclusaoController extends Controller
         foreach ($alunos as $aluno) {
             $data_expedicao = Carbon::parse(str_replace('/', '-', $aluno->dtaexdidf))->formatLocalized('%d de %B de %Y');
             $data_nascimento = Carbon::parse(str_replace('/', '-', $aluno->dtanas))->formatLocalized('%d de %B de %Y');
+            $data_documento = Carbon::parse(str_replace('/', '-', $request->data_documento))->formatLocalized('%d de %B de %Y');
             $nome = strtoupper(Encoding::fixUTF8($aluno->nompesttd));
             $nommae = Encoding::fixUTF8($aluno->nommaepes);
             $nompai = Encoding::fixUTF8($aluno->nompaipes);
@@ -127,6 +130,7 @@ class CertificadoConclusaoController extends Controller
                 'data_colacao',
                 'data_expedicao',
                 'data_nascimento',
+                'data_documento',
                 'cursos',
                 'nome',
                 'nommae',

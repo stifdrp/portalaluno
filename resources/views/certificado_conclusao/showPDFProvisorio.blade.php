@@ -144,7 +144,7 @@
         <p>Em vista do Comunicado do GT Plano USP de Readequação do Ano Acadêmico (GT PRAA), de 5 de maio de 2021, considerando a situação ainda preocupante da pandemia no país e, em particular no Estado de São Paulo, deve ser evitada a realização de atividades que possam levar a aglomerações de pessoas. Desta forma, estamos aguardando novas orientações para a retomada das atividades presenciais e a realização do atendimento para assinatura do livro.</p>
         <br>
         <p class="texto-direita">
-            Ribeirão Preto, {{ $data_colacao }}.
+            Ribeirão Preto, {{ $data_documento }}.
         </p>
 
         <div class="row texto-assinatura">

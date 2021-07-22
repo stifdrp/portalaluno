@@ -11,6 +11,7 @@
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
                 <input type="hidden" value="{{ $data_conclusao }}" name="data_conclusao">
+                <input type="hidden" value="{{ $data_documento }}" name="data_documento">
                 <input type="hidden" value="{{ $nome_assistente }}" name="nome_assistente">
                 <input type="hidden" value="{{ $cargo_assistente }}" name="cargo_assistente">
                 <input type="hidden" value="{{ $codpes }}" name="codpes">
@@ -23,6 +24,7 @@
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $data_colacao }}" name="data_colacao">
                 <input type="hidden" value="{{ $data_conclusao }}" name="data_conclusao">
+                <input type="hidden" value="{{ $data_documento }}" name="data_documento">
                 <input type="hidden" value="{{ $nome_assistente }}" name="nome_assistente">
                 <input type="hidden" value="{{ $cargo_assistente }}" name="cargo_assistente">
                 <input type="hidden" value="{{ $codpes }}" name="codpes">
@@ -41,7 +43,7 @@
         <br>
         <b>Data colação:</b> {{ $data_colacao }}
         <br>
-        <b>Emissão:</b> {{ $data_colacao }}
+        <b>Emissão:</b> {{ $data_documento }}
     </div>
     <div id="alunos" class="dataTables_wrapper form-inline dt-bootstrap">
         <div class="row">

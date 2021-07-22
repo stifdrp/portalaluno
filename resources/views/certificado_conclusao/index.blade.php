@@ -24,19 +24,24 @@
             <div class="box-body">
                 <div class="form-group">
                     <label for="codpes" class="col-sm-2 control-label">Números USP</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-12">
                         <textarea rows="3" class="form-control" id="codpes" name="codpes" autofocus required placeholder="Insira os números USP separados por vírgula"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="data_conclusao" class="col-sm-2 control-label">Conclusão (curso) em:</label>
-                    <div class="col-sm-4">
-                        <input class="form-control" id="data" name="data_conclusao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
+                    <div class="col-sm-2">
+                        <input class="form-control" name="data_conclusao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
                     </div>
 
                     <label for="data_colacao" class="col-sm-2 control-label">Colação em:</label>
-                    <div class="col-sm-4">
-                        <input class="form-control" id="data" name="data_colacao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
+                    <div class="col-sm-2">
+                        <input class="form-control" name="data_colacao" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
+                    </div>
+
+                    <label for="data_documento" class="col-sm-2 control-label">Emissão em:</label>
+                    <div class="col-sm-2">
+                        <input class="form-control" name="data_documento" value="{{\Carbon\Carbon::parse(now())->format('d/m/Y')}}" required>
                     </div>
                 </div>
                 <div class="form-group row">
