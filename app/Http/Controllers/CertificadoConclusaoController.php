@@ -25,7 +25,7 @@ class CertificadoConclusaoController extends Controller
 
     public function show(Request $request)
     {
-        /** 
+        /**
          * Selecionar a última habilitação para cada nusp informado
          * será importante para definir os cursos/habilitações
          * pois tabela VINCULOPESSOAUSP teve de ser 'removida' da query original
@@ -33,7 +33,7 @@ class CertificadoConclusaoController extends Controller
         $alunos_nusp = explode(',', str_replace(array("\n", "\r"), '', str_replace(' ', '', $request->codpes)));
 
         foreach ($alunos_nusp as $aluno) {
-            $alunos_cursos = DB::connection('replicado')->select(DB::raw("SELECT TOP 1 codcur, codhab 
+            $alunos_cursos = DB::connection('replicado')->select(DB::raw("SELECT TOP 1 codcur, codhab
                                                             FROM HABILPROGGR
                                                             WHERE codpes={$aluno}
                                                             ORDER BY dtaini DESC"));
@@ -43,9 +43,9 @@ class CertificadoConclusaoController extends Controller
             }
         }
 
-        $alunos = DB::connection('replicado')->select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, 
-                                            tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
-                                            sglorgexdidf, p.sglest AS estado_rg, 
+        $alunos = DB::connection('replicado')->select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd as nompes, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas,
+                                            tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf,
+                                            sglorgexdidf, p.sglest AS estado_rg,
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
@@ -66,7 +66,7 @@ class CertificadoConclusaoController extends Controller
     {
         // Adicionado extensão no tempo de processamento, pois no server demorou mais e retornou fatal error
         set_time_limit(300);
-        /** 
+        /**
          * Selecionar a última habilitação para cada nusp informado
          * será importante para definir os cursos/habilitações
          * pois tabela VINCULOPESSOAUSP teve de ser 'removida' da query original
@@ -74,7 +74,7 @@ class CertificadoConclusaoController extends Controller
         $alunos_nusp = explode(',', str_replace(' ', '', $request->codpes));
 
         foreach ($alunos_nusp as $aluno) {
-            $alunos_cursos = DB::connection('replicado')->select(DB::raw("SELECT TOP 1 codcur, codhab 
+            $alunos_cursos = DB::connection('replicado')->select(DB::raw("SELECT TOP 1 codcur, codhab
                                                             FROM HABILPROGGR
                                                             WHERE codpes={$aluno}
                                                             ORDER BY dtaini DESC"));
@@ -84,8 +84,8 @@ class CertificadoConclusaoController extends Controller
             }
         }
 
-        $alunos = DB::connection('replicado')->select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes, 
-                                            tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf, 
+        $alunos = DB::connection('replicado')->select(DB::raw("SELECT DISTINCT p.codpes, p.nompesttd, nommaepes, c.nompaipes, CONVERT(VARCHAR, dtanas, 103) AS dtanas, p.sexpes,
+                                            tipdocidf, numdocidf, CONVERT(VARCHAR, dtaexdidf, 103) AS dtaexdidf,
                                             sglorgexdidf, p.sglest AS estado_rg,
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
@@ -170,11 +170,15 @@ class CertificadoConclusaoController extends Controller
         return [
             81002 => 'Administração',
             81003 => 'Administração',
+            81004 => 'Administração',
             81100 => 'Ciências Econômicas',
             81101 => 'Ciências Econômicas',
+            81102 => 'Ciências Econômicas',
             81200 => 'Ciências Contábeis',
+            81201 => 'Ciências Contábeis',
             81300 => 'Economia Empresarial e Controladoria',
             81301 => 'Economia Empresarial e Controladoria',
+            81302 => 'Economia Empresarial e Controladoria',
         ];
     }
 }

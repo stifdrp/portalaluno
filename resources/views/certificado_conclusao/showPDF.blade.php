@@ -39,7 +39,7 @@
         position: fixed;
         top: 300px;
         left: 80px;
-        /** The width and height may change 
+        /** The width and height may change
                     according to the dimensions of your letterhead
                 **/
         width: 12cm;
@@ -104,7 +104,7 @@
 <header>
     <div class="row">
         <div class="col-md-10 col-md-offset-8">
-            <img src="img/logo_cabecalho.jpg" height="120px" width="600px" />
+            <img src="img/logo_cabecalho_fearp_30_anos.jpg" height="120px" width="600px" />
         </div>
     </div>
     <p class="texto-pequeno-header">Serviço de Graduação</p>
@@ -120,7 +120,7 @@
     <div id="texto">
         <div id="watermark"><img src="img/logo_fearp_pb.jpg" height="100%" width="100%"></div>
         <p class="texto-fundo">C E R T I F I C A M O S que <b>{{ mb_strtoupper($nome) }}</b>, n° USP {{ $aluno->codpes }},
-            @if ($curso == '81200')
+            @if (($curso == '81200') || ($curso == '81201'))
             filh{{$artigo}} de {{ "{$nommae} e {$nompai}" }}, natural de {{ $cidade }}, Estado de {{ $estado }},
             @if ((isset($pais)) && (!is_null($pais)) && ($pais != 'Brasil'))
             {{$pais}},
@@ -138,7 +138,7 @@
             @else
             desta Faculdade
             @endif
-            em {{ $data_conclusao }}{{($curso == '81200') ? ", com carga horária total de 3030 horas." : "."}}
+            em {{ $data_conclusao }}{{(($curso == '81200') || ($curso == '81201')) ? ", com carga horária total de 3030 horas." : "."}}
         </p>
         <p>Certificamos, ainda, que colou grau em {{ $data_colacao }} e que a expedição e o registro do diploma encontram-se em processamento.</p>
 
@@ -164,13 +164,13 @@
 </body>
 <footer>
     <p class="texto-pequeno">A Universidade de São Paulo foi reconhecida pelo Decreto 6.283, de 25/01/1934.<br />
-        @if ($curso == '81200')
+        @if (($curso == '81200') || ($curso == '81201'))
         A renovação do reconhecimento do curso de Ciências Contábeis foi feita pela Portaria CEE-GP-11, de 02/02/2018, publicada no Diário Oficial do Estado de São Paulo em 03/02/2018.</p>
-    @elseif (($curso == '81003') || ($curso == '81002'))
+    @elseif (($curso == '81003') || ($curso == '81002') || ($curso == '81004'))
     A renovação do reconhecimento do curso de Administração foi feita pela Portaria CEE-GP-655, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
-    @elseif (($curso == '81300') || ($curso == '81301'))
+    @elseif (($curso == '81300') || ($curso == '81301') || ($curso == '81302'))
     A renovação do reconhecimento do curso de Economia Empresarial e Controladoria foi feita pela Portaria CEE-GP-657, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
-    @elseif (($curso == '81100') || ($curso == '81101'))
+    @elseif (($curso == '81100') || ($curso == '81101') || ($curso == '81102'))
     A renovação do reconhecimento do curso de Ciências Econômicas foi feita pela Portaria CEE-GP-450, de 24/10/2019, publicada no Diário Oficial do Estado de São Paulo em 25/10/2019.
     @endif
     </p>
