@@ -49,7 +49,7 @@ class CertificadoConclusaoController extends Controller
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
-                                                        INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
+                                                        LEFT JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
                                                         INNER JOIN PAIS ps ON (ps.codpas = l.codpas)
                                         WHERE p.codpes IN ($request->codpes)
                                         ORDER BY p.nompesttd "));
@@ -90,7 +90,7 @@ class CertificadoConclusaoController extends Controller
                                             l.cidloc, l.sglest, c.codlocnas, e.nomest, e.codpas, ps.nompas, p.numdocfmt
                                         FROM PESSOA p INNER JOIN COMPLPESSOA c on (p.codpes = c.codpes)
                                                         INNER JOIN LOCALIDADE l on (l.codloc = c.codlocnas)
-                                                        INNER JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
+                                                        LEFT JOIN ESTADO e ON (l.sglest = e.sglest AND e.codpas = l.codpas)
                                                         INNER JOIN PAIS ps ON (ps.codpas = l.codpas)
                                         WHERE p.codpes IN ($request->codpes)
                                         ORDER BY p.nompesttd "));
