@@ -42,7 +42,7 @@ class AlunoSolicitacaoDocumentoController extends Controller
 
         // Verifica se o formulário está ativo e no período para preenchimento
         if (count($solicitacao_documentos) == 0) {
-            return redirect()->back()->withErrors('Formulário desativado ou fora do período de preenchimento!!!');
+            return redirect()->route('home')->withErrors('Formulário desativado ou fora do período de preenchimento!!!');
         }
 
         $solicitacao_documentos = $solicitacao_documentos->first();
@@ -53,7 +53,7 @@ class AlunoSolicitacaoDocumentoController extends Controller
 
         // Verifica se há algum documento disponível para ser solicitado
         if (count($documentos_disponiveis) == 0) {
-            return redirect()->back()->withErrors('Formulário com algum problema. Informe o Serviço de Graduação!');
+            return redirect()->route('home')->withErrors('Formulário com algum problema. Informe o Serviço de Graduação!');
         }
 
         return view(
