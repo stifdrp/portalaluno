@@ -13,6 +13,23 @@
         <li><strong>Nome (Número USP): {{ Auth::user()->name }} ({{ Auth::user()->username }})</strong></li>
         <li> {{ Auth::user()->email }}</li>
     </ul>
+
+    @if ($errors->any())
+    <div class="col-8 col-sm-8">
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>
+                    {{ $error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    @endif
 </div>
 
 @can('admin')
@@ -49,21 +66,5 @@
     </div>
     @endif
 
-    @if ($errors->any())
-    <div class="col-6">
-        <div class="alert alert-info">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>
-                    {{ $error }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-    @endif
     @endcan
     @stop
