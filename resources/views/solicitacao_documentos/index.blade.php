@@ -36,7 +36,11 @@
 
                 <div class="col">
                     <label for="fim" class="control-label">Data Final</label>
-                    <input class="form-control" id="fim" name="fim" value="{{\Carbon\Carbon::parse($solicitacao_documentos->fim)->format('d/m/Y')}}" readonly>
+                    @if (isset($solicitacao_documentos->fim) && !is_null($solicitacao_documentos->fim))
+                        <input class="form-control" id="fim" name="fim" value="{{\Carbon\Carbon::parse($solicitacao_documentos->fim)->format('d/m/Y')}}" readonly>
+                    @else
+                        <input class="form-control" id="fim" name="fim" readonly>
+                    @endif
                 </div>
 
                 <div class="col">
