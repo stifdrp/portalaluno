@@ -9,10 +9,11 @@
 * Contagem de Créditos (pendente)
 
 ## Requisitos
-    1. Servidor web (nginx ou apache);
-    2. Servidor de banco de dados (postgresql, mysql);
-    3. Algum serviço/servidor de e-mail para envio das comunicações;
-    4. Supervisor, serviço para gerenciar a fila de e-mails;
+    1. Base USP replicada;
+    2. Servidor web (nginx ou apache);
+    3. Servidor de banco de dados (postgresql, mysql);
+    4. Algum serviço/servidor de e-mail para envio das comunicações;
+    5. Supervisor, serviço para gerenciar a fila de e-mails;
 
 ### Instalação
 
@@ -40,7 +41,7 @@ Para receber as últimas atualizações do sistema rode:
 
 ### Autenticação 
 
-Este projeto utiliza o [Senha única](https://github.com/uspdev/senhaunica-socialite), para utilizá-lo, cadastre uma nova URL no [site](https://uspdigital.usp.br/adminws/oauthConsumidorAcessar) com a URL https://seu_app/callback. Este callback_id deverá ser inserido no arquivo .env.
+Este projeto utiliza o [Senha única](https://github.com/uspdev/senhaunica-socialite), para configurá-lo, cadastre uma nova URL no [site](https://uspdigital.usp.br/adminws/oauthConsumidorAcessar) com a URL https://seu_app/callback. Este callback_id deverá ser inserido no arquivo .env.
 
 ### Banco de dados
 
@@ -87,4 +88,4 @@ Reinicie o **Supervisor**
     sudo supervisorctl update
     sudo supervisorctl restart all
 
-Readme inspirado no projeto [Uspdev/Starter](https://github.com/uspdev/starter)
+Este Readme foi inspirado no projeto [Uspdev/Starter](https://github.com/uspdev/starter)
