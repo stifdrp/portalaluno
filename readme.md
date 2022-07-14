@@ -24,7 +24,8 @@
     composer install
     cp .env.example .env
     php artisan key:generate
-    php artisan migrate
+    // O primeiro migrate, deve-se rodar com --seed para criar os formulários previstos
+    php artisan migrate --seed
     Configure o .env conforme a necessidade
 ```
 
@@ -53,7 +54,7 @@ A utilização do ```--seed ``` é necessário para criação dos registros dos 
 
 * Ambiente de Produção
 
-    php artisan migrate --seed
+    php artisan migrate
 
 ### Supervisor 
 
