@@ -39,7 +39,7 @@
         position: fixed;
         top: 300px;
         left: 80px;
-        /** The width and height may change 
+        /** The width and height may change
                     according to the dimensions of your letterhead
                 **/
         width: 12cm;
@@ -150,7 +150,7 @@
         <div class="row texto-assinatura">
             <div class="col-xs-5">
                 <p class="traco">___________________________________</p>
-                <center>Prof. Dr. André Lucirton Costa<br>Diretor</p>
+                <center>Prof. Dr. Fábio Augusto Reis Gomes<br>Diretor</p>
                 </center>
             </div>
             <div class="col-xs-5 pull-right">
