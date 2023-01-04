@@ -167,7 +167,7 @@
         @if ($curso == '81200')
         A renovação do reconhecimento do curso de Ciências Contábeis foi feita pela Portaria CEE-GP-11, de 02/02/2018, publicada no Diário Oficial do Estado de São Paulo em 03/02/2018.</p>
     @elseif (($curso == '81003') || ($curso == '81002'))
-    A renovação do reconhecimento do curso de Administração foi feita pela Portaria CEE-GP-655, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
+    A renovação do reconhecimento do curso de Administração foi feita pela Portaria CEE-GP-514, de 28/11/2022, publicada no Diário Oficial do Estado de São Paulo em 29/11/2022.
     @elseif (($curso == '81300') || ($curso == '81301'))
     A renovação do reconhecimento do curso de Economia Empresarial e Controladoria foi feita pela Portaria CEE-GP-657, de 19/12/2017, publicada no Diário Oficial do Estado de São Paulo em 21/12/2017.
     @elseif (($curso == '81100') || ($curso == '81101'))
